@@ -1,4 +1,4 @@
-package ProyectoCoil.utilidades;
+package coilvic.utilidades;
 
 public class Constantes {
     

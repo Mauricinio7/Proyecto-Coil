@@ -1,4 +1,4 @@
-package ProyectoCoil.modelo.dao;
+package coilvic.modelo.dao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -6,8 +6,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
-import ProyectoCoil.modelo.ConexionBD;
-import ProyectoCoil.utilidades.Constantes;
+
+import coilvic.modelo.ConexionBD;
+import coilvic.utilidades.Constantes;
 
 public class LoginDAO {
     
@@ -27,9 +28,11 @@ public class LoginDAO {
                 Integer idProfesorUv = null;
                 if (resultado.next()) {
                     idProfesorUv = resultado.getInt("id_profesor");
+                    respuesta.put(Constantes.KEY_ERROR, false);
+                    respuesta.put("idProfesor",idProfesorUv);
+                } else {
+                    respuesta.put(Constantes.KEY_MENSAJE,"Usuario y/o contraseña incorrectos");
                 }
-                respuesta.put(Constantes.KEY_ERROR, false);
-                respuesta.put("idProfesor",idProfesorUv);
                 conexionBD.close();
             } catch(SQLException e) {
                 respuesta.put(Constantes.KEY_MENSAJE, e.getMessage());
