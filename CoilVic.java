@@ -11,7 +11,7 @@ public class CoilVic extends Application {
     
     @Override
     public void start(Stage stage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("vista/FXMLVistaAdmin.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("vista/FXMLVistaProfesor.fxml"));
         
         Scene scene = new Scene(root);
         
