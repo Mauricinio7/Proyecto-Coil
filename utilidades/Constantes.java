@@ -11,4 +11,5 @@ public class Constantes {
     public static final String MENSAJE_ERROR_CONEXION = "No disponible, inténtelo mas tarde";
     public static final String KEY_ERROR = "error";
     public static final String KEY_MENSAJE = "mensaje";
+    
 }

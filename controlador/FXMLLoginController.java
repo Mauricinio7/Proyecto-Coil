@@ -36,8 +36,8 @@ public class FXMLLoginController implements Initializable {
     private void btnContinuar(ActionEvent event) {
         String usuario = tfUsuario.getText();
         String contrasena = pfUsuario.getText();
-        irPantallaAdministrador();
-            irPantallaProfesor();
+        Utils.irVistaPorComponent(tfUsuario,"../vista/FXMLVistaProfesor.fxml", null);
+        //Utils.irVistaPorComponent(tfUsuario,"../vista/FXMLVistaAdmin.fxml", null);
         if (validarCampos()) {
             HashMap<String, Object> respuesta = LoginDAO.iniciarSesion(usuario, contrasena);
             if( !(boolean) respuesta.get(Constantes.KEY_ERROR)) {
@@ -56,35 +56,5 @@ public class FXMLLoginController implements Initializable {
             return false;
         }
         return true;
-    }
-    public void irPantallaAdministrador(){
-        try{
-            Stage stagePrincipal = (Stage)tfUsuario.getScene().getWindow();
-            FXMLLoader loader = new FXMLLoader(CoilVic.class.getResource("../vista/FXMLVistaAdmin.fxml"));
-            Parent root =loader.load();
-            FXMLVistaAdminController pantallaPrincipalControlador = loader.getController();
-            pantallaPrincipalControlador.inicializarValores();
-            Scene nuevaEscena = new Scene(root);
-            stagePrincipal.setScene(nuevaEscena);
-            stagePrincipal.setTitle("Pantalla Administrador");
-            stagePrincipal.show();
-        }catch(IOException error){
-
-        }
-    }
-    public void irPantallaProfesor(){
-        try{
-            Stage stagePrincipal = (Stage)tfUsuario.getScene().getWindow();
-            FXMLLoader loader = new FXMLLoader(CoilVic.class.getResource("../vista/FXMLVistaProfesor.fxml"));
-            Parent root =loader.load();
-            FXMLVistaProfesorController pantallaPrincipalControlador = loader.getController();
-            pantallaPrincipalControlador.inicializarValores();
-            Scene nuevaEscena = new Scene(root);
-            stagePrincipal.setScene(nuevaEscena);
-            stagePrincipal.setTitle("Pantalla Profesor");
-            stagePrincipal.show();
-        }catch(IOException error){
-
-        }
     }
 }
