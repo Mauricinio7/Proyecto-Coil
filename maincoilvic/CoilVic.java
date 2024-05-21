@@ -1,5 +1,6 @@
-package coilvic;
+package coilvic.maincoilvic;
 
+import coilvic.modelo.ConexionBD;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -11,7 +12,7 @@ public class CoilVic extends Application {
     
     @Override
     public void start(Stage stage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("vista/FXMLLogin.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("../vista/FXMLLogin.fxml"));
         
         Scene scene = new Scene(root);
         
