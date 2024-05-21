@@ -57,4 +57,34 @@ public class FXMLLoginController implements Initializable {
         }
         return true;
     }
+    public void irPantallaAdministrador(){
+        try{
+            Stage stagePrincipal = (Stage)tfUsuario.getScene().getWindow();
+            FXMLLoader loader = new FXMLLoader(CoilVic.class.getResource("../vista/FXMLVistaAdmin.fxml"));
+            Parent root =loader.load();
+            FXMLVistaAdminController pantallaPrincipalControlador = loader.getController();
+            pantallaPrincipalControlador.inicializarValores();
+            Scene nuevaEscena = new Scene(root);
+            stagePrincipal.setScene(nuevaEscena);
+            stagePrincipal.setTitle("Pantalla Administrador");
+            stagePrincipal.show();
+        }catch(IOException error){
+
+        }
+    }
+    public void irPantallaProfesor(){
+        try{
+            Stage stagePrincipal = (Stage)tfUsuario.getScene().getWindow();
+            FXMLLoader loader = new FXMLLoader(CoilVic.class.getResource("../vista/FXMLVistaProfesor.fxml"));
+            Parent root =loader.load();
+            FXMLVistaProfesorController pantallaPrincipalControlador = loader.getController();
+            pantallaPrincipalControlador.inicializarValores();
+            Scene nuevaEscena = new Scene(root);
+            stagePrincipal.setScene(nuevaEscena);
+            stagePrincipal.setTitle("Pantalla Profesor");
+            stagePrincipal.show();
+        }catch(IOException error){
+
+        }
+    }
 }
