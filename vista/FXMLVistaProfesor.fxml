@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" prefHeight="750.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="coilvic.controlador.FXMLVistaProfesorController">
+   <children>
+      <Pane layoutX="79.0" layoutY="-1.0" prefHeight="182.0" prefWidth="1124.0" style="-fx-background-color: linear-gradient(to bottom left, #e93367, #de8444);">
+         <children>
+            <ImageView fitHeight="143.0" fitWidth="149.0" layoutX="167.0" layoutY="16.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../recursos/LogoCOIL.png" />
+               </image>
+            </ImageView>
+            <Label layoutX="357.0" layoutY="25.0" text="COIL - VIC" textFill="WHITE">
+               <font>
+                  <Font name="Arial Unicode MS" size="93.0" />
+               </font>
+            </Label>
+         </children>
+      </Pane>
+      <Pane fx:id="panelDeslisante" layoutX="-213.0" layoutY="-2.0" onMouseEntered="#entraPanel" onMouseExited="#salePanel" prefHeight="752.0" prefWidth="321.0" style="-fx-background-color: linear-gradient(to bottom, #e93367, #cd18ed);">
+         <children>
+            <ImageView fitHeight="58.0" fitWidth="61.0" layoutX="236.0" layoutY="145.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../recursos/home.png" />
+               </image>
+            </ImageView>
+            <ImageView fitHeight="67.0" fitWidth="62.0" layoutX="236.0" layoutY="248.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../recursos/colaboracion.png" />
+               </image>
+            </ImageView>
+            <ImageView fitHeight="61.0" fitWidth="60.0" layoutX="237.0" layoutY="359.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../recursos/mis-Colab.png" />
+               </image>
+            </ImageView>
+            <Label layoutX="122.0" layoutY="163.0" text="Inicio" textFill="WHITE">
+               <font>
+                  <Font name="Arial Black" size="28.0" />
+               </font>
+            </Label>
+            <Label layoutX="37.0" layoutY="258.0" text="Mis ofertas" textFill="WHITE">
+               <font>
+                  <Font name="Arial Black" size="28.0" />
+               </font>
+            </Label>
+            <Label layoutX="20.0" layoutY="364.0" prefHeight="32.0" prefWidth="63.0" text="Mis" textFill="WHITE">
+               <font>
+                  <Font name="Arial Black" size="22.0" />
+               </font>
+            </Label>
+            <Label layoutX="19.0" layoutY="390.0" prefHeight="32.0" prefWidth="219.0" text="colaboraciones" textFill="WHITE">
+               <font>
+                  <Font name="Arial Black" size="22.0" />
+               </font>
+            </Label>
+            <Label layoutX="242.0" layoutY="-39.0" text="_" textFill="WHITE">
+               <font>
+                  <Font name="Arial Black" size="80.0" />
+               </font>
+            </Label>
+            <Label layoutX="242.0" layoutY="-22.0" text="_" textFill="WHITE">
+               <font>
+                  <Font name="Arial Black" size="80.0" />
+               </font>
+            </Label>
+            <Label layoutX="242.0" layoutY="-4.0" text="_" textFill="WHITE">
+               <font>
+                  <Font name="Arial Black" size="80.0" />
+               </font>
+            </Label>
+         </children></Pane>
+   </children>
+</AnchorPane>
