@@ -2,61 +2,61 @@ package coilvic.modelo.pojo;
 
 
 public class profesorUv {
-    String correo;
-    String nombre;
-    String noPersonal;
-    String region;
-    Integer idProfesorUv;
+    private String nombre;
+    private String correo;
+    private String noPersonal;
+    private Integer idProfesorUv;
+    private Integer idRegion;
 
     public profesorUv() {
     }
 
-    public profesorUv(String correo, String nombre, String noPersonal, String region, Integer idProfesorUv) {
-        this.correo = correo;
+    public profesorUv(String nombre, String correo, String noPersonal, Integer idProfesorUv, Integer idRegion) {
         this.nombre = nombre;
+        this.correo = correo;
         this.noPersonal = noPersonal;
-        this.region = region;
         this.idProfesorUv = idProfesorUv;
-    }
-
-    public String getCorreo() {
-        return correo;
+        this.idRegion = idRegion;
     }
 
     public String getNombre() {
         return nombre;
     }
 
-    public String getNoPersonal() {
-        return noPersonal;
+    public String getCorreo() {
+        return correo;
     }
 
-    public String getRegion() {
-        return region;
+    public String getNoPersonal() {
+        return noPersonal;
     }
 
     public Integer getIdProfesorUv() {
         return idProfesorUv;
     }
 
-    public void setCorreo(String correo) {
-        this.correo = correo;
+    public Integer getIdRegion() {
+        return idRegion;
     }
 
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
 
+    public void setCorreo(String correo) {
+        this.correo = correo;
+    }
+
     public void setNoPersonal(String noPersonal) {
         this.noPersonal = noPersonal;
     }
 
-    public void setRegion(String region) {
-        this.region = region;
-    }
-
     public void setIdProfesorUv(Integer idProfesorUv) {
         this.idProfesorUv = idProfesorUv;
+    }
+
+    public void setIdRegion(Integer idRegion) {
+        this.idRegion = idRegion;
     }
     
 }
