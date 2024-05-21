@@ -33,6 +33,8 @@ public class LoginDAO {
                 } else {
                     respuesta.put(Constantes.KEY_MENSAJE,"Usuario y/o contraseña incorrectos");
                 }
+                respuesta.put(Constantes.KEY_ERROR, false);
+                respuesta.put("idProfesor",idProfesorUv);
                 conexionBD.close();
             } catch(SQLException e) {
                 respuesta.put(Constantes.KEY_MENSAJE, e.getMessage());
