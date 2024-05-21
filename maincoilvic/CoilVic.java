@@ -1,5 +1,7 @@
 package coilvic.maincoilvic;
 
+import java.io.IOException;
+
 import coilvic.modelo.ConexionBD;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -23,5 +25,4 @@ public class CoilVic extends Application {
     public static void main(String[] args) {
         launch(args);
     }
-    
 }

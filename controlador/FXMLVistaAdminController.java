@@ -20,6 +20,9 @@ public class FXMLVistaAdminController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
     }   
+    public void inicializarValores(){
+        
+    }
     
         @FXML
     private void salePanel(MouseEvent event) {
