@@ -1,9 +1,10 @@
-package ProyectoCoil.modelo;
+package coilvic.modelo;
 
-import ProyectoCoil.utilidades.Constantes;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+
+import coilvic.utilidades.Constantes;
 
 public class ConexionBD {
     
