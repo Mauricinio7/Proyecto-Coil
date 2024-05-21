@@ -1,4 +1,4 @@
-package coilvic.modelo;
+package coilvic.modelo.pojo;
 
 
 public class profesorUv {
