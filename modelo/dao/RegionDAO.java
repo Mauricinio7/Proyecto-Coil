@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import coilvic.modelo.ConexionBD;
-import coilvic.modelo.pojo.Departamento;
 import coilvic.modelo.pojo.Region;
 import coilvic.utilidades.Constantes;
 
