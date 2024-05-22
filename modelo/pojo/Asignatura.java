@@ -9,11 +9,10 @@ public class Asignatura {
     public Asignatura() {
     }
 
-    public Asignatura(String areaAcademical, String nombre, int idAsignatura, int idProfesorUV) {
+    public Asignatura(String areaAcademical, String nombre, int idAsignatura) {
         this.areaAcademical = areaAcademical;
         this.nombre = nombre;
         this.idAsignatura = idAsignatura;
-        this.idProfesorUV = idProfesorUV;
     }
 
     public String getAreaAcademical() {
@@ -27,11 +26,6 @@ public class Asignatura {
     public int getIdAsignatura() {
         return idAsignatura;
     }
-
-    public int getIdProfesorUV() {
-        return idProfesorUV;
-    }
-
     public void setAreaAcademical(String areaAcademical) {
         this.areaAcademical = areaAcademical;
     }
@@ -43,9 +37,4 @@ public class Asignatura {
     public void setIdAsignatura(int idAsignatura) {
         this.idAsignatura = idAsignatura;
     }
-
-    public void setIdProfesorUV(int idProfesorUV) {
-        this.idProfesorUV = idProfesorUV;
-    }
-    
 }

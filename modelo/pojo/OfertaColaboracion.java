@@ -6,6 +6,8 @@ public class OfertaColaboracion {
     String objetivoGeneral;
     String periodo;
     String temaInteres;
+    int idAsignatura;
+    int idDepartamento;
     int idOfertaColaboracion;
     int idProfesor;
 
