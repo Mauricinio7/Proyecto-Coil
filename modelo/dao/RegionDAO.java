@@ -8,31 +8,31 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import coilvic.modelo.ConexionBD;
-import coilvic.modelo.pojo.Asignatura;
+import coilvic.modelo.pojo.Departamento;
+import coilvic.modelo.pojo.Region;
 import coilvic.utilidades.Constantes;
 
-public class AsignaturaDAO {
-    public HashMap<String, Object> consultarListaAsignatura(){
+public class RegionDAO {
+    public HashMap<String, Object> consultarListaRegion(){
         HashMap<String, Object> respuesta = new HashMap<>();
-        ArrayList<Asignatura> listaAsignaturas = new ArrayList<>();
+        ArrayList<Region> listaRegion = new ArrayList<>();
         try(Connection conexionDB = ConexionBD.obtenerConexion()){
             StringBuilder consulta = new StringBuilder();
-            consulta.append("SELECT areaAcademica, ");
-            consulta.append("nombre, idAsignatura FROM asignatura");
+            consulta.append("SELECT nombre, ");
+            consulta.append("idRegion FROM region");
             PreparedStatement sentenciaPreparada = conexionDB.prepareStatement(consulta.toString());
             ResultSet resultado = sentenciaPreparada.executeQuery();
             while(resultado.next()){
-                Asignatura nuevaAsignatura = new Asignatura();
-                nuevaAsignatura.setAreaAcademical(resultado.getString("areaAcademica"));
-                nuevaAsignatura.setIdAsignatura(resultado.getInt("idAsignatura"));
-                nuevaAsignatura.setNombre(resultado.getString("nombre"));
-                listaAsignaturas.add(nuevaAsignatura);
+                Region nuevaRegion = new Region();
+                nuevaRegion.setNombre(resultado.getString("nombre"));
+                nuevaRegion.setIdRegion(resultado.getInt("idRegion"));
             }
-            respuesta.put("listaAsignatura", listaAsignaturas);
+            respuesta.put("nuevaRegion", listaRegion);
         }catch(SQLException sqlError){
             sqlError.printStackTrace();
         }
         if(respuesta.isEmpty()) respuesta.put(Constantes.KEY_ERROR, null);
         return respuesta;
     }
+    
 }

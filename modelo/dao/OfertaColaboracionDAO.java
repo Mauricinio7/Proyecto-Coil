@@ -27,7 +27,7 @@ public class OfertaColaboracionDAO {
             prepararSentencia.setInt(6, nuevaOferta.getIdProfesor());
             prepararSentencia.setInt(7, idAsignatura);
             prepararSentencia.setInt(8, idDepartamento);
-            int filasAfectada  =prepararSentencia.executeUpdate();
+            int filasAfectada =prepararSentencia.executeUpdate();
             if(filasAfectada > 0){
                 respuesta.put("guardado", true);
             }else{

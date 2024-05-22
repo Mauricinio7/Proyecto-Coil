@@ -8,27 +8,26 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import coilvic.modelo.ConexionBD;
-import coilvic.modelo.pojo.Asignatura;
+import coilvic.modelo.pojo.Departamento;
 import coilvic.utilidades.Constantes;
 
-public class AsignaturaDAO {
-    public HashMap<String, Object> consultarListaAsignatura(){
+public class DepartamentoDAO {
+    public HashMap<String, Object> consultarListaDepartamento(){
         HashMap<String, Object> respuesta = new HashMap<>();
-        ArrayList<Asignatura> listaAsignaturas = new ArrayList<>();
+        ArrayList<Departamento> listaDepartamentos = new ArrayList<>();
         try(Connection conexionDB = ConexionBD.obtenerConexion()){
             StringBuilder consulta = new StringBuilder();
-            consulta.append("SELECT areaAcademica, ");
-            consulta.append("nombre, idAsignatura FROM asignatura");
+            consulta.append("SELECT nombre, ");
+            consulta.append("idDepartamento FROM departamento");
             PreparedStatement sentenciaPreparada = conexionDB.prepareStatement(consulta.toString());
             ResultSet resultado = sentenciaPreparada.executeQuery();
             while(resultado.next()){
-                Asignatura nuevaAsignatura = new Asignatura();
-                nuevaAsignatura.setAreaAcademical(resultado.getString("areaAcademica"));
-                nuevaAsignatura.setIdAsignatura(resultado.getInt("idAsignatura"));
-                nuevaAsignatura.setNombre(resultado.getString("nombre"));
-                listaAsignaturas.add(nuevaAsignatura);
+                Departamento nuevoDepartamento = new Departamento();
+                nuevoDepartamento.setNombre(resultado.getString("nombre"));
+                nuevoDepartamento.setIdDepartamento(resultado.getInt("idDepartamento"));
+                listaDepartamentos.add(nuevoDepartamento);
             }
-            respuesta.put("listaAsignatura", listaAsignaturas);
+            respuesta.put("nuevoDepartamento", listaDepartamentos);
         }catch(SQLException sqlError){
             sqlError.printStackTrace();
         }
