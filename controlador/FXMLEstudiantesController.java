@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/javafx/FXMLController.java to edit this template
- */
 package coilvic.controlador;
 
 import java.net.URL;
@@ -36,12 +32,16 @@ public class FXMLEstudiantesController implements Initializable {
     private double nextYPosition;
     ObservableList<Estudiante> estudiantes;
     ArrayList<Estudiante> estudiantesBD;
+    @FXML
+    private Pane paneNoHayAlumnos;
+    @FXML
+    private Button btnAnadir;
 
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        cargarPanelScroll();
-        cargarRegistroEstudiantes(5); //TODO Hardcode
+        //cargarPanelScroll();
+        cargarRegistroEstudiantes(4); //TODO Hardcode
     }    
 
     @FXML
@@ -80,8 +80,14 @@ public class FXMLEstudiantesController implements Initializable {
         if(!isError){
             estudiantesBD = (ArrayList) respuesta.get("estudiantes");
             //TODO Si no hay estudiantes mensaje y cambio if(estudiantesBD = null){cambiar añadir y label};
-            for (Estudiante estudiante : estudiantesBD) {
-                crearFichaEstudiante(estudiante);
+            if(estudiantesBD.size() < 1){
+                paneNoHayAlumnos.setVisible(true);
+                btnAnadir.setVisible(false);
+            }else{
+                cargarPanelScroll();
+                for (Estudiante estudiante : estudiantesBD) {
+                    crearFichaEstudiante(estudiante);
+                }
             }
         }else{
             Utils.mostrarAlertaSimple("Error en la conexión", "No se han podido cargar los datos.", Alert.AlertType.ERROR);
@@ -89,10 +95,18 @@ public class FXMLEstudiantesController implements Initializable {
     }
 
     private void cargarEstudiantesPorNombre(String nombre){
+        boolean band = false;
         for (Estudiante estudiante : estudiantesBD) {
             if(estudiante.getNombre().equals(nombre)){
                 crearFichaEstudiante(estudiante);
+                band = true;
             }
+        }
+        if(!band){
+            for (Estudiante estudiante : estudiantesBD) {
+                crearFichaEstudiante(estudiante);
+            }
+            Utils.mostrarAlertaSimple("Sin resultados", "No se han encontrado registros que coincidan con ese nombre", Alert.AlertType.WARNING);
         }
     }
 
