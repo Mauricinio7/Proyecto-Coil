@@ -4,7 +4,6 @@ public class Asignatura {
     String areaAcademical;
     String nombre;
     int idAsignatura;
-    int idProfesorUV;
 
     public Asignatura() {
     }

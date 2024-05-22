@@ -23,7 +23,6 @@ public class AsignaturaDAO {
                 nuevaAsignatura.setAreaAcademical(resultado.getString("areaAcademica"));
                 nuevaAsignatura.setIdAsignatura(resultado.getInt("idAsignatura"));
                 nuevaAsignatura.setNombre(resultado.getString("nombre"));
-                //nuevaAsignatura.setIdProfesorUV(0);
             }
 
         }catch(SQLException sqlError){
