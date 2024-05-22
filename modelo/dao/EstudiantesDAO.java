@@ -20,7 +20,7 @@ public class EstudiantesDAO {
         Connection conexionBD = ConexionBD.obtenerConexion();
         if(conexionBD != null){
             try{
-                String consulta = "SELECT e.nombre, e.matricula, e.correo, e.idEstudiante, ec.Colaboracion_id_colaboracion AS idColaboracion" +
+                String consulta = "SELECT e.nombre, e.matricula, e.correo, e.idEstudiante, ec.Colaboracion_id_colaboracion AS idColaboracion " +
                 "FROM estudiante e " +
                 "INNER JOIN estudianteColaboracion ec ON e.idEstudiante = ec.estudiante_idEstudiante " +
                 "WHERE ec.Colaboracion_id_colaboracion = ? ";
