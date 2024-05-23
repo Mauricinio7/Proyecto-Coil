@@ -1,28 +1,37 @@
 package coilvic.controlador;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.ResourceBundle;
 
+import coilvic.modelo.dao.ColaboracionDAO;
 import coilvic.modelo.dao.EstudiantesDAO;
+import coilvic.modelo.pojo.Colaboracion;
 import coilvic.modelo.pojo.Estudiante;
+import coilvic.observador.ObservadorEstudiante;
 import coilvic.utilidades.Constantes;
 import coilvic.utilidades.Utils;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 
 
-public class FXMLEstudiantesController implements Initializable {
+public class FXMLEstudiantesController implements Initializable, ObservadorEstudiante {
 
     @FXML
     private ScrollPane scPanePrincipal;
@@ -32,6 +41,7 @@ public class FXMLEstudiantesController implements Initializable {
     private double nextYPosition;
     ObservableList<Estudiante> estudiantes;
     ArrayList<Estudiante> estudiantesBD;
+    private Colaboracion colaboracion;
     @FXML
     private Pane paneNoHayAlumnos;
     @FXML
@@ -40,9 +50,15 @@ public class FXMLEstudiantesController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        //cargarPanelScroll();
-        cargarRegistroEstudiantes(4); //TODO Hardcode
+        iniciarColaboracion();
+        cargarRegistroEstudiantes(colaboracion.getIdColaboracion());
     }    
+
+        //TODO este es un metodo en lo que se pasa a la ventana la colab
+    private void iniciarColaboracion(){
+        HashMap<String, Object> consulta = ColaboracionDAO.obtenerColaboracionPorId(4); //TODO Hardcode
+        colaboracion = (Colaboracion)consulta.get("Colaboracion");
+    }
 
     @FXML
     private void clicBuscar(ActionEvent event) {
@@ -57,6 +73,24 @@ public class FXMLEstudiantesController implements Initializable {
 
     @FXML
     private void clicAnadir(ActionEvent event) {
+        irRegistrarEstudiante();
+    }
+
+    private void irRegistrarEstudiante(){
+        try {
+            Stage escenario = new Stage();
+            FXMLLoader loader = Utils.obtenerLoader("vista/FXMLRegistrarEstudiantes.fxml");
+            Parent root = loader.load();
+            FXMLRegistrarEstudianteController controlador = loader.getController();
+            controlador.inicializarValores(colaboracion, this);
+            Scene escena = new Scene(root);
+            escenario.setScene(escena);
+            escenario.setTitle("Registrar Estudiantes");
+            escenario.initModality(Modality.APPLICATION_MODAL);
+            escenario.showAndWait();
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
     }
 
     @FXML
@@ -79,7 +113,6 @@ public class FXMLEstudiantesController implements Initializable {
         boolean isError = (boolean) respuesta.get(Constantes.KEY_ERROR);
         if(!isError){
             estudiantesBD = (ArrayList) respuesta.get("estudiantes");
-            //TODO Si no hay estudiantes mensaje y cambio if(estudiantesBD = null){cambiar añadir y label};
             if(estudiantesBD.size() < 1){
                 paneNoHayAlumnos.setVisible(true);
                 btnAnadir.setVisible(false);
@@ -141,6 +174,17 @@ public class FXMLEstudiantesController implements Initializable {
         nextYPosition += 123;
         contenedor.setPrefHeight(nextYPosition);
     
+    }
+
+    @Override
+    public void operacionExitosa(String tipoOperacion, String nombreEstudiante) {
+        System.out.println("Operación: " + tipoOperacion);
+        System.out.println("Paciente: " + nombreEstudiante);
+        contenedor.getChildren().clear();
+        cargarPanelScroll();
+        for (Estudiante estudiante : estudiantesBD) {
+            crearFichaEstudiante(estudiante);
+        }
     }
     
 }

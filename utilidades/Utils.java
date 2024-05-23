@@ -4,8 +4,8 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
-import coilvic.controlador.FXMLVistaProfesorController;
 import coilvic.maincoilvic.CoilVic;
+import coilvic.controlador.FXMLVistaProfesorController;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -48,5 +48,9 @@ public class Utils {
         }catch(IOException error){
 
         }
+    }
+
+    public static FXMLLoader obtenerLoader(String ruta){
+        return new FXMLLoader(coilvic.maincoilvic.CoilVic.class.getResource(ruta));
     }
 }

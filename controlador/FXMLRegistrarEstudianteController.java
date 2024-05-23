@@ -1,11 +1,22 @@
 package coilvic.controlador;
 
 import java.net.URL;
+import java.util.HashMap;
 import java.util.ResourceBundle;
+
+import coilvic.modelo.dao.ColaboracionDAO;
+import coilvic.modelo.dao.EstudiantesDAO;
+import coilvic.modelo.pojo.Colaboracion;
+import coilvic.modelo.pojo.Estudiante;
+import coilvic.observador.ObservadorEstudiante;
+import coilvic.utilidades.Constantes;
+import coilvic.utilidades.Utils;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
 import javafx.scene.control.TextField;
+import javafx.stage.Stage;
 
 public class FXMLRegistrarEstudianteController implements Initializable {
 
@@ -15,19 +26,91 @@ public class FXMLRegistrarEstudianteController implements Initializable {
     private TextField txtMatricula;
     @FXML
     private TextField txtNombre;
+    private Colaboracion colaboracion;
+    private ObservadorEstudiante observador;
 
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
-    }    
+    }
+    
+    public void inicializarValores(Colaboracion colaboracion, ObservadorEstudiante observador){
+        this.colaboracion = colaboracion;
+        this.observador = observador;
+    }
 
     @FXML
     private void clicAceptar(ActionEvent event) {
+        if(!(camposVacios())){
+            if(!datosInvalidos()){
+                HashMap<String, Object> consulta = EstudiantesDAO.comprobarExistenciaEstudiante(txtMatricula.getText());
+            
+            if((boolean)consulta.get("encontrado")){
+                if(!probarExisteEstudianteColaboracion()){
+                    asociarEstudiante((int) consulta.get("idEstudiante"));
+                    observador.operacionExitosa("Asociar", txtNombre.getText());
+                    System.out.println("Si existe, ID: " + consulta.get("idEstudiante"));
+                }else{
+                    Utils.mostrarAlertaSimple("Error", "El estudiante ya se encuentra registrado en esta colaboración", Alert.AlertType.WARNING);
+                    System.out.println("El estudiante ya esta en la colab");
+                }
+            }else{
+                guardarEstudiante();
+                observador.operacionExitosa("Agregar", txtNombre.getText());
+                System.out.println("No existe");
+            }
+            }else{
+                Utils.mostrarAlertaSimple("Rellenar campos correctamente", "Se han introducido datos inválidos", Alert.AlertType.WARNING);
+            }
+        }else {
+            Utils.mostrarAlertaSimple("Rellenar campos obligatorios", "Se han dejado campos obligatorios vacíos", Alert.AlertType.WARNING);
+        }
+        cerrarVentana();
+    }
+
+    private boolean camposVacios(){
+        return (txtNombre.getText().equals("") || txtMatricula.getText().equals("") || txtCorreo.getText().equals(""));
+    }
+
+    private boolean datosInvalidos(){
+        return !(txtCorreo.getText().matches("^[^@]+@[^@]+$"));
+    }
+
+    private boolean probarExisteEstudianteColaboracion(){
+        HashMap<String, Object> consulta = EstudiantesDAO.comprobarExistenciaEstudianteColaboracion(txtMatricula.getText(), colaboracion);
+        return (boolean)consulta.get("encontrado");
+    }
+
+    public void guardarEstudiante(){
+        Estudiante estudiante = new Estudiante();
+        estudiante.setNombre(txtNombre.getText());
+        estudiante.setCorreo(txtCorreo.getText());
+        estudiante.setMatricula(txtMatricula.getText());
+
+        HashMap<String, Object> respuesta = EstudiantesDAO.guardarEstudiante(estudiante, colaboracion);
+        if(!((boolean) respuesta.get(Constantes.KEY_ERROR))){
+            Utils.mostrarAlertaSimple("Éxito", "Se ha añadido exitosamente", Alert.AlertType.INFORMATION);
+        }
+
+    }
+
+    public void asociarEstudiante(int idEstudiante){
+        HashMap<String, Object> respuesta = EstudiantesDAO.asociarEstudianteColaboracion(idEstudiante, colaboracion);
+        if(!((boolean) respuesta.get(Constantes.KEY_ERROR))){
+            Utils.mostrarAlertaSimple("Éxito", "Se ha añadido exitosamente", Alert.AlertType.INFORMATION);
+        }
     }
 
     @FXML
     private void clicCancelar(ActionEvent event) {
+        cerrarVentana();
+    }
+
+    private void cerrarVentana(){
+        Stage stage = (Stage) txtNombre.getScene().getWindow();
+        // Cerrar el Stage
+        stage.close();
     }
     
 }
