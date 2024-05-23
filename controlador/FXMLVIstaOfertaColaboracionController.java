@@ -6,6 +6,8 @@ package coilvic.controlador;
 
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import coilvic.modelo.pojo.Asignatura;
 import coilvic.modelo.pojo.Departamento;
@@ -61,5 +63,13 @@ public class FXMLVIstaOfertaColaboracionController implements Initializable {
     @FXML
     private void entraPanel(MouseEvent event) {
     }
-    
+    public void inicializarValores(){
+        
+    }
+    public static boolean validarNombreColaboracion(String nombre){
+        String regex = "[a-zA-Z0-9íáéóúñÁÉÍÓÚÑÜ ]+";
+        Pattern patronCoincidencias =Pattern.compile(regex);
+        Matcher coincidencias = patronCoincidencias.matcher(nombre);
+        return coincidencias.matches();
+    }
 }
