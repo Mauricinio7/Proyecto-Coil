@@ -1,8 +1,17 @@
 package coilvic.controlador;
 
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
+
+import coilvic.modelo.dao.AsignaturaDAO;
+import coilvic.modelo.pojo.Asignatura;
+import coilvic.modelo.pojo.Departamento;
 import javafx.animation.TranslateTransition;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -17,6 +26,10 @@ import javafx.util.Duration;
 
 public class FXMLRegistrarColaboracionSinOfertaController implements Initializable {
 
+    //private ProfesorUv profesorUv; //DATOS DEL PROFESOR UV
+    private ObservableList<Asignatura> listaAsignaturas;
+    private ObservableList<Departamento> listaDepartamentos;
+    private ObservableList<Asignatura> listaAreasAcademicas;
     @FXML
     private Pane panelDeslisante;
     @FXML
@@ -42,19 +55,48 @@ public class FXMLRegistrarColaboracionSinOfertaController implements Initializab
     @FXML
     private TextField tfNoEstudiantes;
     @FXML
-    private ComboBox<?> cbAreaAcademica;
+    private ComboBox<Asignatura> cbAreaAcademica;
     @FXML
-    private ComboBox<?> cbAsignatura;
+    private ComboBox<Asignatura> cbAsignatura;
     @FXML
-    private ComboBox<?> cbDepartamento;
+    private ComboBox<Departamento> cbDepartamento;
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
+        cargarAreasAcademicas();
+        configurarSeleccionAsignatura();
     }    
     
-    public void inicializarValores(){
-        
+    /*
+    public void inicializarValores(ProfesorUv profesor){ //PIDE EL PROFESOR UV EN LOS PARAMETROS
+        this.profesorUv = profesor;
+        lbNombreProfesor.setText("Nombre profesor: " + profesor.getNombre());
+        lbCorreoProfesor.setText("Correo: " + profesor.getCorreo());
+        lbRegionProfesor.setText("Region: " + profesor.getRegion());
+    }
+    */
+
+    private void cargarAreasAcademicas(){
+        listaAreasAcademicas = FXCollections.observableArrayList();
+        listaAreasAcademicas.addAll
+        ((ArrayList<Asignatura>) AsignaturaDAO.consultarListaAsignatura().get("listaAsignatura"));
+        cbAreaAcademica.setItems(listaAreasAcademicas);
+    }
+
+    private void configurarSeleccionAsignatura() {
+        cbAreaAcademica.valueProperty().addListener(new ChangeListener<Asignatura>() {
+            @Override
+            public void changed(ObservableValue<? extends Asignatura> observable, Asignatura oldValue, Asignatura newValue) {
+                cargarAsignaturas(newValue);
+            }
+        });
+    }
+
+    private void cargarAsignaturas(Asignatura asignatura) {
+        listaAsignaturas = FXCollections.observableArrayList();
+        listaAsignaturas.add(asignatura);
+        cbAsignatura.setItems(listaAsignaturas);
     }
     
     @FXML
@@ -63,7 +105,6 @@ public class FXMLRegistrarColaboracionSinOfertaController implements Initializab
         transicion.setDuration(Duration.millis(500));
         transicion.setNode(panelDeslisante);
         transicion.setToX(0);
-        
         transicion.play();
     }
 
@@ -73,16 +114,17 @@ public class FXMLRegistrarColaboracionSinOfertaController implements Initializab
         transicion.setDuration(Duration.millis(500));
         transicion.setNode(panelDeslisante);
         transicion.setToX(210);
-        
         transicion.play();
     }
 
     @FXML
     private void btnRegistrarEstudiantes(ActionEvent event) {
+        //LLAMA A LA VENTANA DE REGISTRAR ESTUDIANTES
     }
 
     @FXML
     private void btnAsociarProfesorExterno(ActionEvent event) {
+        //LLAMA A LA VENTANA DE ASOCIAR PROFESOR EXTERNO
     }
 
     @FXML
@@ -91,5 +133,6 @@ public class FXMLRegistrarColaboracionSinOfertaController implements Initializab
 
     @FXML
     private void btnCancelar(ActionEvent event) {
+        //REGRESA A LA VENTANA ANTERIOR
     }
 }
