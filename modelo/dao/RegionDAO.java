@@ -12,7 +12,7 @@ import coilvic.modelo.pojo.Region;
 import coilvic.utilidades.Constantes;
 
 public class RegionDAO {
-    public HashMap<String, Object> consultarListaRegion(){
+    public static HashMap<String, Object> consultarListaRegion(){
         HashMap<String, Object> respuesta = new HashMap<>();
         ArrayList<Region> listaRegion = new ArrayList<>();
         try(Connection conexionDB = ConexionBD.obtenerConexion()){
