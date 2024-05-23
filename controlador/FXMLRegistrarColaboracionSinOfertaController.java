@@ -7,6 +7,7 @@ import java.util.ResourceBundle;
 import coilvic.modelo.dao.AsignaturaDAO;
 import coilvic.modelo.pojo.Asignatura;
 import coilvic.modelo.pojo.Departamento;
+import coilvic.modelo.pojo.ProfesorUv;
 import javafx.animation.TranslateTransition;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -26,7 +27,7 @@ import javafx.util.Duration;
 
 public class FXMLRegistrarColaboracionSinOfertaController implements Initializable {
 
-    //private ProfesorUv profesorUv; //DATOS DEL PROFESOR UV
+    private ProfesorUv profesorUv;
     private ObservableList<Asignatura> listaAsignaturas;
     private ObservableList<Departamento> listaDepartamentos;
     private ObservableList<Asignatura> listaAreasAcademicas;
@@ -68,14 +69,12 @@ public class FXMLRegistrarColaboracionSinOfertaController implements Initializab
         configurarSeleccionAsignatura();
     }    
     
-    /*
-    public void inicializarValores(ProfesorUv profesor){ //PIDE EL PROFESOR UV EN LOS PARAMETROS
+    public void inicializarValores(ProfesorUv profesor){
         this.profesorUv = profesor;
-        lbNombreProfesor.setText("Nombre profesor: " + profesor.getNombre());
-        lbCorreoProfesor.setText("Correo: " + profesor.getCorreo());
-        lbRegionProfesor.setText("Region: " + profesor.getRegion());
+        lbNombreProfesor.setText("Nombre profesor: " + profesorUv.getNombre());
+        lbCorreoProfesor.setText("Correo: " + profesorUv.getCorreo());
+        lbRegionProfesor.setText("Region: " + profesorUv.getIdRegion()); //CAMBIAR POR EL NOMBRE DE LA REGION
     }
-    */
 
     private void cargarAreasAcademicas(){
         listaAreasAcademicas = FXCollections.observableArrayList();
