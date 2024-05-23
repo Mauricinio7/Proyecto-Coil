@@ -1,20 +1,32 @@
 
 package coilvic.controlador;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import coilvic.maincoilvic.CoilVic;
 import javafx.animation.TranslateTransition;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.Label;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
+import javafx.stage.Stage;
 import javafx.util.Duration;
 
 public class FXMLVistaProfesorController implements Initializable {
 
     @FXML
     private Pane panelDeslisante;
+    @FXML
+    private ImageView ivMisOfertas;
+    @FXML
+    private Label lbMisOfertas;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -43,5 +55,28 @@ public class FXMLVistaProfesorController implements Initializable {
         transicion.play();
     }
 
-    
+    @FXML
+    private void clicMisOfertasIV(MouseEvent event) {
+        irPantallaOfertasColaboracion();
+        
+    }
+
+    @FXML
+    private void clicMisOfertasLB(MouseEvent event) {
+        irPantallaOfertasColaboracion();
+    }
+
+    public void irPantallaOfertasColaboracion(){
+        try{
+            Stage stagePrincipal = (Stage)ivMisOfertas.getScene().getWindow();
+            FXMLLoader cargarObjeto = new FXMLLoader(CoilVic.class.getResource("../vista/FXMLVistaOfertaColaboracion.fxml"));
+            Parent root = cargarObjeto.load();
+            Scene nuevaScena = new Scene(root);
+            stagePrincipal.setTitle("Registrar ofertas de colaboracion");
+            stagePrincipal.setScene(nuevaScena);
+            stagePrincipal.show();
+        }catch(IOException error){
+            error.printStackTrace();
+        }
+    }
 }
