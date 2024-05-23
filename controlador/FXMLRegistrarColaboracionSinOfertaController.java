@@ -183,6 +183,12 @@ public class FXMLRegistrarColaboracionSinOfertaController implements Initializab
 
     @FXML
     private void btnGuardar(ActionEvent event) {
+        if(!camposVacios()) {
+            Colaboracion colaboracion = obtenerDatosColaboracion();
+            PlanProyecto planProyecto = obtenerDatosPlanProyecto();
+            
+            //GUARDAR COLABORACION Y PLAN PROYECTO
+        }
     }
 
     @FXML
