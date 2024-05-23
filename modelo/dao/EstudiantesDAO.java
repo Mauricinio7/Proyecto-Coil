@@ -159,10 +159,10 @@ public class EstudiantesDAO {
                 if (filasAfectadasEstudiante > 0 && filasAfectadasEstudianteColaboracion > 0) {
                     conexionBD.commit();
                     respuesta.put(Constantes.KEY_ERROR, false);
-                    respuesta.put(Constantes.KEY_MENSAJE, "Estudiante guardado con éxito");
+                    respuesta.put(Constantes.KEY_MENSAJE, "Se ha añadido exitosamente");
                 } else {
                     conexionBD.rollback();
-                    respuesta.put(Constantes.KEY_MENSAJE, "Hubo un error al guardar los datos del estudiante" + ", favor de verificar");
+                    respuesta.put(Constantes.KEY_MENSAJE, "No se han podido guardar los datos");
                 }
                 conexionBD.close();
             } catch(SQLException ex) {
@@ -191,9 +191,9 @@ public class EstudiantesDAO {
 
                 if (filasAfectadasEstudianteColaboracion > 0) {
                     respuesta.put(Constantes.KEY_ERROR, false);
-                    respuesta.put(Constantes.KEY_MENSAJE, "Estudiante guardado con éxito");
+                    respuesta.put(Constantes.KEY_MENSAJE, "Se ha añadido exitosamente");
                 } else {
-                    respuesta.put(Constantes.KEY_MENSAJE, "Hubo un error al guardar los datos del estudiante" + ", favor de verificar");
+                    respuesta.put(Constantes.KEY_MENSAJE, "No se han podido guardar los datos");
                 }
                 conexionBD.close();
             } catch(SQLException ex) {

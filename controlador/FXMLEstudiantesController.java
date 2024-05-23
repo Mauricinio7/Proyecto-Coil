@@ -79,7 +79,7 @@ public class FXMLEstudiantesController implements Initializable, ObservadorEstud
     private void irRegistrarEstudiante(){
         try {
             Stage escenario = new Stage();
-            FXMLLoader loader = Utils.obtenerLoader("vista/FXMLRegistrarEstudiantes.fxml");
+            FXMLLoader loader = Utils.obtenerLoader("../vista/FXMLRegistrarEstudiante.fxml");
             Parent root = loader.load();
             FXMLRegistrarEstudianteController controlador = loader.getController();
             controlador.inicializarValores(colaboracion, this);
@@ -179,12 +179,10 @@ public class FXMLEstudiantesController implements Initializable, ObservadorEstud
     @Override
     public void operacionExitosa(String tipoOperacion, String nombreEstudiante) {
         System.out.println("Operación: " + tipoOperacion);
-        System.out.println("Paciente: " + nombreEstudiante);
+        System.out.println("Estudiante: " + nombreEstudiante);
         contenedor.getChildren().clear();
         cargarPanelScroll();
-        for (Estudiante estudiante : estudiantesBD) {
-            crearFichaEstudiante(estudiante);
-        }
+        cargarRegistroEstudiantes(colaboracion.getIdColaboracion());
     }
     
 }
