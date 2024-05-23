@@ -1,5 +1,6 @@
 package coilvic.controlador;
 
+import java.io.File;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
@@ -23,11 +24,14 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
+import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 import javafx.util.Duration;
 
 public class FXMLRegistrarColaboracionSinOfertaController implements Initializable {
 
     private ProfesorUv profesorUv;
+    private File archivoPlan;
     private ObservableList<Asignatura> listaAsignaturas;
     private ObservableList<Departamento> listaDepartamentos;
     private ObservableList<Asignatura> listaAreasAcademicas;
@@ -61,6 +65,8 @@ public class FXMLRegistrarColaboracionSinOfertaController implements Initializab
     private ComboBox<Asignatura> cbAsignatura;
     @FXML
     private ComboBox<Departamento> cbDepartamento;
+    @FXML
+    private TextArea taDescripcionPlan;
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -96,6 +102,13 @@ public class FXMLRegistrarColaboracionSinOfertaController implements Initializab
         listaAsignaturas = FXCollections.observableArrayList();
         listaAsignaturas.add(asignatura);
         cbAsignatura.setItems(listaAsignaturas);
+    }
+
+    private boolean camposVacios(){
+        return tfNombreColaboracion.getText().isEmpty() || dpFechaInicio.getValue() == null || dpFechaFin.getValue() == null
+                || tfIdioma.getText().isEmpty() || taObjetivo.getText().isEmpty() || tfPeriodo.getText().isEmpty()
+                || taTemaInteres.getText().isEmpty() || tfNoEstudiantes.getText().isEmpty() || cbAreaAcademica.getValue() == null
+                || cbAsignatura.getValue() == null || cbDepartamento.getValue() == null;
     }
     
     @FXML
@@ -133,5 +146,17 @@ public class FXMLRegistrarColaboracionSinOfertaController implements Initializab
     @FXML
     private void btnCancelar(ActionEvent event) {
         //REGRESA A LA VENTANA ANTERIOR
+    }
+
+    @FXML
+    private void btnPlanProyecto(ActionEvent event) {
+        FileChooser dialogoSeleccion = new FileChooser();
+        dialogoSeleccion.setTitle("Seleccionar plan");
+        String etiquetaTipoDato = "Archivos pdf (*.pdf)";
+        FileChooser.ExtensionFilter filtro = 
+                new FileChooser.ExtensionFilter(etiquetaTipoDato, "*.pdf");
+        dialogoSeleccion.getExtensionFilters().add(filtro);
+        Stage escenarioActual = (Stage) panelDeslisante.getScene().getWindow();
+        archivoPlan = dialogoSeleccion.showOpenDialog(escenarioActual);
     }
 }
