@@ -1,14 +1,18 @@
 package coilvic.controlador;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.URL;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 import coilvic.modelo.dao.AsignaturaDAO;
 import coilvic.modelo.dao.DepartamentoDAO;
 import coilvic.modelo.pojo.Asignatura;
+import coilvic.modelo.pojo.Colaboracion;
 import coilvic.modelo.pojo.Departamento;
+import coilvic.modelo.pojo.PlanProyecto;
 import coilvic.modelo.pojo.ProfesorUv;
 import javafx.animation.TranslateTransition;
 import javafx.beans.value.ChangeListener;
@@ -118,6 +122,35 @@ public class FXMLRegistrarColaboracionSinOfertaController implements Initializab
                 || tfIdioma.getText().isEmpty() || taObjetivo.getText().isEmpty() || tfPeriodo.getText().isEmpty()
                 || taTemaInteres.getText().isEmpty() || tfNoEstudiantes.getText().isEmpty() || cbAreaAcademica.getValue() == null
                 || cbAsignatura.getValue() == null || cbDepartamento.getValue() == null || archivoPlan == null;
+    }
+
+    private Colaboracion obtenerDatosColaboracion() {
+        Colaboracion colaboracion = new Colaboracion();
+        colaboracion.setNombre(tfNombreColaboracion.getText());
+        colaboracion.setFechaInicio(dpFechaInicio.getValue().toString());
+        colaboracion.setFechaFin(dpFechaFin.getValue().toString());
+        colaboracion.setIdioma(tfIdioma.getText());
+        colaboracion.setObjetivoGeneral(taObjetivo.getText());
+        colaboracion.setPeriodo(tfPeriodo.getText());
+        colaboracion.setTemaInteres(taTemaInteres.getText());
+        colaboracion.setNoEstudiantesExternos(Integer.parseInt(tfNoEstudiantes.getText()));
+        colaboracion.setIdAsignatura(cbAsignatura.getValue().getIdAsignatura());
+        colaboracion.setIdDepartamento(cbDepartamento.getValue().getIdDepartamento());
+        colaboracion.setIdProfesorUV(profesorUv.getIdProfesorUv());
+        return colaboracion;
+    }
+
+    private PlanProyecto obtenerDatosPlanProyecto() {
+        PlanProyecto planProyecto = new PlanProyecto();
+        planProyecto.setNombre(archivoPlan.getName());
+        planProyecto.setDescripcion(taDescripcionPlan.getText());
+        try {
+            byte[] archivo = Files.readAllBytes(archivoPlan.toPath());
+            planProyecto.setArchivoAdjunto(archivo);
+        } catch (IOException ex) {
+            //TODO
+        }
+        return planProyecto;
     }
     
     @FXML
