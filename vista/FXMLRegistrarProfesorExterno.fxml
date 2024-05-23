@@ -22,72 +22,83 @@
             </Label>
          </children>
       </Pane>
-      <TextField layoutX="169.0" layoutY="210.0" prefHeight="42.0" prefWidth="517.0" promptText="nombre del profesor" />
-      <Button layoutX="765.0" layoutY="210.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="136.0" text="Añadir" />
-      <Button layoutX="968.0" layoutY="210.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="136.0" text="Cancelar" />
-      <TableView layoutX="169.0" layoutY="298.0" prefHeight="406.0" prefWidth="967.0">
-        <columns>
-          <TableColumn prefWidth="184.0" text="Nombre" />
-          <TableColumn prefWidth="154.0" text="Correo" />
-            <TableColumn prefWidth="81.0" text="Idioma" />
-            <TableColumn prefWidth="167.0" text="Institución" />
-            <TableColumn prefWidth="92.0" text="País" />
-            <TableColumn prefWidth="109.0" text="Teléfono" />
-            <TableColumn prefWidth="179.0" text="Colaboración" />
-        </columns>
-      </TableView>
-      <Pane fx:id="panelDeslisante" layoutX="-213.0" layoutY="-2.0" onMouseEntered="#entraPanel" onMouseExited="#salePanel" prefHeight="752.0" prefWidth="321.0" style="-fx-background-color: linear-gradient(to bottom, #e93367, #cd18ed);">
+        <TextField fx:id="tfBusquedaProfesor" layoutX="169.0" layoutY="210.0" prefHeight="42.0" prefWidth="517.0" promptText="nombre del profesor" />
+        <Button layoutX="765.0" layoutY="210.0" mnemonicParsing="false" onAction="#btnAnadir" prefHeight="42.0" prefWidth="136.0" text="Añadir" />
+        <Button fx:id="btnCancelar" layoutX="968.0" layoutY="210.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="136.0" text="Cancelar" />
+        <TableView fx:id="tvProfesoresExternos" layoutX="169.0" layoutY="298.0" prefHeight="406.0" prefWidth="967.0">
+          <columns>
+            <TableColumn fx:id="colNombre" prefWidth="184.0" text="Nombre" />
+            <TableColumn fx:id="colCorreo" prefWidth="154.0" text="Correo" />
+              <TableColumn fx:id="colIdioma" prefWidth="81.0" text="Idioma" />
+              <TableColumn fx:id="colInstitucion" prefWidth="167.0" text="Institución" />
+              <TableColumn fx:id="colPais" prefWidth="92.0" text="País" />
+              <TableColumn fx:id="colTelefono" prefWidth="109.0" text="Teléfono" />
+              <TableColumn fx:id="colColaboracion" prefWidth="179.0" text="Colaboración" />
+          </columns>
+        </TableView>
+      <Pane fx:id="panelDeslisante" layoutX="-252.0" layoutY="-2.0" onMouseEntered="#entraPanel" onMouseExited="#salePanel" prefHeight="752.0" prefWidth="349.0" style="-fx-background-color: linear-gradient(to bottom, #e93367, #cd18ed);">
          <children>
-            <ImageView fitHeight="58.0" fitWidth="61.0" layoutX="236.0" layoutY="145.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fitHeight="58.0" fitWidth="61.0" layoutX="272.0" layoutY="159.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../recursos/home.png" />
                </image>
             </ImageView>
-            <ImageView fitHeight="67.0" fitWidth="62.0" layoutX="236.0" layoutY="248.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fitHeight="67.0" fitWidth="62.0" layoutX="272.0" layoutY="262.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../recursos/colaboracion.png" />
                </image>
             </ImageView>
-            <ImageView fitHeight="61.0" fitWidth="60.0" layoutX="237.0" layoutY="359.0" pickOnBounds="true" preserveRatio="true">
+            <Label layoutX="140.0" layoutY="177.0" text="Inicio" textFill="WHITE">
+               <font>
+                  <Font name="Arial Black" size="28.0" />
+               </font>
+            </Label>
+            <Label layoutX="102.0" layoutY="268.0" text="Ofertas" textFill="WHITE">
+               <font>
+                  <Font name="Arial Black" size="28.0" />
+               </font>
+            </Label>
+            <Label layoutX="33.0" layoutY="378.0" prefHeight="32.0" prefWidth="220.0" text="Registrar profesor" textFill="WHITE">
+               <font>
+                  <Font name="Arial Black" size="21.0" />
+               </font>
+            </Label>
+            <Label layoutX="33.0" layoutY="404.0" prefHeight="32.0" prefWidth="219.0" text="externo." textFill="WHITE">
+               <font>
+                  <Font name="Arial Black" size="22.0" />
+               </font>
+            </Label>
+            <Label layoutX="281.0" layoutY="-39.0" text="_" textFill="WHITE">
+               <font>
+                  <Font name="Arial Black" size="80.0" />
+               </font>
+            </Label>
+            <Label layoutX="282.0" layoutY="-22.0" text="_" textFill="WHITE">
+               <font>
+                  <Font name="Arial Black" size="80.0" />
+               </font>
+            </Label>
+            <Label layoutX="283.0" layoutY="-4.0" text="_" textFill="WHITE">
+               <font>
+                  <Font name="Arial Black" size="80.0" />
+               </font>
+            </Label>
+            <ImageView fitHeight="67.0" fitWidth="62.0" layoutX="267.0" layoutY="487.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@../recursos/mis-Colab.png" />
+                  <Image url="@../recursos/colaboracion.png" />
                </image>
             </ImageView>
-            <Label layoutX="122.0" layoutY="163.0" text="Inicio" textFill="WHITE">
+            <ImageView fitHeight="67.0" fitWidth="62.0" layoutX="273.0" layoutY="377.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../recursos/colaboracion.png" />
+               </image>
+            </ImageView>
+            <Label layoutX="79.0" layoutY="495.0" text="Consultas" textFill="WHITE">
                <font>
                   <Font name="Arial Black" size="28.0" />
-               </font>
-            </Label>
-            <Label layoutX="37.0" layoutY="258.0" text="Mis ofertas" textFill="WHITE">
-               <font>
-                  <Font name="Arial Black" size="28.0" />
-               </font>
-            </Label>
-            <Label layoutX="20.0" layoutY="364.0" prefHeight="32.0" prefWidth="63.0" text="Mis" textFill="WHITE">
-               <font>
-                  <Font name="Arial Black" size="22.0" />
-               </font>
-            </Label>
-            <Label layoutX="19.0" layoutY="390.0" prefHeight="32.0" prefWidth="219.0" text="colaboraciones" textFill="WHITE">
-               <font>
-                  <Font name="Arial Black" size="22.0" />
-               </font>
-            </Label>
-            <Label layoutX="242.0" layoutY="-39.0" text="_" textFill="WHITE">
-               <font>
-                  <Font name="Arial Black" size="80.0" />
-               </font>
-            </Label>
-            <Label layoutX="242.0" layoutY="-22.0" text="_" textFill="WHITE">
-               <font>
-                  <Font name="Arial Black" size="80.0" />
-               </font>
-            </Label>
-            <Label layoutX="242.0" layoutY="-4.0" text="_" textFill="WHITE">
-               <font>
-                  <Font name="Arial Black" size="80.0" />
                </font>
             </Label>
          </children></Pane>
    </children>
 </AnchorPane>
+
