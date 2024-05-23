@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+
+<AnchorPane id="AnchorPane" prefHeight="500.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8" fx:controller="coilvic.controlador.FXMLRegistrarEstudianteController">
+   <children>
+      <Label layoutX="112.0" layoutY="52.0" text="Datos del nuevo estudiante">
+         <font>
+            <Font name="Arial" size="31.0" />
+         </font>
+      </Label>
+      <Label layoutX="90.0" layoutY="163.0" text="Correo:">
+         <font>
+            <Font name="Arial" size="22.0" />
+         </font>
+      </Label>
+      <Label layoutX="68.0" layoutY="237.0" text="Matricula:">
+         <font>
+            <Font name="Arial" size="22.0" />
+         </font>
+      </Label>
+      <Label layoutX="80.0" layoutY="318.0" text="Nombre:">
+         <font>
+            <Font name="Arial" size="22.0" />
+         </font>
+      </Label>
+      <TextField fx:id="txtCorreo" layoutX="183.0" layoutY="158.0" prefHeight="36.0" prefWidth="346.0" promptText="Escriba el correo">
+         <font>
+            <Font size="17.0" />
+         </font>
+      </TextField>
+      <TextField fx:id="txtMatricula" layoutX="183.0" layoutY="236.0" prefHeight="36.0" prefWidth="346.0" promptText="Escriba la matricula">
+         <font>
+            <Font size="17.0" />
+         </font>
+      </TextField>
+      <TextField fx:id="txtNombre" layoutX="183.0" layoutY="312.0" prefHeight="36.0" prefWidth="346.0" promptText="Escriba el nombre">
+         <font>
+            <Font size="17.0" />
+         </font>
+      </TextField>
+      <Button layoutX="31.0" layoutY="424.0" mnemonicParsing="false" onAction="#clicAceptar" prefHeight="45.0" prefWidth="96.0" text="Aceptar">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Button>
+      <Button layoutX="467.0" layoutY="424.0" mnemonicParsing="false" onAction="#clicCancelar" prefHeight="45.0" prefWidth="96.0" text="Cancelar">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Button>
+   </children>
+</AnchorPane>
