@@ -6,6 +6,9 @@ import java.util.Optional;
 
 import coilvic.controlador.FXMLVistaProfesorController;
 import coilvic.maincoilvic.CoilVic;
+import javafx.beans.Observable;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -49,4 +52,10 @@ public class Utils {
 
         }
     }
+    // ObservableList<String> obtenerAreasAcademicas(){
+    //     ObservableList areasAcademicas = FXCollections.observableArrayList();
+    //     areasAcademicas.add("Área Académica de Artes");
+    //     areasAcademicas.add("Área Académica de Ciencias Biológicas y Agropecuarias");
+
+    // }
 }

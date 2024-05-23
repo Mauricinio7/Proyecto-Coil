@@ -6,6 +6,10 @@ package coilvic.controlador;
 
 import java.net.URL;
 import java.util.ResourceBundle;
+
+import coilvic.modelo.pojo.Asignatura;
+import coilvic.modelo.pojo.Departamento;
+import coilvic.modelo.pojo.Region;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ComboBox;
@@ -24,11 +28,11 @@ public class FXMLVIstaOfertaColaboracionController implements Initializable {
     @FXML
     private Pane panelDeslisante;
     @FXML
-    private ComboBox<?> cbPeriodo;
+    private ComboBox<String> cbPeriodo;
     @FXML
-    private ComboBox<?> cdRegion;
+    private ComboBox<Region> cdRegion;
     @FXML
-    private ComboBox<?> cbDepartamento;
+    private ComboBox<Departamento> cbDepartamento;
     @FXML
     private TextArea taObjetivo;
     @FXML
@@ -38,9 +42,9 @@ public class FXMLVIstaOfertaColaboracionController implements Initializable {
     @FXML
     private TextField tfNameCol;
     @FXML
-    private ComboBox<?> cdAreaAcad;
+    private ComboBox<String> cdAreaAcad;
     @FXML
-    private ComboBox<?> cdAsignatura;
+    private ComboBox<Asignatura> cdAsignatura;
 
     /**
      * Initializes the controller class.
