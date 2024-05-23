@@ -12,7 +12,7 @@ import coilvic.modelo.pojo.Departamento;
 import coilvic.utilidades.Constantes;
 
 public class DepartamentoDAO {
-    public HashMap<String, Object> consultarListaDepartamento(){
+    public static HashMap<String, Object> consultarListaDepartamento(){
         HashMap<String, Object> respuesta = new HashMap<>();
         ArrayList<Departamento> listaDepartamentos = new ArrayList<>();
         try(Connection conexionDB = ConexionBD.obtenerConexion()){

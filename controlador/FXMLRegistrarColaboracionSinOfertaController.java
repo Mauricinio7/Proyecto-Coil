@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 import coilvic.modelo.dao.AsignaturaDAO;
+import coilvic.modelo.dao.DepartamentoDAO;
 import coilvic.modelo.pojo.Asignatura;
 import coilvic.modelo.pojo.Departamento;
 import coilvic.modelo.pojo.ProfesorUv;
@@ -72,6 +73,7 @@ public class FXMLRegistrarColaboracionSinOfertaController implements Initializab
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
         cargarAreasAcademicas();
+        cargarDepartamentos();
         configurarSeleccionAsignatura();
     }    
     
@@ -104,11 +106,18 @@ public class FXMLRegistrarColaboracionSinOfertaController implements Initializab
         cbAsignatura.setItems(listaAsignaturas);
     }
 
+    private void cargarDepartamentos() {
+        listaDepartamentos = FXCollections.observableArrayList();
+        listaDepartamentos.addAll
+        ((ArrayList<Departamento>) DepartamentoDAO.consultarListaDepartamento().get("nuevoDepartamento"));
+        cbDepartamento.setItems(listaDepartamentos);
+    }
+
     private boolean camposVacios(){
         return tfNombreColaboracion.getText().isEmpty() || dpFechaInicio.getValue() == null || dpFechaFin.getValue() == null
                 || tfIdioma.getText().isEmpty() || taObjetivo.getText().isEmpty() || tfPeriodo.getText().isEmpty()
                 || taTemaInteres.getText().isEmpty() || tfNoEstudiantes.getText().isEmpty() || cbAreaAcademica.getValue() == null
-                || cbAsignatura.getValue() == null || cbDepartamento.getValue() == null;
+                || cbAsignatura.getValue() == null || cbDepartamento.getValue() == null || archivoPlan == null;
     }
     
     @FXML
