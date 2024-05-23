@@ -37,5 +37,8 @@ public class ProgramaEducativo {
     public void setIdPrograma(int idPrograma) {
         this.idPrograma = idPrograma;
     }
-    
+    @Override
+    public String toString(){
+        return "-" + getNombre();
+    }
 }
