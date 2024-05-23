@@ -25,7 +25,7 @@ import javafx.scene.layout.Pane;
  *
  * @author outis
  */
-public class FXMLVIstaOfertaColaboracionController implements Initializable {
+public class FXMLVistaOfertaColaboracionController implements Initializable {
 
     @FXML
     private Pane panelDeslisante;
