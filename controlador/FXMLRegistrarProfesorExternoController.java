@@ -8,6 +8,7 @@ import java.util.ResourceBundle;
 
 import coilvic.modelo.dao.ProfesorExternoDAO;
 import coilvic.modelo.pojo.ProfesorExterno;
+import coilvic.observador.ObservadorProfesorExterno;
 import coilvic.utilidades.Constantes;
 import coilvic.utilidades.Utils;
 import javafx.animation.TranslateTransition;
@@ -34,7 +35,7 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
-public class FXMLRegistrarProfesorExternoController implements Initializable {
+public class FXMLRegistrarProfesorExternoController implements Initializable, ObservadorProfesorExterno {
 
     private ObservableList<ProfesorExterno> profesoresExternos;
     private FilteredList<ProfesorExterno> profesoresExternosFiltrados;
@@ -140,6 +141,8 @@ public class FXMLRegistrarProfesorExternoController implements Initializable {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/coilvic/vista/FXMLFormularioAgregarProfesorExterno.fxml"));
             Parent root = loader.load();
+            FXMLFormularioAgregarProfesorExternoController controlador = loader.getController();
+            controlador.inicializarValores(this);
             Scene scene = new Scene(root);
             Stage stage = new Stage();
             stage.initModality(Modality.APPLICATION_MODAL);
@@ -153,5 +156,11 @@ public class FXMLRegistrarProfesorExternoController implements Initializable {
     @FXML
     private void btnCancelar(ActionEvent event) {
         //REGRESAR A LA VENTANA ANTERIOR
+    }
+
+    @Override
+    public void profesorGuardado() {
+        cargarDatosProfesoresExternos();    
+        actualizarTabla();
     }
 }

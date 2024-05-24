@@ -6,6 +6,7 @@ import java.util.ResourceBundle;
 
 import coilvic.modelo.dao.ProfesorExternoDAO;
 import coilvic.modelo.pojo.ProfesorExterno;
+import coilvic.observador.ObservadorProfesorExterno;
 import coilvic.utilidades.Constantes;
 import coilvic.utilidades.Utils;
 import javafx.beans.value.ObservableValue;
@@ -17,6 +18,7 @@ import javafx.scene.control.Alert.AlertType;
 
 public class FXMLFormularioAgregarProfesorExternoController implements Initializable {
 
+    private ObservadorProfesorExterno observadorProfesorExterno;
     private ProfesorExterno profesorExterno;
     @FXML
     private TextField tfNombre;
@@ -56,6 +58,7 @@ public class FXMLFormularioAgregarProfesorExternoController implements Initializ
         HashMap<String, Object> respuesta = ProfesorExternoDAO.registrarProfesorExterno(profesorExterno);
         if (!(Boolean) respuesta.get(Constantes.KEY_ERROR)) {
             Utils.mostrarAlertaSimple(null, ""+respuesta.get(Constantes.KEY_MENSAJE), AlertType.INFORMATION);
+            observadorProfesorExterno.profesorGuardado();
         } else {
             Utils.mostrarAlertaSimple("Error", "No se han podido cargar los datos", AlertType.ERROR);
         }
@@ -99,5 +102,9 @@ public class FXMLFormularioAgregarProfesorExternoController implements Initializ
                 textField.setText(oldValue);
             }
         });
+    }
+
+    public void inicializarValores(ObservadorProfesorExterno observadorProfesorExterno) {
+        this.observadorProfesorExterno = observadorProfesorExterno;
     }
 }
