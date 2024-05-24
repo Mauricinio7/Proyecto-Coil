@@ -24,7 +24,7 @@
       </Pane>
         <TextField fx:id="tfBusquedaProfesor" layoutX="169.0" layoutY="210.0" prefHeight="42.0" prefWidth="517.0" promptText="nombre del profesor" />
         <Button layoutX="765.0" layoutY="210.0" mnemonicParsing="false" onAction="#btnAnadir" prefHeight="42.0" prefWidth="136.0" text="Añadir" />
-        <Button fx:id="btnCancelar" layoutX="968.0" layoutY="210.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="136.0" text="Cancelar" />
+        <Button layoutX="968.0" layoutY="210.0" mnemonicParsing="false" onAction="#btnCancelar" prefHeight="42.0" prefWidth="136.0" text="Cancelar" />
         <TableView fx:id="tvProfesoresExternos" layoutX="169.0" layoutY="298.0" prefHeight="406.0" prefWidth="967.0">
           <columns>
             <TableColumn fx:id="colNombre" prefWidth="184.0" text="Nombre" />
@@ -101,4 +101,3 @@
          </children></Pane>
    </children>
 </AnchorPane>
-
