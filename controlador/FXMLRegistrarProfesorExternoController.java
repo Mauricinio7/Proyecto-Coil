@@ -1,5 +1,6 @@
 package coilvic.controlador;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -18,14 +19,19 @@ import javafx.collections.transformation.FilteredList;
 import javafx.collections.transformation.SortedList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 import javafx.util.Duration;
 
 public class FXMLRegistrarProfesorExternoController implements Initializable {
@@ -130,10 +136,27 @@ public class FXMLRegistrarProfesorExternoController implements Initializable {
 
     @FXML
     private void btnAnadir(ActionEvent event) {
+        abrirFormularioProfesorExterno();
+    }
+
+    private void abrirFormularioProfesorExterno() {
+        try {
+            Stage escenario = new Stage();
+            FXMLLoader loader = new FXMLLoader(coilvic.maincoilvic.CoilVic.class.getResource("vista/FXMLFormularioProfesorExterno.fxml"));
+            Parent root = loader.load();
+            Scene scene = new Scene(root);
+            escenario.setScene(scene);
+            escenario.setTitle("");
+            escenario.initModality(Modality.APPLICATION_MODAL);
+            escenario.showAndWait();
+        } catch (IOException e) {
+            Utils.mostrarAlertaSimple("Error", e.getMessage(), AlertType.ERROR);
+        }
     }
 
     @FXML
     private void btnCancelar(ActionEvent event) {
+        //REGRESAR A LA VENTANA ANTERIOR
     }
     
 }
