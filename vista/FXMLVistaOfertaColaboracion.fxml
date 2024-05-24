@@ -133,8 +133,8 @@
       <ComboBox fx:id="cbPeriodo" layoutX="438.0" layoutY="359.0" prefWidth="150.0" promptText="Periodo" />
       <ComboBox fx:id="cbRegion" layoutX="438.0" layoutY="417.0" prefWidth="150.0" promptText="Región " />
       <ComboBox fx:id="cbDepartamento" layoutX="438.0" layoutY="475.0" prefWidth="150.0" promptText="Departamento" />
-      <TextArea fx:id="taObjetivo" layoutX="256.0" layoutY="568.0" maxWidth="333.0" minWidth="333.0" prefHeight="82.0" prefWidth="333.0" />
-      <TextArea fx:id="taTemaInteres" layoutX="744.0" layoutY="567.0" maxWidth="333.0" minWidth="333.0" prefHeight="82.0" prefWidth="333.0" />
+      <TextArea fx:id="taObjetivo" layoutX="256.0" layoutY="568.0" maxWidth="333.0" minWidth="333.0" prefHeight="82.0" prefWidth="333.0" promptText="Objetivo general del curso" />
+      <TextArea fx:id="taTemaInteres" layoutX="744.0" layoutY="567.0" maxWidth="333.0" minWidth="333.0" prefHeight="82.0" prefWidth="333.0" promptText="Tema de interés" />
       <TextField fx:id="tfIdioma" layoutX="915.0" layoutY="358.0" prefHeight="26.0" prefWidth="150.0" promptText="Idioma" />
       <TextField fx:id="tfNameCol" layoutX="511.0" layoutY="285.0" prefHeight="26.0" prefWidth="402.0" promptText="Nombre de la Colaboración" />
       <ComboBox fx:id="cbAreaAcad" layoutX="915.0" layoutY="417.0" prefWidth="150.0" promptText="Área académica" />

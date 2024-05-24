@@ -5,12 +5,15 @@
 package coilvic.controlador;
 
 import java.net.URL;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.ResourceBundle;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import coilvic.modelo.ConexionApacheNet;
 import coilvic.modelo.dao.AsignaturaDAO;
 import coilvic.modelo.dao.DepartamentoDAO;
 import coilvic.modelo.dao.RegionDAO;
@@ -18,6 +21,7 @@ import coilvic.modelo.pojo.Asignatura;
 import coilvic.modelo.pojo.Departamento;
 import coilvic.modelo.pojo.ProgramaEducativo;
 import coilvic.modelo.pojo.Region;
+import coilvic.utilidades.Constantes;
 import javafx.animation.TranslateTransition;
 import javafx.beans.binding.ObjectExpression;
 import javafx.collections.FXCollections;
@@ -33,6 +37,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.util.Duration;
 
+
 /**
  * FXML Controller class
  *
@@ -45,6 +50,7 @@ public class FXMLVistaOfertaColaboracionController implements Initializable {
     private ObservableList<Asignatura> observadorAsignatura;
     private ObservableList<String> observadorAreaAcademica;
     private ObservableList<Departamento> observadorDepartamento;
+    int year;
     @FXML
     private Pane panelDeslisante;
     @FXML
@@ -92,6 +98,7 @@ public class FXMLVistaOfertaColaboracionController implements Initializable {
         fillDepartamento();
         fillAreaAcademica();
         fillAsignatura();
+        //obtenerYear();
     }
     //metodos de crud
     public void fillRegion(){
@@ -123,6 +130,14 @@ public class FXMLVistaOfertaColaboracionController implements Initializable {
         if(obtenerAsignatura != null && obtenerAsignatura.containsKey("listaAsignatura")){
             observadorAsignatura = FXCollections.observableArrayList((ArrayList<Asignatura>)obtenerAsignatura.get("listaAsignatura"));
             cbAsignatura.setItems(observadorAsignatura);
+        }
+    }
+    public void obtenerYear(){
+        LocalDateTime fechaActual = ConexionApacheNet.obtenerFechaHoraServidorNTP(Constantes.SERVIDOR_NTP);
+        if(fechaActual != null){
+            year = fechaActual.getYear();
+        }else{
+            System.out.println("Error al establecer la conexion con servidor ntp");
         }
     }
     //metodos para validar campos
