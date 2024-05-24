@@ -25,8 +25,9 @@ public class RegionDAO {
                 Region nuevaRegion = new Region();
                 nuevaRegion.setNombre(resultado.getString("nombre"));
                 nuevaRegion.setIdRegion(resultado.getInt("idRegion"));
+                listaRegion.add(nuevaRegion);
             }
-            respuesta.put("nuevaRegion", listaRegion);
+            respuesta.put("listaRegion", listaRegion);
         }catch(SQLException sqlError){
             sqlError.printStackTrace();
         }

@@ -27,7 +27,7 @@ public class DepartamentoDAO {
                 nuevoDepartamento.setIdDepartamento(resultado.getInt("idDepartamento"));
                 listaDepartamentos.add(nuevoDepartamento);
             }
-            respuesta.put("nuevoDepartamento", listaDepartamentos);
+            respuesta.put("listaDepartamento", listaDepartamentos);
         }catch(SQLException sqlError){
             sqlError.printStackTrace();
         }

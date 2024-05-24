@@ -73,6 +73,8 @@ public class FXMLVistaProfesorController implements Initializable {
             stageOferta.initStyle(StageStyle.UTILITY);
             FXMLLoader cargarObjeto = new FXMLLoader(CoilVic.class.getResource("../vista/FXMLVistaOfertaColaboracion.fxml"));
             Parent root = cargarObjeto.load();
+            FXMLVistaOfertaColaboracionController vistaOfertaCol = cargarObjeto.getController();
+            vistaOfertaCol.inicializarValores();
             Scene nuevaScena = new Scene(root);
             stageOferta.setTitle("Registrar ofertas de colaboracion");
             stageOferta.setScene(nuevaScena);

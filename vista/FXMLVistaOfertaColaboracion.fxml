@@ -130,15 +130,15 @@
             <Font name="Open Sans" size="14.0" />
          </font>
       </Label>
-      <ComboBox fx:id="cbPeriodo" layoutX="438.0" layoutY="359.0" prefWidth="150.0" />
-      <ComboBox fx:id="cdRegion" layoutX="438.0" layoutY="417.0" prefWidth="150.0" />
-      <ComboBox fx:id="cbDepartamento" layoutX="438.0" layoutY="475.0" prefWidth="150.0" />
+      <ComboBox fx:id="cbPeriodo" layoutX="438.0" layoutY="359.0" prefWidth="150.0" promptText="Periodo" />
+      <ComboBox fx:id="cbRegion" layoutX="438.0" layoutY="417.0" prefWidth="150.0" promptText="Región " />
+      <ComboBox fx:id="cbDepartamento" layoutX="438.0" layoutY="475.0" prefWidth="150.0" promptText="Departamento" />
       <TextArea fx:id="taObjetivo" layoutX="256.0" layoutY="568.0" maxWidth="333.0" minWidth="333.0" prefHeight="82.0" prefWidth="333.0" />
       <TextArea fx:id="taTemaInteres" layoutX="744.0" layoutY="567.0" maxWidth="333.0" minWidth="333.0" prefHeight="82.0" prefWidth="333.0" />
-      <TextField fx:id="tfIdioma" layoutX="915.0" layoutY="358.0" prefHeight="26.0" prefWidth="150.0" />
-      <TextField fx:id="tfNameCol" layoutX="511.0" layoutY="285.0" prefHeight="26.0" prefWidth="402.0" />
-      <ComboBox fx:id="cdAreaAcad" layoutX="915.0" layoutY="417.0" prefWidth="150.0" />
-      <ComboBox fx:id="cdAsignatura" layoutX="915.0" layoutY="476.0" prefWidth="150.0" />
+      <TextField fx:id="tfIdioma" layoutX="915.0" layoutY="358.0" prefHeight="26.0" prefWidth="150.0" promptText="Idioma" />
+      <TextField fx:id="tfNameCol" layoutX="511.0" layoutY="285.0" prefHeight="26.0" prefWidth="402.0" promptText="Nombre de la Colaboración" />
+      <ComboBox fx:id="cbAreaAcad" layoutX="915.0" layoutY="417.0" prefWidth="150.0" promptText="Área académica" />
+      <ComboBox fx:id="cbAsignatura" layoutX="915.0" layoutY="475.0" prefWidth="150.0" promptText="Asignatura" />
       <Button fx:id="btSave" layoutX="821.0" layoutY="684.0" mnemonicParsing="false" onMouseEntered="#btSaveAnimationEntered" onMouseExited="#btSaveAnimationExited" style="-fx-background-color: #24A0ed;" text="Guardar" textFill="WHITE" />
       <Button fx:id="btCancel" layoutX="973.0" layoutY="684.0" mnemonicParsing="false" onMouseEntered="#btCancelAnimationEntered" onMouseExited="#btCancelAnimationExited" text="Cancelar" />
    </children>
