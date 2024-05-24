@@ -1,10 +1,17 @@
 package coilvic.controlador;
 
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.ResourceBundle;
 
+import coilvic.modelo.dao.ProfesorExternoDAO;
 import coilvic.modelo.pojo.ProfesorExternoColaboracion;
+import coilvic.utilidades.Constantes;
+import coilvic.utilidades.Utils;
 import javafx.animation.TranslateTransition;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -12,13 +19,14 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.util.Duration;
 
 public class FXMLRegistrarProfesorExternoController implements Initializable {
 
-    private ProfesorExternoColaboracion profesorExternoColaboracion;
+    private ObservableList<ProfesorExternoColaboracion> profesoresExternosColaboracion;
     @FXML
     private Pane panelDeslisante;
     @FXML
@@ -45,7 +53,22 @@ public class FXMLRegistrarProfesorExternoController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
-    }    
+        cargarDatosProfesoresExternos();
+    }
+
+    private void cargarDatosProfesoresExternos() {
+        profesoresExternosColaboracion = FXCollections.observableArrayList();
+        HashMap<String, Object> respuesta = ProfesorExternoDAO.obtenerProfesoresExternosConColaboracion();
+        boolean isError = (boolean) respuesta.get(Constantes.KEY_ERROR);
+        if (!isError) {
+            ArrayList<ProfesorExternoColaboracion> profesoresExternos = 
+            (ArrayList<ProfesorExternoColaboracion>) respuesta.get("profesoresExternosColaboracion");
+            profesoresExternosColaboracion.addAll(profesoresExternos);
+            tvProfesoresExternos.setItems(profesoresExternosColaboracion);
+        } else {
+            Utils.mostrarAlertaSimple("Error", ""+respuesta.get(Constantes.KEY_MENSAJE), AlertType.ERROR);
+        }
+    }
 
     @FXML
     private void salePanel(MouseEvent event) {
