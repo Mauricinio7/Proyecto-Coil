@@ -55,8 +55,6 @@ public class FXMLRegistrarProfesorExternoController implements Initializable {
     private TableColumn colPais;
     @FXML
     private TableColumn colTelefono;
-    @FXML
-    private TableColumn colColaboracion;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -141,16 +139,15 @@ public class FXMLRegistrarProfesorExternoController implements Initializable {
 
     private void abrirFormularioProfesorExterno() {
         try {
-            Stage escenario = new Stage();
-            FXMLLoader loader = new FXMLLoader(coilvic.maincoilvic.CoilVic.class.getResource("vista/FXMLFormularioProfesorExterno.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/coilvic/vista/FXMLFormularioAgregarProfesorExterno.fxml"));
             Parent root = loader.load();
             Scene scene = new Scene(root);
-            escenario.setScene(scene);
-            escenario.setTitle("");
-            escenario.initModality(Modality.APPLICATION_MODAL);
-            escenario.showAndWait();
-        } catch (IOException e) {
-            Utils.mostrarAlertaSimple("Error", e.getMessage(), AlertType.ERROR);
+            Stage stage = new Stage();
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.setScene(scene);
+            stage.showAndWait();
+        } catch (IOException ex) {
+            Utils.mostrarAlertaSimple("Error", "Error al abrir el formulario", AlertType.ERROR);
         }
     }
 

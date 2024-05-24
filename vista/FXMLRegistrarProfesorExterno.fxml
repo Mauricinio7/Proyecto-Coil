@@ -27,13 +27,12 @@
         <Button layoutX="968.0" layoutY="210.0" mnemonicParsing="false" onAction="#btnCancelar" prefHeight="42.0" prefWidth="136.0" text="Cancelar" />
         <TableView fx:id="tvProfesoresExternos" layoutX="169.0" layoutY="298.0" prefHeight="406.0" prefWidth="967.0">
           <columns>
-            <TableColumn fx:id="colNombre" prefWidth="184.0" text="Nombre" />
-            <TableColumn fx:id="colCorreo" prefWidth="154.0" text="Correo" />
-              <TableColumn fx:id="colIdioma" prefWidth="81.0" text="Idioma" />
-              <TableColumn fx:id="colInstitucion" prefWidth="167.0" text="Institución" />
-              <TableColumn fx:id="colPais" prefWidth="92.0" text="País" />
-              <TableColumn fx:id="colTelefono" prefWidth="109.0" text="Teléfono" />
-              <TableColumn fx:id="colColaboracion" prefWidth="179.0" text="Colaboración" />
+            <TableColumn fx:id="colNombre" prefWidth="216.0" text="Nombre" />
+            <TableColumn fx:id="colCorreo" prefWidth="142.0" text="Correo" />
+              <TableColumn fx:id="colIdioma" prefWidth="140.0" text="Idioma" />
+              <TableColumn fx:id="colInstitucion" prefWidth="172.0" text="Institución" />
+              <TableColumn fx:id="colPais" prefWidth="95.0" text="País" />
+              <TableColumn fx:id="colTelefono" prefWidth="201.0" text="Teléfono" />
           </columns>
         </TableView>
       <Pane fx:id="panelDeslisante" layoutX="-252.0" layoutY="-2.0" onMouseEntered="#entraPanel" onMouseExited="#salePanel" prefHeight="752.0" prefWidth="349.0" style="-fx-background-color: linear-gradient(to bottom, #e93367, #cd18ed);">
