@@ -78,5 +78,4 @@ public class ProfesorExterno {
     public void setTelefono(String telefono) {
         this.telefono = telefono;
     }
-
 }

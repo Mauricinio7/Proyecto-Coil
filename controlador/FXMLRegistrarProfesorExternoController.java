@@ -3,7 +3,7 @@ package coilvic.controlador;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-import coilvic.modelo.pojo.ProfesorExterno;
+import coilvic.modelo.pojo.ProfesorExternoColaboracion;
 import javafx.animation.TranslateTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -18,8 +18,7 @@ import javafx.util.Duration;
 
 public class FXMLRegistrarProfesorExternoController implements Initializable {
 
-    private ProfesorExterno profesorExterno;
-    private String nombreColaboracion;
+    private ProfesorExternoColaboracion profesorExternoColaboracion;
     @FXML
     private Pane panelDeslisante;
     @FXML
@@ -27,7 +26,7 @@ public class FXMLRegistrarProfesorExternoController implements Initializable {
     @FXML
     private Button btnCancelar;
     @FXML
-    private TableView<?> tvProfesoresExternos;
+    private TableView<ProfesorExternoColaboracion> tvProfesoresExternos;
     @FXML
     private TableColumn colNombre;
     @FXML
