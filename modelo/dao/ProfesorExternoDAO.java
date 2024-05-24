@@ -53,4 +53,37 @@ public class ProfesorExternoDAO {
         }
         return respuesta;
     }
+
+    public static HashMap<String, Object> registrarProfesorExterno(ProfesorExterno profesorExterno) {
+        HashMap<String, Object> respuesta = new HashMap<>();
+        respuesta.put(Constantes.KEY_ERROR, true);
+        Connection conexionBD = ConexionBD.obtenerConexion();
+        if (conexionBD != null) {
+            try {
+            String sentencia = "INSERT INTO "
+                    + " (nombre, correo, idioma, institucion, pais, telefono)"
+                    + " VALUES (?, ?, ?, ?, ?, ?)";
+            PreparedStatement prepararSentencia = conexionBD.prepareStatement(sentencia);
+            prepararSentencia.setString(1, profesorExterno.getNombre());
+            prepararSentencia.setString(2, profesorExterno.getCorreo());
+            prepararSentencia.setString(3, profesorExterno.getIdioma());
+            prepararSentencia.setString(4, profesorExterno.getInstitucion());
+            prepararSentencia.setString(5, profesorExterno.getPais());
+            prepararSentencia.setString(6, profesorExterno.getTelefono());            
+            int filasAfectadas = prepararSentencia.executeUpdate();
+                if (filasAfectadas > 0) {
+                    respuesta.put(Constantes.KEY_ERROR, false);
+                    respuesta.put(Constantes.KEY_MENSAJE, "Datos registrados exitosamente");
+                } else {
+                    respuesta.put(Constantes.KEY_MENSAJE, "No se han podido guardar los datos");
+                }
+                conexionBD.close();
+            } catch(SQLException ex) {
+                respuesta.put(Constantes.KEY_MENSAJE, ex.getMessage());
+            }
+        } else {
+            respuesta.put(Constantes.KEY_MENSAJE, Constantes.MENSAJE_ERROR_CONEXION);
+        }
+        return respuesta;
+    }
 }
