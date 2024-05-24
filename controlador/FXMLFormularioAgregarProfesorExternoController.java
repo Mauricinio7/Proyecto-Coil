@@ -71,7 +71,7 @@ public class FXMLFormularioAgregarProfesorExternoController implements Initializ
     }
 
     private Boolean datosValidos() {
-        return tfTelefono.getText().matches("[0-9]{10}") || 
+        return tfTelefono.getText().matches("[0-9]{10}") && 
         tfCorreo.getText().matches("[a-zA-Z0-9]+@[a-zA-Z0-9]+\\.[a-zA-Z0-9]+");
     }
 

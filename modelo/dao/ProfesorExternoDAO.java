@@ -60,7 +60,7 @@ public class ProfesorExternoDAO {
         Connection conexionBD = ConexionBD.obtenerConexion();
         if (conexionBD != null) {
             try {
-            String sentencia = "INSERT INTO "
+            String sentencia = "INSERT INTO profesor_externo"
                     + " (nombre, correo, idioma, institucion, pais, telefono)"
                     + " VALUES (?, ?, ?, ?, ?, ?)";
             PreparedStatement prepararSentencia = conexionBD.prepareStatement(sentencia);
