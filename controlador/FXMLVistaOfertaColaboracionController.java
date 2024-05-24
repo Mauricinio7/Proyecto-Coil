@@ -4,9 +4,7 @@
  */
 package coilvic.controlador;
 
-import java.io.IOException;
 import java.net.URL;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -20,11 +18,11 @@ import coilvic.modelo.dao.DepartamentoDAO;
 import coilvic.modelo.dao.RegionDAO;
 import coilvic.modelo.pojo.Asignatura;
 import coilvic.modelo.pojo.Departamento;
-import coilvic.modelo.pojo.ProgramaEducativo;
 import coilvic.modelo.pojo.Region;
 import coilvic.utilidades.Constantes;
 import javafx.animation.TranslateTransition;
-import javafx.beans.binding.ObjectExpression;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -98,6 +96,7 @@ public class FXMLVistaOfertaColaboracionController implements Initializable {
         fillRegion();
         fillDepartamento();
         fillAreaAcademica();
+        actualizarRegion();
         fillAsignatura();
         asignarFechaActualNTP();
         fillPeriodo();
@@ -105,12 +104,22 @@ public class FXMLVistaOfertaColaboracionController implements Initializable {
     //metodos de crud
     public void fillRegion(){
         HashMap<String, Object> obtenerRegion = RegionDAO.consultarListaRegion();
+        verificacionConsultaRegion(obtenerRegion);
+    }
+    public void fillRegionPorArea(String area){
+        HashMap<String, Object> obtenerRegion = RegionDAO.consultarRegionPorAreaAcad(area);
+        verificacionConsultaRegion(obtenerRegion);
+    }
+    public void fillRegionPorAsignatura(){
+        
+    }
+    public void verificacionConsultaRegion(HashMap<String, Object> obtenerRegion){
         if(obtenerRegion != null && obtenerRegion.containsKey("listaRegion")){
-             observadorRegion = FXCollections.observableArrayList((ArrayList<Region>) obtenerRegion.get("listaRegion"));
-             cbRegion.setItems(observadorRegion);
-        }else{
+            observadorRegion = FXCollections.observableArrayList((ArrayList<Region>) obtenerRegion.get("listaRegion"));
+            cbRegion.setItems(observadorRegion);
+       }else{
 
-        }
+       }
     }
     public void fillDepartamento(){
         HashMap<String, Object> obtenerDepartamento = DepartamentoDAO.consultarListaDepartamento();
@@ -134,12 +143,26 @@ public class FXMLVistaOfertaColaboracionController implements Initializable {
             cbAsignatura.setItems(observadorAsignatura);
         }
     }
+    public void actualizarRegion(){
+        cbAreaAcad.valueProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+                System.out.println(newValue);
+                if(newValue != null){
+                    fillRegionPorArea(newValue);
+                }
+            }
+            
+        });
+    }
     public void asignarFechaActualNTP(){
         try{
             LocalDateTime fechaActual = ConexionApacheNet.obtenerFechaHoraServidorNTP(Constantes.SERVIDOR_NTP);
             if(fechaActual != null){
                 fechaNTP = fechaActual;
                 System.out.println("fecha NTP");
+            }else{
+
             }
         }catch(Exception error){
             error.printStackTrace();

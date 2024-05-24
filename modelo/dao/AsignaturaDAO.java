@@ -54,4 +54,23 @@ public class AsignaturaDAO {
         }
         return respuesta;
     }
+    public static HashMap<String, Object> consultarAreaAcademicaPorRegion(int idRegion){
+        HashMap<String, Object> respuesta = new HashMap<>();
+        ArrayList<String> listaAreaAcad = new ArrayList<>();
+        try(Connection conexionDB = ConexionBD.obtenerConexion()){
+            StringBuilder consulta = new StringBuilder();
+            consulta.append("SELECT DISTINCT a.areaAcademica ");
+            consulta.append("FROM asignatura a ");
+            consulta.append("JOIN asignaturaprogramaeducativo ape ON a.idAsignatura = ape.Asignatura_idAsignatura ");
+            consulta.append("JOIN departamento_has_programaeducativo dhpe ON ape.ProgramaEducativo_idPrograma = dhpe.ProgramaEducativo_idPrograma ");
+            consulta.append("JOIN region_has_departamento rhd ON dhpe.Departamento_idDepartamento = rhd.Departamento_idDepartamento ");
+            consulta.append("WHERE rhd.Region_idRegion = ?");
+            PreparedStatement consultaPreparada = conexionDB.prepareStatement(consulta.toString());
+            consultaPreparada.setInt(1, idRegion);
+            ResultSet resultado = consultaPreparada.executeQuery();
+        }catch(SQLException errorSql){
+
+        }
+        return null;
+    }
 }
