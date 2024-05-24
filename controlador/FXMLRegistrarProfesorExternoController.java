@@ -37,6 +37,8 @@ import javafx.util.Duration;
 public class FXMLRegistrarProfesorExternoController implements Initializable {
 
     private ObservableList<ProfesorExterno> profesoresExternos;
+    private FilteredList<ProfesorExterno> profesoresExternosFiltrados;
+    
     @FXML
     private Pane panelDeslisante;
     @FXML
@@ -58,19 +60,18 @@ public class FXMLRegistrarProfesorExternoController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
         configurarTabla();
         cargarDatosProfesoresExternos();
         configurarBusqueda();
     }
 
     private void configurarTabla() {
-        colNombre.setCellValueFactory(new PropertyValueFactory("nombre"));
-        colCorreo.setCellValueFactory(new PropertyValueFactory("correo"));
-        colIdioma.setCellValueFactory(new PropertyValueFactory("idioma"));
-        colInstitucion.setCellValueFactory(new PropertyValueFactory("institucion"));
-        colPais.setCellValueFactory(new PropertyValueFactory("pais"));
-        colTelefono.setCellValueFactory(new PropertyValueFactory("telefono"));
+        colNombre.setCellValueFactory(new PropertyValueFactory<>("nombre"));
+        colCorreo.setCellValueFactory(new PropertyValueFactory<>("correo"));
+        colIdioma.setCellValueFactory(new PropertyValueFactory<>("idioma"));
+        colInstitucion.setCellValueFactory(new PropertyValueFactory<>("institucion"));
+        colPais.setCellValueFactory(new PropertyValueFactory<>("pais"));
+        colTelefono.setCellValueFactory(new PropertyValueFactory<>("telefono"));
     }
 
     private void cargarDatosProfesoresExternos() {
@@ -81,35 +82,33 @@ public class FXMLRegistrarProfesorExternoController implements Initializable {
             ArrayList<ProfesorExterno> profesoresExternosConsulta = 
             (ArrayList<ProfesorExterno>) respuesta.get("profesoresExternos");
             profesoresExternos.addAll(profesoresExternosConsulta);
-            tvProfesoresExternos.setItems(profesoresExternos);
         } else {
             Utils.mostrarAlertaSimple("Error", ""+respuesta.get(Constantes.KEY_MENSAJE), AlertType.ERROR);
         }
     }
 
     private void configurarBusqueda() {
-        if (profesoresExternos.size() > 0) {
-            FilteredList<ProfesorExterno> profesoresExternosFiltrados = 
-            new FilteredList<>(profesoresExternos, p -> true);
-            tfBusquedaProfesor.textProperty().addListener(new ChangeListener<String>() {
-                @Override
-                public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-                    profesoresExternosFiltrados.setPredicate(profesorExterno -> {
-                        if (newValue == null || newValue.isEmpty()) {
-                            return true;
-                        }
-                        String valorMinuscula = newValue.toLowerCase();
-                        if (profesorExterno.getNombre().toLowerCase().contains(valorMinuscula)) {
-                            return true;
-                        }
-                        return false;
-                    });
-                }
-            });
-            SortedList<ProfesorExterno> profesoresExternosOrdenados = new SortedList<>(profesoresExternosFiltrados);
-            profesoresExternosOrdenados.comparatorProperty().bind(tvProfesoresExternos.comparatorProperty());
-            tvProfesoresExternos.setItems(profesoresExternosOrdenados);
-        }
+        profesoresExternosFiltrados = new FilteredList<>(profesoresExternos, p -> false); // Inicialmente filtra todo
+        
+        tfBusquedaProfesor.textProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+                profesoresExternosFiltrados.setPredicate(profesorExterno -> {
+                    if (newValue == null || newValue.isEmpty()) {
+                        return false; // No mostrar nada si el campo de búsqueda está vacío
+                    }
+                    String valorMinuscula = newValue.toLowerCase();
+                    return profesorExterno.getNombre().toLowerCase().contains(valorMinuscula);
+                });
+                actualizarTabla();
+            }
+        });
+    }
+
+    private void actualizarTabla() {
+        SortedList<ProfesorExterno> profesoresExternosOrdenados = new SortedList<>(profesoresExternosFiltrados);
+        profesoresExternosOrdenados.comparatorProperty().bind(tvProfesoresExternos.comparatorProperty());
+        tvProfesoresExternos.setItems(profesoresExternosOrdenados);
     }
 
     @FXML
@@ -155,5 +154,4 @@ public class FXMLRegistrarProfesorExternoController implements Initializable {
     private void btnCancelar(ActionEvent event) {
         //REGRESAR A LA VENTANA ANTERIOR
     }
-    
 }
