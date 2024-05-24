@@ -12,5 +12,5 @@ public class Constantes {
     public static final String KEY_ERROR = "error";
     public static final String KEY_MENSAJE = "mensaje";
     public static final int TIEMPO_ESPERA_SERVIDOR = 50000;
-    public static final String SERVIDOR_NTP = "north-america.pool.ntp.org";
+    public static final String SERVIDOR_NTP = "pool.ntp.org";
 }

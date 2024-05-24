@@ -21,11 +21,13 @@ public class ConexionApacheNet {
             InetAddress direccionServidor = InetAddress.getByName(servidorNTP);
             TimeInfo infoTiempo = clienteNTP.getTime(direccionServidor);
             infoTiempo.computeDetails();
-            long tiempoNTP = infoTiempo.getMessage().getTransmitTimeStamp().getTime(); 
+            long tiempoNTP = infoTiempo.getMessage().getTransmitTimeStamp().getTime();
+            System.out.println("Fecha obtenida del ntp"); 
             return LocalDateTime.ofInstant(Instant.ofEpochMilli(tiempoNTP), ZoneId.systemDefault());
         } catch (IOException e) {
             e.printStackTrace();
-            return null;
+            LocalDateTime fecha = LocalDateTime.now();
+            return fecha;
         }
     }
 }

@@ -137,13 +137,9 @@ public class FXMLVistaOfertaColaboracionController implements Initializable {
     public void asignarFechaActualNTP(){
         try{
             LocalDateTime fechaActual = ConexionApacheNet.obtenerFechaHoraServidorNTP(Constantes.SERVIDOR_NTP);
-            //cambiar a diferente de null para usar fecha ntp
-            if(fechaActual == null){
+            if(fechaActual != null){
                 fechaNTP = fechaActual;
                 System.out.println("fecha NTP");
-            }else{
-                fechaNTP = LocalDateTime.now();
-                System.out.println("fecha sistema");
             }
         }catch(Exception error){
             error.printStackTrace();
