@@ -88,7 +88,12 @@ public class FXMLFormularioAgregarProfesorExternoController implements Initializ
             ("Datos inválidos", "Por favor, verifique los datos", AlertType.WARNING);
         } else {
             obtenerDatosProfesorExterno();
-            guardarProfesorExterno();
+            if (idProfesorYaRegistrado() != null) {
+                Utils.mostrarAlertaSimple("", "El profesor ya se encuentra registrado", AlertType.WARNING);
+                return;
+            } else {
+                guardarProfesorExterno();
+            }
         }
     }
 
@@ -106,5 +111,13 @@ public class FXMLFormularioAgregarProfesorExternoController implements Initializ
 
     public void inicializarValores(ObservadorProfesorExterno observadorProfesorExterno) {
         this.observadorProfesorExterno = observadorProfesorExterno;
+    }
+
+    private Integer idProfesorYaRegistrado() {
+        HashMap<String, Object> respuesta = ProfesorExternoDAO.obtenerIdProfesor(profesorExterno);
+        if (!(Boolean) respuesta.get(Constantes.KEY_ERROR)) {
+            return (Integer) respuesta.get("idProfesorExterno");
+        }
+        return null;
     }
 }

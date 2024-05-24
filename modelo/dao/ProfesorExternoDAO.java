@@ -54,6 +54,42 @@ public class ProfesorExternoDAO {
         return respuesta;
     }
 
+    public static HashMap<String, Object> obtenerIdProfesor(ProfesorExterno profesorExterno) {
+        HashMap<String, Object> respuesta = new HashMap<>();
+        respuesta.put(Constantes.KEY_ERROR, true);
+        Connection conexionBD = ConexionBD.obtenerConexion();
+        if (conexionBD != null) {
+            try {
+                String consulta = "SELECT idProfesorExterno"
+                        + " FROM profesor_externo"
+                        + " WHERE nombre = ?"
+                        + " AND correo = ?"
+                        + " AND idioma = ?"
+                        + " AND institucion = ?"
+                        + " AND pais = ?"
+                        + " AND telefono = ?";
+                PreparedStatement prepararSentencia = conexionBD.prepareStatement(consulta);
+                prepararSentencia.setString(1, profesorExterno.getNombre());
+                prepararSentencia.setString(2, profesorExterno.getCorreo());
+                prepararSentencia.setString(3, profesorExterno.getIdioma());
+                prepararSentencia.setString(4, profesorExterno.getInstitucion());
+                prepararSentencia.setString(5, profesorExterno.getPais());
+                prepararSentencia.setString(6, profesorExterno.getTelefono());
+                ResultSet resultado = prepararSentencia.executeQuery();
+                if (resultado.next()) {
+                    respuesta.put(Constantes.KEY_ERROR, false);
+                    respuesta.put("idProfesorExterno", resultado.getInt("idProfesorExterno"));
+                }
+                conexionBD.close();
+            } catch (SQLException e) {
+                respuesta.put(Constantes.KEY_MENSAJE, e.getMessage());
+            }
+        } else {
+            respuesta.put(Constantes.KEY_MENSAJE, Constantes.MENSAJE_ERROR_CONEXION);
+        }
+        return respuesta;
+    }
+
     public static HashMap<String, Object> registrarProfesorExterno(ProfesorExterno profesorExterno) {
         HashMap<String, Object> respuesta = new HashMap<>();
         respuesta.put(Constantes.KEY_ERROR, true);
