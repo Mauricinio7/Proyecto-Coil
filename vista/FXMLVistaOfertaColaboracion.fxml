@@ -85,12 +85,12 @@
             <Font name="Open Sans Extrabold" size="37.0" />
          </font>
       </Label>
-      <Label layoutX="255.0" layoutY="288.0" text="Nombre de la Colaboración" textAlignment="JUSTIFY">
+      <Label fx:id="lbName" layoutX="255.0" layoutY="288.0" text="Nombre de la Colaboración" textAlignment="JUSTIFY">
          <font>
             <Font name="Open Sans" size="14.0" />
          </font>
       </Label>
-      <Label layoutX="255.0" layoutY="362.0" text="Periodo">
+      <Label fx:id="lbPeriodo" layoutX="255.0" layoutY="362.0" text="Periodo">
          <font>
             <Font name="Open Sans" size="14.0" />
          </font>
@@ -110,17 +110,17 @@
             <Font name="Open Sans" size="14.0" />
          </font>
       </Label>
-      <Label layoutX="256.0" layoutY="421.0" text="Región ">
+      <Label fx:id="lbRegion" layoutX="256.0" layoutY="421.0" text="Región ">
          <font>
             <Font name="Open Sans" size="14.0" />
          </font>
       </Label>
-      <Label layoutX="255.0" layoutY="479.0" text="Departamento">
+      <Label fx:id="lbDepartamento" layoutX="255.0" layoutY="479.0" text="Departamento">
          <font>
             <Font name="Open Sans" size="14.0" />
          </font>
       </Label>
-      <Label layoutX="255.0" layoutY="538.0" text="Objetivo general del curso">
+      <Label fx:id="lbObjetivoGeneral" layoutX="255.0" layoutY="538.0" text="Objetivo general del curso">
          <font>
             <Font name="Open Sans" size="14.0" />
          </font>

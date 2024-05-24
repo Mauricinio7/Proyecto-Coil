@@ -17,6 +17,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import javafx.util.Duration;
 
 public class FXMLVistaProfesorController implements Initializable {
@@ -68,13 +69,16 @@ public class FXMLVistaProfesorController implements Initializable {
 
     public void irPantallaOfertasColaboracion(){
         try{
-            Stage stagePrincipal = (Stage)ivMisOfertas.getScene().getWindow();
+            Stage stageOferta = new Stage();
+            stageOferta.initStyle(StageStyle.UTILITY);
             FXMLLoader cargarObjeto = new FXMLLoader(CoilVic.class.getResource("../vista/FXMLVistaOfertaColaboracion.fxml"));
             Parent root = cargarObjeto.load();
             Scene nuevaScena = new Scene(root);
-            stagePrincipal.setTitle("Registrar ofertas de colaboracion");
-            stagePrincipal.setScene(nuevaScena);
-            stagePrincipal.show();
+            stageOferta.setTitle("Registrar ofertas de colaboracion");
+            stageOferta.setScene(nuevaScena);
+            stageOferta.show();
+            Stage stagePrincipal = (Stage)ivMisOfertas.getScene().getWindow();
+            stagePrincipal.close();
         }catch(IOException error){
             error.printStackTrace();
         }
