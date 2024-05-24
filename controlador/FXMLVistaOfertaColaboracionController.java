@@ -4,6 +4,7 @@
  */
 package coilvic.controlador;
 
+import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -50,7 +51,7 @@ public class FXMLVistaOfertaColaboracionController implements Initializable {
     private ObservableList<Asignatura> observadorAsignatura;
     private ObservableList<String> observadorAreaAcademica;
     private ObservableList<Departamento> observadorDepartamento;
-    int year;
+    LocalDateTime fechaNTP;
     @FXML
     private Pane panelDeslisante;
     @FXML
@@ -98,7 +99,8 @@ public class FXMLVistaOfertaColaboracionController implements Initializable {
         fillDepartamento();
         fillAreaAcademica();
         fillAsignatura();
-        //obtenerYear();
+        asignarFechaActualNTP();
+        fillPeriodo();
     }
     //metodos de crud
     public void fillRegion(){
@@ -132,13 +134,35 @@ public class FXMLVistaOfertaColaboracionController implements Initializable {
             cbAsignatura.setItems(observadorAsignatura);
         }
     }
-    public void obtenerYear(){
-        LocalDateTime fechaActual = ConexionApacheNet.obtenerFechaHoraServidorNTP(Constantes.SERVIDOR_NTP);
-        if(fechaActual != null){
-            year = fechaActual.getYear();
-        }else{
-            System.out.println("Error al establecer la conexion con servidor ntp");
+    public void asignarFechaActualNTP(){
+        try{
+            LocalDateTime fechaActual = ConexionApacheNet.obtenerFechaHoraServidorNTP(Constantes.SERVIDOR_NTP);
+            //cambiar a diferente de null para usar fecha ntp
+            if(fechaActual == null){
+                fechaNTP = fechaActual;
+                System.out.println("fecha NTP");
+            }else{
+                fechaNTP = LocalDateTime.now();
+                System.out.println("fecha sistema");
+            }
+        }catch(Exception error){
+            error.printStackTrace();
         }
+    }
+    public void fillPeriodo(){
+        ObservableList<String> observablePeriodo =  FXCollections.observableArrayList();
+        ArrayList<String> listaPeriodos = new ArrayList<>();
+        String []periodos = {"ENER-JUN", "AGOST-DIC"};
+        int mesActual = fechaNTP.getMonthValue();
+            if(mesActual >= 6 && mesActual <= 11){
+                listaPeriodos.add(periodos[1] + " " + fechaNTP.getYear());
+                listaPeriodos.add(periodos[0] + " " + (fechaNTP.getYear() + 1));
+            }else{
+                listaPeriodos.add(periodos[0] + " " + fechaNTP.getYear());
+                listaPeriodos.add(periodos[1] + " " + fechaNTP.getYear());
+            }
+            observablePeriodo.addAll(listaPeriodos);
+            cbPeriodo.setItems(observablePeriodo);
     }
     //metodos para validar campos
     public static boolean validarNombreColaboracion(String nombre){

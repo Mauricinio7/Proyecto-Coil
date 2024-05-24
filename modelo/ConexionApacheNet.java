@@ -15,12 +15,14 @@ import coilvic.utilidades.Constantes;
 public class ConexionApacheNet {
     public static LocalDateTime obtenerFechaHoraServidorNTP(String servidorNTP) {
         try {
-            TimeTCPClient client = new TimeTCPClient();
-            client.setDefaultTimeout(Constantes.TIEMPO_ESPERA_SERVIDOR);
-            client.connect(servidorNTP);
-            long tiempoMillis = client.getDate().getTime();
-            client.disconnect();
-            return LocalDateTime.ofInstant(Instant.ofEpochMilli(tiempoMillis), ZoneId.systemDefault());
+            NTPUDPClient clienteNTP = new NTPUDPClient();
+            clienteNTP.setDefaultTimeout(60000); 
+            clienteNTP.open();
+            InetAddress direccionServidor = InetAddress.getByName(servidorNTP);
+            TimeInfo infoTiempo = clienteNTP.getTime(direccionServidor);
+            infoTiempo.computeDetails();
+            long tiempoNTP = infoTiempo.getMessage().getTransmitTimeStamp().getTime(); 
+            return LocalDateTime.ofInstant(Instant.ofEpochMilli(tiempoNTP), ZoneId.systemDefault());
         } catch (IOException e) {
             e.printStackTrace();
             return null;
