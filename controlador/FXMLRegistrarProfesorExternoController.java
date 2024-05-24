@@ -2,6 +2,8 @@ package coilvic.controlador;
 
 import java.net.URL;
 import java.util.ResourceBundle;
+
+import coilvic.modelo.pojo.ProfesorExterno;
 import javafx.animation.TranslateTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -16,6 +18,8 @@ import javafx.util.Duration;
 
 public class FXMLRegistrarProfesorExternoController implements Initializable {
 
+    private ProfesorExterno profesorExterno;
+    private String nombreColaboracion;
     @FXML
     private Pane panelDeslisante;
     @FXML
