@@ -6,12 +6,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import javax.naming.spi.DirStateFactory.Result;
-
-import com.mysql.jdbc.PreparedStatement;
-
 import coilvic.modelo.ConexionBD;
 import coilvic.utilidades.Constantes;
+import java.sql.PreparedStatement;
 
 public class PeriodoDAO {
     

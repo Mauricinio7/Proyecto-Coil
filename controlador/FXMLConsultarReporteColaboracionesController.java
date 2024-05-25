@@ -1,10 +1,12 @@
 package coilvic.controlador;
 
+import java.io.FileNotFoundException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 import coilvic.modelo.dao.PeriodoDAO;
+import coilvic.modelo.pojo.ReporteColaboraciones;
 import javafx.animation.TranslateTransition;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -42,6 +44,7 @@ public class FXMLConsultarReporteColaboracionesController implements Initializab
 
     @FXML
     private void btnDescargar(ActionEvent event) {
+        generarReporte();
     }
 
     private void cargarPeriodos() {
@@ -73,6 +76,18 @@ public class FXMLConsultarReporteColaboracionesController implements Initializab
 
     private void generarReporte() {
         //GENERAR REPORTE
+        ReporteColaboraciones reporte = new ReporteColaboraciones();
+        try {
+            reporte.crearDocumento();
+            reporte.abrirDocumento();
+            reporte.agregarTitulo("Reporte de Colaboraciones");
+            reporte.agregarSaltoLinea();
+            reporte.agregarParrafo("Periodo: " + cbPeriodo.getValue());
+            reporte.agregarSaltoLinea();
+            reporte.agregarTablaColaboraciones(cbPeriodo.getValue());
+        } catch (FileNotFoundException | DocumentException ex) {
+            //TODO
+        }
     }
     
 }

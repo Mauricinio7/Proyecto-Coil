@@ -2,6 +2,8 @@ package coilvic.modelo.pojo;
 
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.Chunk;
@@ -16,8 +18,13 @@ import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
 
+import coilvic.modelo.dao.ColaboracionDAO;
+import coilvic.modelo.dao.ProfesorUvDAO;
+import coilvic.utilidades.Constantes;
+
 public class ReporteColaboraciones {
     
+    private ArrayList<Colaboracion> colaboraciones;
     private Document documento;
     private FileOutputStream fileOutputStream;
     private Font fuenteTitulo = new Font(Font.FontFamily.TIMES_ROMAN, 16, Font.BOLD);
@@ -56,13 +63,46 @@ public class ReporteColaboraciones {
         documento.add(saltoLinea);
     }
 
-    public void agregarTablaColaboraciones() {
+    public void agregarTablaColaboraciones(String periodo) throws DocumentException {
         PdfPTable tabla = new PdfPTable(5);
         tabla.addCell("Nombre");
         tabla.addCell("Idioma");
         tabla.addCell("No. Estudiantes Externos");
         tabla.addCell("Profesor UV");
         tabla.addCell("No Personal");
-        
+        //Lista de colaboraciones
+        obtenerColaboraciones(periodo);
+        for (Colaboracion colaboracion : colaboraciones) {
+            ProfesorUv profesorUv = obtenerProfesorUv(colaboracion.getIdProfesorUV());
+            tabla.addCell(colaboracion.getNombre());
+            tabla.addCell(colaboracion.getIdioma());
+            tabla.addCell(String.valueOf(colaboracion.getNoEstudiantesExternos()));
+            tabla.addCell(profesorUv.getNombre());
+            tabla.addCell(profesorUv.getNoPersonal());
+        }
+        documento.add(tabla);
+        cerrarDocumento();
+    }
+
+    private void obtenerColaboraciones(String periodo) {
+        colaboraciones = new ArrayList<>();
+        HashMap<String, Object> respuesta = ColaboracionDAO.obtenerColaboracionesConcluidasPorPeriodo(periodo);
+        if (!(boolean) respuesta.get(Constantes.KEY_ERROR)) {
+            colaboraciones = (ArrayList<Colaboracion>) respuesta.get("Colaboraciones");
+        }
+    }
+
+    private ProfesorUv obtenerProfesorUv(Integer idProfesorUv) {
+        ProfesorUv profesorUv = null;
+        HashMap<String, Object> respuesta = ProfesorUvDAO.obtenerProfesorUvPorId(idProfesorUv);
+        if (!(boolean) respuesta.get(Constantes.KEY_ERROR)) {
+            profesorUv = new ProfesorUv();
+            profesorUv = (ProfesorUv) respuesta.get("Profesor");
+        }
+        return profesorUv;
+    }
+
+    public void cerrarDocumento() {
+        documento.close();
     }
 }
