@@ -86,7 +86,7 @@
             </Label>
          </children></Pane>
       <Button layoutX="1059.0" layoutY="214.0" mnemonicParsing="false" onAction="#btnSalir" prefHeight="50.0" prefWidth="93.0" text="Salir" />
-      <ComboBox layoutX="226.0" layoutY="306.0" onAction="#cbPeriodo" prefHeight="42.0" prefWidth="201.0" />
+      <ComboBox fx:id="cbPeriodo" layoutX="226.0" layoutY="306.0" prefHeight="42.0" prefWidth="201.0" />
       <Pane layoutX="137.0" layoutY="397.0" prefHeight="137.0" prefWidth="1009.0" style="-fx-background-color: #D4D4D4;">
          <children>
             <Label layoutX="61.0" layoutY="57.0" text="Reporte de colaboraciones">
