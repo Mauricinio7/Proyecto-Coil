@@ -9,6 +9,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.ResourceBundle;
+import java.util.Stack;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -93,66 +94,73 @@ public class FXMLVistaOfertaColaboracionController implements Initializable {
         // TODO
     }    
     public void inicializarValores(){
-        fillRegion();
-        fillDepartamento();
-        fillAreaAcademica();
-        actualizarRegion();
-        fillAsignatura();
         asignarFechaActualNTP();
         fillPeriodo();
+        fillRegion();
+        modificarAreaAcademica();
+        modificarDepartamento();
+        modificarAsignatura();
+        
     }
     //metodos de crud
     public void fillRegion(){
+        disableCombobox();
         HashMap<String, Object> obtenerRegion = RegionDAO.consultarListaRegion();
-        verificacionConsultaRegion(obtenerRegion);
+        verificarConsulta(obtenerRegion, cbRegion, observadorRegion, "listaRegion");
     }
-    public void fillRegionPorArea(String area){
-        HashMap<String, Object> obtenerRegion = RegionDAO.consultarRegionPorAreaAcad(area);
-        verificacionConsultaRegion(obtenerRegion);
+    public void fillAreaAcademicaPorRegion(int idRegion){
+        HashMap<String, Object> obtenerAreaAcademica = AsignaturaDAO.consultarAreaAcademicaPorRegion(idRegion);
+        verificarConsulta(obtenerAreaAcademica, cbAreaAcad, observadorAreaAcademica, "listaArea");
     }
-    public void fillRegionPorAsignatura(){
-        
+    public void fillDepartamentoPorAreaAcad(String areaAcad){
+        HashMap<String, Object> obtenerDepartamento = DepartamentoDAO.consultarDepartamentoPorAreaAcad(areaAcad);
+        verificarConsulta(obtenerDepartamento, cbDepartamento, observadorDepartamento, "listaDepartamento");
     }
-    public void verificacionConsultaRegion(HashMap<String, Object> obtenerRegion){
-        if(obtenerRegion != null && obtenerRegion.containsKey("listaRegion")){
-            observadorRegion = FXCollections.observableArrayList((ArrayList<Region>) obtenerRegion.get("listaRegion"));
-            cbRegion.setItems(observadorRegion);
-       }else{
+    public void fillAsignaturaPorDepartamento(int idDepartamento){
+        HashMap<String, Object> obtenerAsignatura = AsignaturaDAO.consultaAsignaturaDepartamento(idDepartamento);
+        verificarConsulta(obtenerAsignatura, cbAsignatura, observadorAsignatura, "listaAsignatura");
+    }
+    public <T> void verificarConsulta(HashMap<String, Object>consulta, ComboBox<T> comboAModificar, ObservableList<T> observador, String key){
+        if(consulta != null && consulta.containsKey(key)){
+            observador = FXCollections.observableArrayList((ArrayList<T>)consulta.get(key));
+            comboAModificar.setItems(observador);
+        }else{
 
-       }
-    }
-    public void fillDepartamento(){
-        HashMap<String, Object> obtenerDepartamento = DepartamentoDAO.consultarListaDepartamento();
-        if(obtenerDepartamento != null && obtenerDepartamento.containsKey("listaDepartamento")){
-            observadorDepartamento = FXCollections.observableArrayList((ArrayList<Departamento>) obtenerDepartamento.get("listaDepartamento"));
-            cbDepartamento.setItems(observadorDepartamento);
-        }
-        
-    }
-    public void fillAreaAcademica(){
-        HashMap<String, Object> obtenerArea = AsignaturaDAO.consultarAreaAcademica();
-        if(obtenerArea != null && obtenerArea.containsKey("listaArea")){
-            observadorAreaAcademica = FXCollections.observableArrayList((ArrayList<String>) obtenerArea.get("listaArea"));
-            cbAreaAcad.setItems(observadorAreaAcademica);
         }
     }
-    public void fillAsignatura(){
-        HashMap<String, Object> obtenerAsignatura = AsignaturaDAO.consultarListaAsignatura();
-        if(obtenerAsignatura != null && obtenerAsignatura.containsKey("listaAsignatura")){
-            observadorAsignatura = FXCollections.observableArrayList((ArrayList<Asignatura>)obtenerAsignatura.get("listaAsignatura"));
-            cbAsignatura.setItems(observadorAsignatura);
-        }
-    }
-    public void actualizarRegion(){
-        cbAreaAcad.valueProperty().addListener(new ChangeListener<String>() {
+    //listerners 
+    public void modificarAreaAcademica(){
+        cbRegion.valueProperty().addListener(new ChangeListener<Region>(){
             @Override
-            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-                System.out.println(newValue);
+            public void changed(ObservableValue<? extends Region> observable, Region oldValue, Region newValue) {
+                disableCombobox();
                 if(newValue != null){
-                    fillRegionPorArea(newValue);
+                    cbAreaAcad.setDisable(false);
+                    fillAreaAcademicaPorRegion(newValue.getIdRegion());
                 }
             }
-            
+        });
+    }
+    public void modificarDepartamento(){
+        cbAreaAcad.valueProperty().addListener(new ChangeListener<String>(){
+            @Override
+            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+                if(newValue != null){
+                    cbDepartamento.setDisable(false);
+                    fillDepartamentoPorAreaAcad(newValue);
+                }
+            }
+        });
+    }
+    public void modificarAsignatura(){
+        cbDepartamento.valueProperty().addListener(new ChangeListener<Departamento>(){
+            @Override
+            public void changed(ObservableValue<? extends Departamento> observable, Departamento oldValue, Departamento newValue) {
+                if(newValue != null){
+                    cbAsignatura.setDisable(false);
+                    fillAsignaturaPorDepartamento(newValue.getIdDepartamento());
+                }
+            }
         });
     }
     public void asignarFechaActualNTP(){
@@ -182,13 +190,6 @@ public class FXMLVistaOfertaColaboracionController implements Initializable {
             }
             observablePeriodo.addAll(listaPeriodos);
             cbPeriodo.setItems(observablePeriodo);
-    }
-    //metodos para validar campos
-    public static boolean validarNombreColaboracion(String nombre){
-        String regex = "[a-zA-Z0-9íáéóúñÁÉÍÓÚÑÜ ]+";
-        Pattern patronCoincidencias =Pattern.compile(regex);
-        Matcher coincidencias = patronCoincidencias.matcher(nombre);
-        return coincidencias.matches();
     }
      //metodos de animacion 
      @FXML
@@ -247,5 +248,85 @@ public class FXMLVistaOfertaColaboracionController implements Initializable {
     public void mouseExitedButton(Button btScale){
         btScale.setScaleX(1);
         btScale.setScaleY(1);
+    }
+    public void disableCombobox(){
+        cbAreaAcad.setDisable(true);
+        cbAsignatura.setDisable(true);
+        cbDepartamento.setDisable(true);
+    }
+    @FXML
+    private void clicSave(MouseEvent event) {
+        if(!areComboboxEmpty() && validNameForColaboracion(tfNameCol.getText()) && validNameForLenguage(tfIdioma.getText()) && validObjetiveTopic(taObjetivo.getText())
+            && validObjetiveTopic(taTemaInteres.getText()) && passRepetiveFilter()){
+            System.out.println("aprobado");
+         }else{
+
+         }
+    }
+
+    @FXML
+    private void clicCancel(MouseEvent event) {   
+    }
+    //validacions
+    public boolean areComboboxEmpty(){
+        if(cbAreaAcad.getSelectionModel().getSelectedItem() == null || cbRegion.getSelectionModel().getSelectedItem() == null 
+            || cbAsignatura.getSelectionModel().getSelectedItem() == null || cbPeriodo.getSelectionModel().getSelectedItem() == null || cbDepartamento.getSelectionModel().getSelectedItem() == null){
+                return true;
+        }
+        return false;
+    }
+    public static boolean validNameForColaboracion(String nombre){
+        String regex = "[a-zA-Z0-9íáéóúñÁÉÍÓÚÑÜ. ]+";
+        Pattern patronCoincidencias = Pattern.compile(regex);
+        Matcher coincidencias = patronCoincidencias.matcher(nombre);
+        return coincidencias.matches();
+    }
+    public static boolean validNameForLenguage(String idioma){
+        String regex = "[a-zA-Z0-99íáéóúñÁÉÍÓÚÑÜ.]+";
+        Pattern patron = Pattern.compile(regex);
+        Matcher coincidencias = patron.matcher(idioma);
+        return coincidencias.matches();
+    }
+    public static boolean validObjetiveTopic(String objetivoTema){
+        String regex = "[a-zA-Z0-9()íáéóúñÁÉÍÓÚÑÜ¿?.\\[\\] ]+";
+        Pattern patrones = Pattern.compile(regex);
+        Matcher coincidencias = patrones.matcher(objetivoTema);
+        return coincidencias.matches();
+    }
+    public static boolean containRepetiveWords(String cadena){
+        String regex = "[a-zA-Z0-9()íáéóúñÁÉÍÓÚÑÜ¿?.\\[\\] ]+";
+        Stack <String> colaTokens = new Stack<>();
+        int countRepetiveWords = 0;
+        Pattern patron = Pattern.compile(regex);
+        Matcher coincidencias = patron.matcher(cadena);
+        while(coincidencias.find()){
+            String token = coincidencias.group();
+            if(colaTokens.empty()){
+                colaTokens.push(token);
+                countRepetiveWords++;
+            }else if(colaTokens.peek().equals(token)){
+                colaTokens.push(token);
+                countRepetiveWords++;
+                if(isSpecialChar(token) && countRepetiveWords == 2){
+                    return true;
+                }
+            }else{
+                colaTokens.push(token);
+                countRepetiveWords = 1; 
+            }
+        }
+        return false;
+    }
+    public static boolean isSpecialChar(String token){
+        if(token.equals(".") || token.equals("?")|| token.equals("¿") || token.equals("-")){
+            return true;
+        }
+        return false;
+    }
+    public boolean passRepetiveFilter(){
+        if(!(containRepetiveWords(tfNameCol.getText()) && containRepetiveWords(tfIdioma.getText()) && containRepetiveWords(taObjetivo.getText()) && containRepetiveWords(taTemaInteres.getText()))){
+                return true;
+        }
+        return false;
     }
 }

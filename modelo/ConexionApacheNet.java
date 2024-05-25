@@ -26,8 +26,8 @@ public class ConexionApacheNet {
             return LocalDateTime.ofInstant(Instant.ofEpochMilli(tiempoNTP), ZoneId.systemDefault());
         } catch (IOException e) {
             e.printStackTrace();
-            LocalDateTime fecha = LocalDateTime.now();
-            return fecha;
         }
+        LocalDateTime fecha = LocalDateTime.now();
+        return fecha;
     }
 }

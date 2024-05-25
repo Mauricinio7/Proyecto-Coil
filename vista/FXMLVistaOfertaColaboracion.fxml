@@ -85,61 +85,61 @@
             <Font name="Open Sans Extrabold" size="37.0" />
          </font>
       </Label>
-      <Label fx:id="lbName" layoutX="255.0" layoutY="288.0" text="Nombre de la Colaboración" textAlignment="JUSTIFY">
+      <Label fx:id="lbName" layoutX="230.0" layoutY="289.0" text="Nombre de la Colaboración" textAlignment="JUSTIFY">
          <font>
             <Font name="Open Sans" size="14.0" />
          </font>
       </Label>
-      <Label fx:id="lbPeriodo" layoutX="255.0" layoutY="362.0" text="Periodo">
+      <Label fx:id="lbPeriodo" layoutX="230.0" layoutY="363.0" text="Periodo">
          <font>
             <Font name="Open Sans" size="14.0" />
          </font>
       </Label>
-      <Label layoutX="748.0" layoutY="362.0" text="Idioma">
+      <Label layoutX="723.0" layoutY="363.0" text="Idioma">
          <font>
             <Font name="Open Sans" size="14.0" />
          </font>
       </Label>
-      <Label layoutX="744.0" layoutY="420.0" text="Área académica">
+      <Label layoutX="719.0" layoutY="421.0" text="Área académica">
          <font>
             <Font name="Open Sans" size="14.0" />
          </font>
       </Label>
-      <Label layoutX="744.0" layoutY="478.0" text="Asignatura">
+      <Label layoutX="719.0" layoutY="479.0" text="Asignatura">
          <font>
             <Font name="Open Sans" size="14.0" />
          </font>
       </Label>
-      <Label fx:id="lbRegion" layoutX="256.0" layoutY="421.0" text="Región ">
+      <Label fx:id="lbRegion" layoutX="231.0" layoutY="422.0" text="Región ">
          <font>
             <Font name="Open Sans" size="14.0" />
          </font>
       </Label>
-      <Label fx:id="lbDepartamento" layoutX="255.0" layoutY="479.0" text="Departamento">
+      <Label fx:id="lbDepartamento" layoutX="230.0" layoutY="480.0" text="Departamento">
          <font>
             <Font name="Open Sans" size="14.0" />
          </font>
       </Label>
-      <Label fx:id="lbObjetivoGeneral" layoutX="255.0" layoutY="538.0" text="Objetivo general del curso">
+      <Label fx:id="lbObjetivoGeneral" layoutX="230.0" layoutY="539.0" text="Objetivo general del curso">
          <font>
             <Font name="Open Sans" size="14.0" />
          </font>
       </Label>
-      <Label layoutX="743.0" layoutY="537.0" text="Tema de interés">
+      <Label layoutX="718.0" layoutY="538.0" text="Tema de interés">
          <font>
             <Font name="Open Sans" size="14.0" />
          </font>
       </Label>
-      <ComboBox fx:id="cbPeriodo" layoutX="438.0" layoutY="359.0" prefWidth="150.0" promptText="Periodo" />
-      <ComboBox fx:id="cbRegion" layoutX="438.0" layoutY="417.0" prefWidth="150.0" promptText="Región " />
-      <ComboBox fx:id="cbDepartamento" layoutX="438.0" layoutY="475.0" prefWidth="150.0" promptText="Departamento" />
-      <TextArea fx:id="taObjetivo" layoutX="256.0" layoutY="568.0" maxWidth="333.0" minWidth="333.0" prefHeight="82.0" prefWidth="333.0" promptText="Objetivo general del curso" />
-      <TextArea fx:id="taTemaInteres" layoutX="744.0" layoutY="567.0" maxWidth="333.0" minWidth="333.0" prefHeight="82.0" prefWidth="333.0" promptText="Tema de interés" />
-      <TextField fx:id="tfIdioma" layoutX="915.0" layoutY="358.0" prefHeight="26.0" prefWidth="150.0" promptText="Idioma" />
-      <TextField fx:id="tfNameCol" layoutX="511.0" layoutY="285.0" prefHeight="26.0" prefWidth="402.0" promptText="Nombre de la Colaboración" />
-      <ComboBox fx:id="cbAreaAcad" layoutX="915.0" layoutY="417.0" prefWidth="150.0" promptText="Área académica" />
-      <ComboBox fx:id="cbAsignatura" layoutX="915.0" layoutY="475.0" prefWidth="150.0" promptText="Asignatura" />
-      <Button fx:id="btSave" layoutX="821.0" layoutY="684.0" mnemonicParsing="false" onMouseEntered="#btSaveAnimationEntered" onMouseExited="#btSaveAnimationExited" style="-fx-background-color: #24A0ed;" text="Guardar" textFill="WHITE" />
-      <Button fx:id="btCancel" layoutX="973.0" layoutY="684.0" mnemonicParsing="false" onMouseEntered="#btCancelAnimationEntered" onMouseExited="#btCancelAnimationExited" text="Cancelar" />
+      <ComboBox fx:id="cbPeriodo" layoutX="413.0" layoutY="360.0" prefWidth="150.0" promptText="Periodo" />
+      <ComboBox fx:id="cbRegion" layoutX="413.0" layoutY="418.0" prefWidth="150.0" promptText="Región " />
+      <ComboBox fx:id="cbDepartamento" layoutX="413.0" layoutY="476.0" prefWidth="150.0" promptText="Departamento" />
+      <TextArea fx:id="taObjetivo" layoutX="231.0" layoutY="569.0" maxWidth="333.0" minWidth="333.0" prefHeight="82.0" prefWidth="333.0" promptText="Objetivo general del curso" />
+      <TextArea fx:id="taTemaInteres" layoutX="719.0" layoutY="568.0" maxWidth="333.0" minWidth="333.0" prefHeight="82.0" prefWidth="333.0" promptText="Tema de interés" />
+      <TextField fx:id="tfIdioma" layoutX="890.0" layoutY="359.0" prefHeight="26.0" prefWidth="150.0" promptText="Idioma" />
+      <TextField fx:id="tfNameCol" layoutX="486.0" layoutY="286.0" prefHeight="26.0" prefWidth="402.0" promptText="Nombre de la Colaboración" />
+      <ComboBox fx:id="cbAreaAcad" layoutX="890.0" layoutY="418.0" prefWidth="150.0" promptText="Área académica" />
+      <ComboBox fx:id="cbAsignatura" layoutX="890.0" layoutY="476.0" prefWidth="150.0" promptText="Asignatura" />
+      <Button fx:id="btSave" layoutX="796.0" layoutY="685.0" mnemonicParsing="false" onMouseClicked="#clicSave" onMouseEntered="#btSaveAnimationEntered" onMouseExited="#btSaveAnimationExited" style="-fx-background-color: #24A0ed;" text="Guardar" textFill="WHITE" />
+      <Button fx:id="btCancel" layoutX="965.0" layoutY="685.0" mnemonicParsing="false" onMouseClicked="#clicCancel" onMouseEntered="#btCancelAnimationEntered" onMouseExited="#btCancelAnimationExited" text="Cancelar" />
    </children>
 </AnchorPane>
