@@ -1,8 +1,13 @@
 package coilvic.controlador;
 
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
+
+import coilvic.modelo.dao.PeriodoDAO;
 import javafx.animation.TranslateTransition;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -10,9 +15,14 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.util.Duration;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.pdf.PdfPTable;
+import com.itextpdf.text.pdf.PdfWriter;
 
 public class FXMLConsultarReporteColaboracionesController implements Initializable {
 
+    private ObservableList<String> periodos;
     @FXML
     private Pane panelDeslisante;
     @FXML
@@ -21,6 +31,7 @@ public class FXMLConsultarReporteColaboracionesController implements Initializab
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
+        cargarPeriodos();
     }    
 
     @FXML
@@ -31,6 +42,15 @@ public class FXMLConsultarReporteColaboracionesController implements Initializab
 
     @FXML
     private void btnDescargar(ActionEvent event) {
+    }
+
+    private void cargarPeriodos() {
+        periodos = FXCollections.observableArrayList();
+        periodos.addAll((ArrayList<String>) PeriodoDAO.obtenerPeriodosConcluidos().get("Periodos"));
+        cbPeriodo.setItems(periodos);
+        if (!periodos.isEmpty()) {
+            cbPeriodo.getSelectionModel().selectFirst();
+        }
     }
     
     @FXML
@@ -51,7 +71,10 @@ public class FXMLConsultarReporteColaboracionesController implements Initializab
         transicion.play();
     }
 
+    private void generarReporte() {
+        //GENERAR REPORTE
+        Document documento = new Document();
     
-
+    }
     
 }
