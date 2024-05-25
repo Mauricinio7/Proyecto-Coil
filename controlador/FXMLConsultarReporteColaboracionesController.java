@@ -73,8 +73,6 @@ public class FXMLConsultarReporteColaboracionesController implements Initializab
 
     private void generarReporte() {
         //GENERAR REPORTE
-        Document documento = new Document();
-    
     }
     
 }
