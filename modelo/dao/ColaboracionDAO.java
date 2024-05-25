@@ -114,4 +114,61 @@ public class ColaboracionDAO {
         return respuesta;
     }
 
+    public static HashMap<String, Object> obtenerColaboracionPorNombre(String nombreColaboracion) {
+        HashMap<String, Object> respuesta = new HashMap<>();
+        respuesta.put(Constantes.KEY_ERROR, true);
+        Connection conexionBD = ConexionBD.obtenerConexion();
+        if (conexionBD != null) {
+            try {
+                String consulta = "SELECT estado,"
+                        + " fecha_inicio,"
+                        + " fecha_fin,"
+                        + " idioma,"
+                        + " nombre,"
+                        + " objetivo_general,"
+                        + " tema_interes,"
+                        + " periodo,"
+                        + " no_estudiantes_externos,"
+                        + " id_colaboracion,"
+                        + " ProfesorUV_idProfesorUV,"
+                        + " Profesor_externo_idProfesorExterno,"
+                        + " Asignatura_idAsignatura,"
+                        + " Region_idRegion,"
+                        + " Departamento_idDepartamento"
+                        + " FROM colaboracion "
+                        + "WHERE nombre = ?";
+                PreparedStatement prepararSentencia = conexionBD.prepareStatement(consulta);
+                prepararSentencia.setString(1, nombreColaboracion);
+                ResultSet resultado = prepararSentencia.executeQuery();
+                Colaboracion colaboracion = null;
+                if (resultado.next()) {
+                    colaboracion = new Colaboracion();
+                    colaboracion.setEstado(resultado.getString("estado"));
+                    colaboracion.setFechaInicio(resultado.getString("fecha_inicio"));
+                    colaboracion.setFechaFin(resultado.getString("fecha_fin"));
+                    colaboracion.setIdioma(resultado.getString("idioma"));
+                    colaboracion.setNombre(resultado.getString("nombre"));
+                    colaboracion.setObjetivoGeneral(resultado.getString("objetivo_general"));
+                    colaboracion.setTemaInteres(resultado.getString("tema_interes"));
+                    colaboracion.setPeriodo(resultado.getString("periodo"));
+                    colaboracion.setNoEstudiantesExternos(resultado.getInt("no_estudiantes_externos"));
+                    colaboracion.setIdColaboracion(resultado.getInt("id_colaboracion"));
+                    colaboracion.setIdProfesorUV(resultado.getInt("ProfesorUV_idProfesorUV"));
+                    colaboracion.setIdProfesorExterno(resultado.getInt("Profesor_externo_idProfesorExterno"));
+                    colaboracion.setIdAsignatura(resultado.getInt("Asignatura_idAsignatura"));
+                    colaboracion.setIdRegion(resultado.getInt("Region_idRegion"));
+                    colaboracion.setIdDepartamento(resultado.getInt("Departamento_idDepartamento"));
+                }
+                respuesta.put(Constantes.KEY_ERROR, false);
+                respuesta.put("Colaboracion", colaboracion);
+                conexionBD.close();
+            } catch (SQLException e) {
+                respuesta.put(Constantes.KEY_MENSAJE, e.getMessage());
+            }
+        } else {
+            respuesta.put(Constantes.KEY_MENSAJE, Constantes.MENSAJE_ERROR_CONEXION);
+        }
+        return respuesta;
+    }
+
 }

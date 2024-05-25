@@ -124,6 +124,14 @@ public class FXMLRegistrarColaboracionSinOfertaController implements Initializab
                 || cbAsignatura.getValue() == null || cbDepartamento.getValue() == null || archivoPlan == null;
     }
 
+    private boolean validarFechas(){
+        return dpFechaInicio.getValue().isBefore(dpFechaFin.getValue());
+    }
+
+    private boolean validarNoEstudiantes(){
+        return tfNoEstudiantes.getText().matches("[0-9]+") && Integer.parseInt(tfNoEstudiantes.getText()) > 0;
+    }
+
     private Colaboracion obtenerDatosColaboracion() {
         Colaboracion colaboracion = new Colaboracion();
         colaboracion.setNombre(tfNombreColaboracion.getText());
@@ -186,7 +194,7 @@ public class FXMLRegistrarColaboracionSinOfertaController implements Initializab
         if(!camposVacios()) {
             Colaboracion colaboracion = obtenerDatosColaboracion();
             PlanProyecto planProyecto = obtenerDatosPlanProyecto();
-            
+
             //GUARDAR COLABORACION Y PLAN PROYECTO
         }
     }
