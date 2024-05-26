@@ -4,7 +4,9 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 
 import coilvic.modelo.ConexionBD;
 import coilvic.modelo.pojo.Colaboracion;
@@ -110,6 +112,60 @@ public class ColaboracionDAO {
             }
         } else {
             respuesta.put(Constantes.KEY_MENSAJE, Constantes.MENSAJE_ERROR_CONEXION);
+        }
+        return respuesta;
+    }
+
+    public static HashMap<String, Object> obtenerColaboracionesConcluidasPorPeriodo(String periodoSeleccionado) {
+        HashMap<String, Object> respuesta = new LinkedHashMap<>();
+        respuesta.put(Constantes.KEY_ERROR, true);
+        Connection conexionBD = ConexionBD.obtenerConexion();
+        if (conexionBD != null) {
+            try {
+                String consulta = "SELECT estado,"
+                        + " idioma,"
+                        + " nombre,"
+                        + " objetivo_general,"
+                        + " tema_interes,"
+                        + " periodo,"
+                        + " no_estudiantes_externos,"
+                        + " id_colaboracion,"
+                        + " ProfesorUV_idProfesorUV,"
+                        + " Profesor_externo_idProfesorExterno,"
+                        + " Asignatura_idAsignatura,"
+                        + " Region_idRegion,"
+                        + " Departamento_idDepartamento"
+                        + " FROM colaboracion "
+                        + "WHERE periodo = ? AND estado = 'Concluida'";
+                PreparedStatement prepararSentencia = conexionBD.prepareStatement(consulta);
+                prepararSentencia.setString(1, periodoSeleccionado);
+                ResultSet resultado = prepararSentencia.executeQuery();
+                ArrayList<Colaboracion> colaboraciones = new ArrayList<>();
+                while (resultado.next()) {
+                    Colaboracion colaboracion = new Colaboracion();
+                    colaboracion.setEstado(resultado.getString("estado"));
+                    colaboracion.setIdioma(resultado.getString("idioma"));
+                    colaboracion.setNombre(resultado.getString("nombre"));
+                    colaboracion.setObjetivoGeneral(resultado.getString("objetivo_general"));
+                    colaboracion.setTemaInteres(resultado.getString("tema_interes"));
+                    colaboracion.setPeriodo(resultado.getString("periodo"));
+                    colaboracion.setNoEstudiantesExternos(resultado.getInt("no_estudiantes_externos"));
+                    colaboracion.setIdColaboracion(resultado.getInt("id_colaboracion"));
+                    colaboracion.setIdProfesorUV(resultado.getInt("ProfesorUV_idProfesorUV"));
+                    colaboracion.setIdProfesorExterno(resultado.getInt("Profesor_externo_idProfesorExterno"));
+                    colaboracion.setIdAsignatura(resultado.getInt("Asignatura_idAsignatura"));
+                    colaboracion.setIdRegion(resultado.getInt("Region_idRegion"));
+                    colaboracion.setIdDepartamento(resultado.getInt("Departamento_idDepartamento"));
+                    colaboraciones.add(colaboracion);
+                }
+                respuesta.put(Constantes.KEY_ERROR, false);
+                respuesta.put("colaboraciones", colaboraciones);
+                conexionBD.close();
+            } catch (SQLException e) {
+                respuesta.put(Constantes.KEY_MENSAJE, e.getMessage());
+            }
+        } else {
+            respuesta.put(Constantes.KEY_MENSAJE, "No se han podido cargar los datos");
         }
         return respuesta;
     }
