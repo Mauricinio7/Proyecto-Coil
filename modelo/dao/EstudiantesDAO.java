@@ -205,4 +205,107 @@ public class EstudiantesDAO {
         return respuesta;
     }
 
+    public static HashMap<String, Object> contarEstudianteColaboracion(int idEstudiante){
+        HashMap<String, Object> respuesta = new LinkedHashMap<>();
+        respuesta.put(Constantes.KEY_ERROR,  true);
+        Connection conexionBD = ConexionBD.obtenerConexion();
+        if(conexionBD != null){
+            try{
+                String consulta = "SELECT COUNT(*) AS count FROM estudiantecolaboracion WHERE estudiante_idEstudiante = ?";
+                PreparedStatement prepararSentencia = conexionBD.prepareStatement(consulta);
+                prepararSentencia.setInt(1, idEstudiante);
+                ResultSet resultado = prepararSentencia.executeQuery();
+                respuesta.put(Constantes.KEY_ERROR, false);
+                if(resultado.next()){
+                    int count = resultado.getInt("count");
+                    if(count > 1){
+                        respuesta.put(Constantes.KEY_ERROR, false);
+                        respuesta.put("encontrado", true);
+                    } else {
+                        respuesta.put(Constantes.KEY_ERROR, false);
+                        respuesta.put("encontrado", false);
+                    }
+                }
+                conexionBD.close();
+            }catch (SQLException e){
+                respuesta.put(Constantes.KEY_MENSAJE, e.getMessage());
+            }
+        }else {
+            respuesta.put(Constantes.KEY_MENSAJE, "No se han podido cargar los datos");
+        }
+        return respuesta;
+    }
+
+    //TODO Eliminar el paciente y la relacion de la base de datos
+    public static HashMap<String, Object> eliminarEstudianteRelacion(int idEstudiante, int idColaboracion) {
+        HashMap<String, Object> respuesta = new HashMap<>();
+        respuesta.put(Constantes.KEY_ERROR, true);
+        Connection conexionBD = ConexionBD.obtenerConexion();
+        if (conexionBD != null) {
+            try {    
+                String sentencia = "DELETE From estudiantecolaboracion where estudiante_idEstudiante = ? AND Colaboracion_id_colaboracion = ?";
+                PreparedStatement prepararSentencia = conexionBD.prepareStatement(sentencia);
+                prepararSentencia.setInt(1, idEstudiante);
+                prepararSentencia.setInt(2, idColaboracion);
+                int filasAfectadas = prepararSentencia.executeUpdate();
+    
+                if (filasAfectadas > 0) {
+                    respuesta.put(Constantes.KEY_ERROR, false);
+                    respuesta.put(Constantes.KEY_MENSAJE, "Se ha eliminado el estudiante correctamente");
+                } else {
+                    respuesta.put(Constantes.KEY_MENSAJE, "Lo sentimos, hubo un error al eliminar el estudiante, por favor revisa la información");
+                }
+                conexionBD.close();
+    
+            } catch (SQLException ex) {
+                respuesta.put(Constantes.KEY_MENSAJE, ex.getMessage());
+            }
+        } else {
+            respuesta.put(Constantes.KEY_MENSAJE, "Error en la conexión");
+        }
+    
+        return respuesta;
+    }
+
+    public static HashMap<String, Object> eliminarEstudiante(int idEstudiante, int idColaboracion) {
+        HashMap<String, Object> respuesta = new HashMap<>();
+        respuesta.put(Constantes.KEY_ERROR, true);
+        Connection conexionBD = ConexionBD.obtenerConexion();
+        if (conexionBD != null) {
+            try {    
+                conexionBD.setAutoCommit(false);
+                String sentenciaRelacion= "DELETE From estudiantecolaboracion where estudiante_idEstudiante = ? AND Colaboracion_id_colaboracion = ?";
+                PreparedStatement prepararSentenciaRelacion = conexionBD.prepareStatement(sentenciaRelacion);
+                prepararSentenciaRelacion.setInt(1, idEstudiante);
+                prepararSentenciaRelacion.setInt(2, idColaboracion);
+                int filasAfectadasRelacion = prepararSentenciaRelacion.executeUpdate();
+
+                String sentenciaEstudiante = "DELETE From estudiante where idEstudiante = ?";
+                PreparedStatement prepararSentenciaEstudiante = conexionBD.prepareStatement(sentenciaEstudiante);
+                prepararSentenciaEstudiante.setInt(1, idEstudiante);
+                int filasAfectadasEstudiante = prepararSentenciaEstudiante.executeUpdate();
+    
+                if (filasAfectadasRelacion > 0 && filasAfectadasEstudiante > 0) {
+                    conexionBD.commit();
+                    respuesta.put(Constantes.KEY_ERROR, false);
+                    respuesta.put(Constantes.KEY_MENSAJE, "Se ha eliminado el estudiante correctamente");
+                } else {
+                    conexionBD.rollback();
+                    respuesta.put(Constantes.KEY_MENSAJE, "Lo sentimos, hubo un error al eliminar el estudiante, por favor revisa la información");
+                }
+                conexionBD.close();
+    
+            } catch (SQLException ex) {
+                respuesta.put(Constantes.KEY_MENSAJE, ex.getMessage());
+            }
+        } else {
+            respuesta.put(Constantes.KEY_MENSAJE, "Error en la conexión");
+        }
+    
+        return respuesta;
+    }
+
+   
 }
+
+
