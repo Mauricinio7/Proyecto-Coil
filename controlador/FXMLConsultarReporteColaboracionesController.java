@@ -1,5 +1,6 @@
 package coilvic.controlador;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -8,6 +9,7 @@ import java.util.ResourceBundle;
 import coilvic.modelo.dao.PeriodoDAO;
 import coilvic.modelo.pojo.ReporteColaboraciones;
 import coilvic.utilidades.Utils;
+import javafx.animation.PauseTransition;
 import javafx.animation.TranslateTransition;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -18,19 +20,21 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
+import javafx.stage.DirectoryChooser;
+import javafx.stage.Stage;
 import javafx.util.Duration;
-import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
-import com.itextpdf.text.pdf.PdfPTable;
-import com.itextpdf.text.pdf.PdfWriter;
 
 public class FXMLConsultarReporteColaboracionesController implements Initializable {
 
+    private File carpeta;
     private ObservableList<String> periodos;
     @FXML
     private Pane panelDeslisante;
     @FXML
     private ComboBox<String> cbPeriodo;
+    @FXML
+    private Pane panelDescarga;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -46,7 +50,11 @@ public class FXMLConsultarReporteColaboracionesController implements Initializab
 
     @FXML
     private void btnDescargar(ActionEvent event) {
-        generarReporte();
+        seleccionarDirectorio();
+        if (carpeta != null) {
+            mostrarVentanaDescarga();
+            generarReporte(carpeta.getAbsolutePath());
+        }
     }
 
     private void cargarPeriodos() {
@@ -76,15 +84,33 @@ public class FXMLConsultarReporteColaboracionesController implements Initializab
         transicion.play();
     }
 
-    private void generarReporte() {
-        //GENERAR REPORTE
-        ReporteColaboraciones reporte = new ReporteColaboraciones();
+    private void mostrarVentanaDescarga() {
+        TranslateTransition transicion = new TranslateTransition();
+        transicion.setDuration(Duration.millis(700));
+        transicion.setNode(panelDescarga);
+        transicion.setToY(-137);
+        transicion.play();
+        PauseTransition pause = new PauseTransition(Duration.seconds(5));
+        pause.setOnFinished(event -> {
+            TranslateTransition reverseTransition = new TranslateTransition();
+            reverseTransition.setDuration(Duration.millis(700));
+            reverseTransition.setNode(panelDescarga);
+            reverseTransition.setToY(0);
+            reverseTransition.play();
+        });
+        pause.play();
+    }
+
+    private void generarReporte(String ruta) {
+        ReporteColaboraciones reporte = new ReporteColaboraciones(ruta);
         try {
             reporte.crearDocumento();
             reporte.abrirDocumento();
             reporte.agregarTitulo("Reporte de Colaboraciones");
             reporte.agregarSaltoLinea();
+            reporte.agregarSaltoLinea();
             reporte.agregarParrafo("Periodo: " + cbPeriodo.getValue());
+            reporte.agregarSaltoLinea();
             reporte.agregarSaltoLinea();
             reporte.agregarTablaColaboraciones(cbPeriodo.getValue());
         } catch (FileNotFoundException | DocumentException ex) {
@@ -92,4 +118,11 @@ public class FXMLConsultarReporteColaboracionesController implements Initializab
         }
     }
     
+    private void seleccionarDirectorio() {
+        DirectoryChooser dialogoSeleccion = new DirectoryChooser();
+        dialogoSeleccion.setTitle("Seleccionar carpeta de destino");
+        Stage escenarioActual = (Stage) panelDeslisante.getScene().getWindow();
+        carpeta = dialogoSeleccion.showDialog(escenarioActual);
+    }
+
 }

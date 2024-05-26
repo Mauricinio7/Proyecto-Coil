@@ -29,11 +29,15 @@ public class ReporteColaboraciones {
     private FileOutputStream fileOutputStream;
     private Font fuenteTitulo = new Font(Font.FontFamily.TIMES_ROMAN, 16, Font.BOLD);
     private Font fuenteNormal = new Font(Font.FontFamily.TIMES_ROMAN, 12, Font.NORMAL);
+    private String ruta;
+
+    public ReporteColaboraciones(String ruta) {
+        this.ruta = ruta;
+    }
 
     public void crearDocumento() throws FileNotFoundException, DocumentException {
         documento = new Document(PageSize.A4, 36, 36, 36, 36);
-        String ruta = System.getProperty("user.home");
-        fileOutputStream = new FileOutputStream(ruta + "/Desktop/ReporteColaboraciones.pdf");
+        fileOutputStream = new FileOutputStream(ruta + "/ReporteColaboraciones.pdf");
         PdfWriter.getInstance(documento, fileOutputStream);
     }
 
