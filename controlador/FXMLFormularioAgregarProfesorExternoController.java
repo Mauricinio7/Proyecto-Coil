@@ -94,6 +94,7 @@ public class FXMLFormularioAgregarProfesorExternoController implements Initializ
                 return;
             } else {
                 guardarProfesorExterno();
+                cerrarVentana();
             }
         }
     }
