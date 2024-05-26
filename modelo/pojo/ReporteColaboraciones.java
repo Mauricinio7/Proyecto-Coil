@@ -4,7 +4,6 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
-
 import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.Chunk;
 import com.itextpdf.text.Document;
@@ -88,7 +87,6 @@ public class ReporteColaboraciones {
     }
 
     private void obtenerColaboraciones(String periodo) {
-        //TODO
         HashMap<String, Object> resultado = ColaboracionDAO.obtenerColaboracionesConcluidasPorPeriodo(periodo);
         if (!(boolean) resultado.get(Constantes.KEY_ERROR)) {
             colaboraciones = (ArrayList<Colaboracion>) resultado.get("colaboraciones");
@@ -110,4 +108,5 @@ public class ReporteColaboraciones {
     public void cerrarDocumento() {
         documento.close();
     }
+
 }

@@ -1,11 +1,11 @@
 package coilvic.controlador;
 
 import java.io.File;
-import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
-
+import java.awt.Desktop;
 import coilvic.modelo.dao.PeriodoDAO;
 import coilvic.modelo.pojo.ReporteColaboraciones;
 import coilvic.utilidades.Utils;
@@ -38,7 +38,6 @@ public class FXMLConsultarReporteColaboracionesController implements Initializab
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
         cargarPeriodos();
     }    
 
@@ -113,7 +112,8 @@ public class FXMLConsultarReporteColaboracionesController implements Initializab
             reporte.agregarSaltoLinea();
             reporte.agregarSaltoLinea();
             reporte.agregarTablaColaboraciones(cbPeriodo.getValue());
-        } catch (FileNotFoundException | DocumentException ex) {
+            abrirArchivo(ruta + "/ReporteColaboraciones.pdf");
+        } catch (DocumentException | IOException ex) {
             Utils.mostrarAlertaSimple("", "No se han podido cargar los datos", AlertType.ERROR);
         }
     }
@@ -124,5 +124,15 @@ public class FXMLConsultarReporteColaboracionesController implements Initializab
         Stage escenarioActual = (Stage) panelDeslisante.getScene().getWindow();
         carpeta = dialogoSeleccion.showDialog(escenarioActual);
     }
+
+    private void abrirArchivo(String ruta) throws IOException {
+        File archivo = new File(ruta);
+        if (Desktop.isDesktopSupported()) {
+            Desktop desktop = Desktop.getDesktop();
+            if (archivo.exists()) {
+                desktop.open(archivo);
+            }
+        }
+    }    
 
 }
