@@ -144,8 +144,6 @@ public class ColaboracionDAO {
                 while (resultado.next()) {
                     Colaboracion colaboracion = new Colaboracion();
                     colaboracion.setEstado(resultado.getString("estado"));
-                    colaboracion.setFechaInicio(resultado.getString("fecha_inicio"));
-                    colaboracion.setFechaFin(resultado.getString("fecha_fin"));
                     colaboracion.setIdioma(resultado.getString("idioma"));
                     colaboracion.setNombre(resultado.getString("nombre"));
                     colaboracion.setObjetivoGeneral(resultado.getString("objetivo_general"));
@@ -161,7 +159,7 @@ public class ColaboracionDAO {
                     colaboraciones.add(colaboracion);
                 }
                 respuesta.put(Constantes.KEY_ERROR, false);
-                respuesta.put("Colaboraciones", colaboraciones);
+                respuesta.put("colaboraciones", colaboraciones);
                 conexionBD.close();
             } catch (SQLException e) {
                 respuesta.put(Constantes.KEY_MENSAJE, e.getMessage());

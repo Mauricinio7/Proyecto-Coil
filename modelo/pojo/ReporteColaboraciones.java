@@ -24,7 +24,7 @@ import coilvic.utilidades.Constantes;
 
 public class ReporteColaboraciones {
     
-    private ArrayList<Colaboracion> colaboraciones;
+    private ArrayList<Colaboracion> colaboraciones = new ArrayList<>();
     private Document documento;
     private FileOutputStream fileOutputStream;
     private Font fuenteTitulo = new Font(Font.FontFamily.TIMES_ROMAN, 16, Font.BOLD);
@@ -70,7 +70,6 @@ public class ReporteColaboraciones {
         tabla.addCell("No. Estudiantes Externos");
         tabla.addCell("Profesor UV");
         tabla.addCell("No Personal");
-        //Lista de colaboraciones
         obtenerColaboraciones(periodo);
         for (Colaboracion colaboracion : colaboraciones) {
             ProfesorUv profesorUv = obtenerProfesorUv(colaboracion.getIdProfesorUV());
@@ -85,12 +84,14 @@ public class ReporteColaboraciones {
     }
 
     private void obtenerColaboraciones(String periodo) {
-        colaboraciones = new ArrayList<>();
-        HashMap<String, Object> respuesta = ColaboracionDAO.obtenerColaboracionesConcluidasPorPeriodo(periodo);
-        if (!(boolean) respuesta.get(Constantes.KEY_ERROR)) {
-            colaboraciones = (ArrayList<Colaboracion>) respuesta.get("Colaboraciones");
+        //TODO
+        HashMap<String, Object> resultado = ColaboracionDAO.obtenerColaboracionesConcluidasPorPeriodo(periodo);
+        if (!(boolean) resultado.get(Constantes.KEY_ERROR)) {
+            colaboraciones = (ArrayList<Colaboracion>) resultado.get("colaboraciones");
+        } else {
+            System.out.println("Error: " + resultado.get(Constantes.KEY_MENSAJE));
         }
-    }
+    }    
 
     private ProfesorUv obtenerProfesorUv(Integer idProfesorUv) {
         ProfesorUv profesorUv = null;

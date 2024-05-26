@@ -7,6 +7,7 @@ import java.util.ResourceBundle;
 
 import coilvic.modelo.dao.PeriodoDAO;
 import coilvic.modelo.pojo.ReporteColaboraciones;
+import coilvic.utilidades.Utils;
 import javafx.animation.TranslateTransition;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -14,6 +15,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.util.Duration;
@@ -86,7 +88,7 @@ public class FXMLConsultarReporteColaboracionesController implements Initializab
             reporte.agregarSaltoLinea();
             reporte.agregarTablaColaboraciones(cbPeriodo.getValue());
         } catch (FileNotFoundException | DocumentException ex) {
-            //TODO
+            Utils.mostrarAlertaSimple("", "No se han podido cargar los datos", AlertType.ERROR);
         }
     }
     
