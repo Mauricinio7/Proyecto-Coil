@@ -161,7 +161,7 @@ public class FXMLRegistrarProfesorExternoController implements Initializable, Ob
     @Override
     public void profesorGuardado() {
         cargarDatosProfesoresExternos();    
-        actualizarTabla();
+        configurarBusqueda();
     }
 
 }
