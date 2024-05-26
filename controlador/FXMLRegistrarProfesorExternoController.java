@@ -163,4 +163,5 @@ public class FXMLRegistrarProfesorExternoController implements Initializable, Ob
         cargarDatosProfesoresExternos();    
         actualizarTabla();
     }
+
 }

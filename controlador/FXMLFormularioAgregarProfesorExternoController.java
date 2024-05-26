@@ -15,6 +15,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Alert.AlertType;
+import javafx.stage.Stage;
 
 public class FXMLFormularioAgregarProfesorExternoController implements Initializable {
 
@@ -99,6 +100,11 @@ public class FXMLFormularioAgregarProfesorExternoController implements Initializ
 
     @FXML
     private void btnCancelar(ActionEvent event) {
+        boolean respuesta = Utils.mostrarAlertaConfirmacion
+        (null, "¿Está seguro que desea cancelar?", AlertType.CONFIRMATION);
+        if (respuesta) {
+            cerrarVentana();
+        }
     }
     
     private void limitarCaracteresTextField(TextField textField, int maxLength) {
@@ -119,5 +125,9 @@ public class FXMLFormularioAgregarProfesorExternoController implements Initializ
             return (Integer) respuesta.get("idProfesorExterno");
         }
         return null;
+    }
+
+    private void cerrarVentana() {
+        ((Stage) tfCorreo.getScene().getWindow()).close();
     }
 }
