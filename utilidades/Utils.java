@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
+import coilvic.maincoilvic.CoilVic;
 import coilvic.controlador.FXMLVistaProfesorController;
 import coilvic.maincoilvic.CoilVic;
 import javafx.beans.Observable;
@@ -52,6 +53,12 @@ public class Utils {
 
         }
     }
+
+    public static FXMLLoader obtenerLoader(String ruta){
+        return new FXMLLoader(coilvic.maincoilvic.CoilVic.class.getResource(ruta));
+    }
+
+
     // ObservableList<String> obtenerAreasAcademicas(){
     //     ObservableList areasAcademicas = FXCollections.observableArrayList();
     //     areasAcademicas.add("Área Académica de Artes");
