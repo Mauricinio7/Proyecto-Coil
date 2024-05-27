@@ -19,6 +19,7 @@ import coilvic.modelo.dao.DepartamentoDAO;
 import coilvic.modelo.dao.RegionDAO;
 import coilvic.modelo.pojo.Asignatura;
 import coilvic.modelo.pojo.Departamento;
+import coilvic.modelo.pojo.ProfesorUv;
 import coilvic.modelo.pojo.Region;
 import coilvic.utilidades.Constantes;
 import javafx.animation.TranslateTransition;
@@ -46,6 +47,7 @@ import javafx.util.Duration;
 public class FXMLVistaOfertaColaboracionController implements Initializable {
 
     
+    ProfesorUv profesorSesion;
     private ObservableList<Region> observadorRegion;
     private ObservableList<Asignatura> observadorAsignatura;
     private ObservableList<String> observadorAreaAcademica;
@@ -93,14 +95,14 @@ public class FXMLVistaOfertaColaboracionController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
     }    
-    public void inicializarValores(){
+    public void inicializarValores(ProfesorUv profesorSesion){
+        this.profesorSesion = profesorSesion;
         asignarFechaActualNTP();
         fillPeriodo();
         fillRegion();
         modificarAreaAcademica();
         modificarDepartamento();
         modificarAsignatura();
-        
     }
     //metodos de crud
     public void fillRegion(){

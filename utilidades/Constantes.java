@@ -11,6 +11,6 @@ public class Constantes {
     public static final String MENSAJE_ERROR_CONEXION = "No disponible, inténtelo mas tarde";
     public static final String KEY_ERROR = "error";
     public static final String KEY_MENSAJE = "mensaje";
-    public static final int TIEMPO_ESPERA_SERVIDOR = 50000;
+    public static final int TIEMPO_ESPERA_SERVIDOR = 2000;
     public static final String SERVIDOR_NTP = "pool.ntp.org";
 }

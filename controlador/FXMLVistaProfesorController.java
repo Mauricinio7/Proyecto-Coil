@@ -6,6 +6,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 import coilvic.maincoilvic.CoilVic;
+import coilvic.modelo.pojo.ProfesorUv;
 import javafx.animation.TranslateTransition;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -58,23 +59,25 @@ public class FXMLVistaProfesorController implements Initializable {
 
     @FXML
     private void clicMisOfertasIV(MouseEvent event) {
-        irPantallaOfertasColaboracion();
+        ProfesorUv profesorUv = new ProfesorUv();
+        irPantallaOfertasColaboracion(profesorUv);
         
     }
 
     @FXML
     private void clicMisOfertasLB(MouseEvent event) {
-        irPantallaOfertasColaboracion();
+        ProfesorUv profesorUv = new ProfesorUv();
+        irPantallaOfertasColaboracion(profesorUv);
     }
 
-    public void irPantallaOfertasColaboracion(){
+    public void irPantallaOfertasColaboracion(ProfesorUv profesorUv){
         try{
             Stage stageOferta = new Stage();
             stageOferta.initStyle(StageStyle.UTILITY);
             FXMLLoader cargarObjeto = new FXMLLoader(CoilVic.class.getResource("../vista/FXMLVistaOfertaColaboracion.fxml"));
             Parent root = cargarObjeto.load();
             FXMLVistaOfertaColaboracionController vistaOfertaCol = cargarObjeto.getController();
-            vistaOfertaCol.inicializarValores();
+            vistaOfertaCol.inicializarValores(profesorUv);
             Scene nuevaScena = new Scene(root);
             stageOferta.setTitle("Registrar ofertas de colaboracion");
             stageOferta.setScene(nuevaScena);
