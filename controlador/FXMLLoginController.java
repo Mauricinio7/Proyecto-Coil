@@ -5,7 +5,7 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.ResourceBundle;
 
-import coilvic.maincoilvic.CoilVic;
+import coilvic.CoilVic;
 import coilvic.modelo.dao.LoginDAO;
 import coilvic.utilidades.Constantes;
 import coilvic.utilidades.Utils;

@@ -4,9 +4,9 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
-import coilvic.maincoilvic.CoilVic;
+import coilvic.CoilVic;
 import coilvic.controlador.FXMLVistaProfesorController;
-import coilvic.maincoilvic.CoilVic;
+import coilvic.CoilVic;
 import javafx.beans.Observable;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -55,7 +55,7 @@ public class Utils {
     }
 
     public static FXMLLoader obtenerLoader(String ruta){
-        return new FXMLLoader(coilvic.maincoilvic.CoilVic.class.getResource(ruta));
+        return new FXMLLoader(coilvic.CoilVic.class.getResource(ruta));
     }
 
 
