@@ -36,7 +36,7 @@ public class FXMLLoginController implements Initializable {
     private void btnContinuar(ActionEvent event) {
         String usuario = tfUsuario.getText();
         String contrasena = pfUsuario.getText();
-        Utils.irVistaPorComponent(tfUsuario,"../vista/FXMLVistaProfesor.fxml", null);
+        Utils.irVistaPorComponent(tfUsuario,"vista/FXMLVistaProfesor.fxml", null);
         //Utils.irVistaPorComponent(tfUsuario,"../vista/FXMLVistaAdmin.fxml", null);
         if (validarCampos()) {
             HashMap<String, Object> respuesta = LoginDAO.iniciarSesion(usuario, contrasena);
@@ -60,7 +60,7 @@ public class FXMLLoginController implements Initializable {
     public void irPantallaAdministrador(){
         try{
             Stage stagePrincipal = (Stage)tfUsuario.getScene().getWindow();
-            FXMLLoader loader = new FXMLLoader(CoilVic.class.getResource("../vista/FXMLVistaAdmin.fxml"));
+            FXMLLoader loader = new FXMLLoader(CoilVic.class.getResource("vista/FXMLVistaAdmin.fxml"));
             Parent root =loader.load();
             FXMLVistaAdminController pantallaPrincipalControlador = loader.getController();
             pantallaPrincipalControlador.inicializarValores();
@@ -75,7 +75,7 @@ public class FXMLLoginController implements Initializable {
     public void irPantallaProfesor(){
         try{
             Stage stagePrincipal = (Stage)tfUsuario.getScene().getWindow();
-            FXMLLoader loader = new FXMLLoader(CoilVic.class.getResource("../vista/FXMLVistaProfesor.fxml"));
+            FXMLLoader loader = new FXMLLoader(CoilVic.class.getResource("coilvic/vista/FXMLVistaProfesor.fxml"));
             Parent root =loader.load();
             FXMLVistaProfesorController pantallaPrincipalControlador = loader.getController();
             pantallaPrincipalControlador.inicializarValores();

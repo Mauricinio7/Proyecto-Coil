@@ -71,7 +71,7 @@ public class FXMLVistaProfesorController implements Initializable {
         try{
             Stage stageOferta = new Stage();
             stageOferta.initStyle(StageStyle.UTILITY);
-            FXMLLoader cargarObjeto = new FXMLLoader(CoilVic.class.getResource("../vista/FXMLVistaOfertaColaboracion.fxml"));
+            FXMLLoader cargarObjeto = new FXMLLoader(CoilVic.class.getResource("/coilvic/vista/FXMLVistaOfertaColaboracion.fxml"));
             Parent root = cargarObjeto.load();
             FXMLVistaOfertaColaboracionController vistaOfertaCol = cargarObjeto.getController();
             vistaOfertaCol.inicializarValores();
