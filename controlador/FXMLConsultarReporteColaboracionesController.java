@@ -23,7 +23,6 @@ import javafx.scene.layout.Pane;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-import com.itextpdf.text.DocumentException;
 
 public class FXMLConsultarReporteColaboracionesController implements Initializable {
 
@@ -101,19 +100,14 @@ public class FXMLConsultarReporteColaboracionesController implements Initializab
     }
 
     private void generarReporte(String ruta) {
-        ReporteColaboraciones reporte = new ReporteColaboraciones(ruta);
+        if (cbPeriodo.getValue() != null) {
+            new ReporteColaboraciones(ruta, cbPeriodo.getValue());
+        } else {
+            new ReporteColaboraciones(ruta, "No existen periodos concluidos");
+        }
         try {
-            reporte.crearDocumento();
-            reporte.abrirDocumento();
-            reporte.agregarTitulo("Reporte de Colaboraciones");
-            reporte.agregarSaltoLinea();
-            reporte.agregarSaltoLinea();
-            reporte.agregarParrafo("Periodo: " + cbPeriodo.getValue());
-            reporte.agregarSaltoLinea();
-            reporte.agregarSaltoLinea();
-            reporte.agregarTablaColaboraciones(cbPeriodo.getValue());
             abrirArchivo(ruta + "/ReporteColaboraciones.pdf");
-        } catch (DocumentException | IOException ex) {
+        } catch (IOException e) {
             Utils.mostrarAlertaSimple("", "No se han podido cargar los datos", AlertType.ERROR);
         }
     }
