@@ -17,6 +17,8 @@ import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
 
+import coilvic.utilidades.Utils;
+import javafx.scene.control.Alert.AlertType;
 import coilvic.modelo.dao.ColaboracionDAO;
 import coilvic.modelo.dao.ProfesorUvDAO;
 import coilvic.utilidades.Constantes;
@@ -91,7 +93,7 @@ public class ReporteColaboraciones {
         if (!(boolean) resultado.get(Constantes.KEY_ERROR)) {
             colaboraciones = (ArrayList<Colaboracion>) resultado.get("colaboraciones");
         } else {
-            System.out.println("Error: " + resultado.get(Constantes.KEY_MENSAJE));
+            Utils.mostrarAlertaSimple("", ""+resultado.get(Constantes.KEY_MENSAJE), AlertType.ERROR);
         }
     }    
 
