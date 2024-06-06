@@ -42,7 +42,7 @@ public class FXMLFormularioAgregarProfesorExternoController implements Initializ
         limitarCaracteresTextField(tfInstitucion, 100);
         limitarCaracteresTextField(tfNombre, 100);
         limitarCaracteresTextField(tfPais, 30);
-        limitarCaracteresTextField(tfTelefono, 15);
+        limitarCaracteresTextField(tfTelefono, 10);
     }    
 
     private void obtenerDatosProfesorExterno() {
