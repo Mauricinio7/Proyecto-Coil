@@ -136,7 +136,7 @@ public class ColaboracionDAO {
                         + " Region_idRegion,"
                         + " Departamento_idDepartamento"
                         + " FROM colaboracion "
-                        + "WHERE periodo = ? AND estado = 'Concluida'";
+                        + "WHERE periodo = ? AND estado = 'Finalizada completamente'";
                 PreparedStatement prepararSentencia = conexionBD.prepareStatement(consulta);
                 prepararSentencia.setString(1, periodoSeleccionado);
                 ResultSet resultado = prepararSentencia.executeQuery();
