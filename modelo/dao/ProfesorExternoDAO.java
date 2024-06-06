@@ -20,7 +20,7 @@ public class ProfesorExternoDAO {
         Connection conexionBD = ConexionBD.obtenerConexion();
         if (conexionBD != null) {
             try {
-                String consulta = "SELECT idProfesorExterno,"
+                String consulta = "SELECT id_profesor_externo,"
                         + " nombre,"
                         + " correo,"
                         + " idioma,"
@@ -33,7 +33,7 @@ public class ProfesorExternoDAO {
                 ArrayList<ProfesorExterno> profesoresExternos = new ArrayList<>();
                 while (resultado.next()) {
                     ProfesorExterno profesorExterno = new ProfesorExterno();
-                    profesorExterno.setIdProfesorExterno(resultado.getInt("idProfesorExterno"));
+                    profesorExterno.setIdProfesorExterno(resultado.getInt("id_profesor_externo"));
                     profesorExterno.setNombre(resultado.getString("nombre"));
                     profesorExterno.setCorreo(resultado.getString("correo"));
                     profesorExterno.setIdioma(resultado.getString("idioma"));
@@ -60,7 +60,7 @@ public class ProfesorExternoDAO {
         Connection conexionBD = ConexionBD.obtenerConexion();
         if (conexionBD != null) {
             try {
-                String consulta = "SELECT idProfesorExterno"
+                String consulta = "SELECT id_profesor_externo"
                         + " FROM profesor_externo"
                         + " WHERE nombre = ?"
                         + " AND correo = ?"
@@ -78,7 +78,7 @@ public class ProfesorExternoDAO {
                 ResultSet resultado = prepararSentencia.executeQuery();
                 if (resultado.next()) {
                     respuesta.put(Constantes.KEY_ERROR, false);
-                    respuesta.put("idProfesorExterno", resultado.getInt("idProfesorExterno"));
+                    respuesta.put("idProfesorExterno", resultado.getInt("id_profesor_externo"));
                 }
                 conexionBD.close();
             } catch (SQLException e) {
