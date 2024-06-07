@@ -20,11 +20,11 @@ public class ProfesorUvDAO {
             try {
                 String consulta = "SELECT "
                         + "nombre,"
-                        + "correo,"
-                        + "no_personal,"
-                        + "id_profesoruv,"
-                        + "region_id_region"
-                        + " FROM profesorUv "
+                        + "correo, "
+                        + "no_personal, "
+                        + "id_profesoruv, "
+                        + "region_id_region "
+                        + " FROM profesoruv "
                         + "WHERE id_profesoruv = ?";
                 PreparedStatement prepararSentencia = conexionBD.prepareStatement(consulta);
                 prepararSentencia.setInt(1, idProfesorUv);
@@ -39,15 +39,11 @@ public class ProfesorUvDAO {
                     profesorUv.setIdRegion(resultado.getInt("region_id_region"));
                 }
                 respuesta.put(Constantes.KEY_ERROR, false);
-                if(profesorUv == null){
-                    System.out.println("profesor es nulo siempre");
-                }else{
-                    System.out.println("Nyaa");
-                }
                 respuesta.put("Profesor", profesorUv);
                 conexionBD.close();
             } catch (SQLException e) {
                 respuesta.put(Constantes.KEY_MENSAJE, "No se han podido cargar los datos");
+                e.printStackTrace();
             }
         } else {
             respuesta.put(Constantes.KEY_MENSAJE, Constantes.MENSAJE_ERROR_CONEXION);
