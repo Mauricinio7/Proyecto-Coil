@@ -3,9 +3,11 @@ package coilvic.controlador;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.HashMap;
 import java.util.ResourceBundle;
 
 import coilvic.CoilVic;
+import coilvic.modelo.dao.ProfesorUvDAO;
 import coilvic.modelo.pojo.ProfesorUv;
 import javafx.animation.TranslateTransition;
 import javafx.fxml.FXML;
@@ -59,15 +61,25 @@ public class FXMLVistaProfesorController implements Initializable {
 
     @FXML
     private void clicMisOfertasIV(MouseEvent event) {
-        ProfesorUv profesorUv = new ProfesorUv();
-        irPantallaOfertasColaboracion(profesorUv);
+        HashMap<String, Object> mapProfesorUV = ProfesorUvDAO.obtenerProfesorUvPorId(1);
+        if(mapProfesorUV.containsKey("Profesor")){
+            ProfesorUv profesorUvSesion = (ProfesorUv) mapProfesorUV.get("Profesor");
+            irPantallaOfertasColaboracion(profesorUvSesion);
+        }else{
+            System.out.println("id no enton");
+        }
         
     }
 
     @FXML
     private void clicMisOfertasLB(MouseEvent event) {
-        ProfesorUv profesorUv = new ProfesorUv();
-        irPantallaOfertasColaboracion(profesorUv);
+        HashMap<String, Object> mapProfesorUV = ProfesorUvDAO.obtenerProfesorUvPorId(1);
+        if(mapProfesorUV.containsKey("Profesor")){
+            ProfesorUv profesorUvSesion = (ProfesorUv) mapProfesorUV.get("Profesor");
+            irPantallaOfertasColaboracion(profesorUvSesion);
+        }else{
+
+        }
     }
 
     public void irPantallaOfertasColaboracion(ProfesorUv profesorUv){

@@ -39,6 +39,11 @@ public class ProfesorUvDAO {
                     profesorUv.setIdRegion(resultado.getInt("region_id_region"));
                 }
                 respuesta.put(Constantes.KEY_ERROR, false);
+                if(profesorUv == null){
+                    System.out.println("profesor es nulo siempre");
+                }else{
+                    System.out.println("Nyaa");
+                }
                 respuesta.put("Profesor", profesorUv);
                 conexionBD.close();
             } catch (SQLException e) {
