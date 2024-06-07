@@ -85,7 +85,11 @@ public class FXMLRegistrarColaboracionSinOfertaController implements Initializab
         profesorUv.setIdRegion(1);
         //Eliminar termina
 
+        limitarCaracteres();
+
         cargarAreasAcademicas();
+        cbDepartamento.setDisable(true);
+        cbAsignatura.setDisable(true);
         configurarSeleccionDepartamento();
         configurarSeleccionAsignatura();
     }    
@@ -96,11 +100,11 @@ public class FXMLRegistrarColaboracionSinOfertaController implements Initializab
         lbCorreoProfesor.setText("Correo: " + profesorUv.getCorreo());
         lbRegionProfesor.setText("Region: " + profesorUv.getIdRegion()); //CAMBIAR POR EL NOMBRE DE LA REGION
     }
-
     
-    private void cargarAreasAcademicas(){
+    private void cargarAreasAcademicas() {
         listaAreasAcademicas = FXCollections.observableArrayList();
-        HashMap<String, Object> obtenerAreaAcademica = AsignaturaDAO.consultarAreaAcademicaPorRegion(profesorUv.getIdRegion());
+        HashMap<String, Object> obtenerAreaAcademica = 
+        AsignaturaDAO.consultarAreaAcademicaPorRegion(profesorUv.getIdRegion());
         listaAreasAcademicas.addAll((ArrayList<String>) obtenerAreaAcademica.get("listaArea"));
         cbAreaAcademica.setItems(listaAreasAcademicas);
     }
@@ -108,15 +112,22 @@ public class FXMLRegistrarColaboracionSinOfertaController implements Initializab
     private void configurarSeleccionAsignatura() {
         cbDepartamento.valueProperty().addListener(new ChangeListener<Departamento>() {
             @Override
-            public void changed(ObservableValue<? extends Departamento> observable, Departamento oldValue, Departamento newValue) {
-                cargarAsignaturas(newValue);
+            public void changed
+            (ObservableValue<? extends Departamento> observable, Departamento oldValue, Departamento newValue) {
+                if (newValue != null) {
+                    cbAsignatura.setDisable(false);
+                    cargarAsignaturas(newValue);
+                } else {
+                    cbAsignatura.setDisable(true);
+                }
             }
         });
     }
 
     private void cargarAsignaturas(Departamento asignatura) {
         listaAsignaturas = FXCollections.observableArrayList();
-        HashMap<String, Object> obtenerAsignatura = AsignaturaDAO.consultaAsignaturaDepartamento(asignatura.getIdDepartamento());
+        HashMap<String, Object> obtenerAsignatura = 
+        AsignaturaDAO.consultaAsignaturaDepartamento(asignatura.getIdDepartamento());
         listaAsignaturas.addAll((ArrayList<Asignatura>) obtenerAsignatura.get("listaAsignatura"));
         cbAsignatura.setItems(listaAsignaturas);
     }
@@ -125,7 +136,12 @@ public class FXMLRegistrarColaboracionSinOfertaController implements Initializab
         cbAreaAcademica.valueProperty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-                cargarDepartamentos(newValue); // Llama a cargarDepartamentos con el nombre de la nueva área académica seleccionada
+                if (newValue != null) {
+                    cbDepartamento.setDisable(false);
+                    cargarDepartamentos(newValue);
+                } else {
+                    cbDepartamento.setDisable(true);
+                }
             }
         });
     }
@@ -235,6 +251,39 @@ public class FXMLRegistrarColaboracionSinOfertaController implements Initializab
         transicion.setNode(panelDeslisante);
         transicion.setToX(210);
         transicion.play();
+    }
+
+    private void limitarCaracteres() {
+        tfNombreColaboracion.textProperty().addListener
+        ((ObservableValue<? extends String> observable, String oldValue, String newValue) -> {
+            if (newValue.length() > 100) {
+                tfNombreColaboracion.setText(oldValue);
+            }
+        });
+        tfIdioma.textProperty().addListener
+        ((ObservableValue<? extends String> observable, String oldValue, String newValue) -> {
+            if (newValue.length() > 20) {
+                tfIdioma.setText(oldValue);
+            }
+        });
+        taObjetivo.textProperty().addListener
+        ((ObservableValue<? extends String> observable, String oldValue, String newValue) -> {
+            if (newValue.length() > 350) {
+                taObjetivo.setText(oldValue);
+            }
+        });
+        taTemaInteres.textProperty().addListener
+        ((ObservableValue<? extends String> observable, String oldValue, String newValue) -> {
+            if (newValue.length() > 50) {
+                taTemaInteres.setText(oldValue);
+            }
+        });
+        taDescripcionPlan.textProperty().addListener
+        ((ObservableValue<? extends String> observable, String oldValue, String newValue) -> {
+            if (newValue.length() > 100) {
+                taDescripcionPlan.setText(oldValue);
+            }
+        });
     }
 
 }
