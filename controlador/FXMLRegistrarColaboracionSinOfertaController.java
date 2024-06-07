@@ -76,9 +76,11 @@ public class FXMLRegistrarColaboracionSinOfertaController implements Initializab
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
+        /*
         cargarAreasAcademicas();
         cargarDepartamentos();
         configurarSeleccionAsignatura();
+        */
     }    
     
     public void inicializarValores(ProfesorUv profesor){
@@ -88,6 +90,7 @@ public class FXMLRegistrarColaboracionSinOfertaController implements Initializab
         lbRegionProfesor.setText("Region: " + profesorUv.getIdRegion()); //CAMBIAR POR EL NOMBRE DE LA REGION
     }
 
+    /*
     private void cargarAreasAcademicas(){
         listaAreasAcademicas = FXCollections.observableArrayList();
         listaAreasAcademicas.addAll
@@ -116,6 +119,7 @@ public class FXMLRegistrarColaboracionSinOfertaController implements Initializab
         ((ArrayList<Departamento>) DepartamentoDAO.consultarListaDepartamento().get("nuevoDepartamento"));
         cbDepartamento.setItems(listaDepartamentos);
     }
+    */
 
     private boolean camposVacios(){
         return tfNombreColaboracion.getText().isEmpty() || dpFechaInicio.getValue() == null || dpFechaFin.getValue() == null
@@ -129,7 +133,8 @@ public class FXMLRegistrarColaboracionSinOfertaController implements Initializab
     }
 
     private boolean validarNoEstudiantes(){
-        return tfNoEstudiantes.getText().matches("[0-9]+") && Integer.parseInt(tfNoEstudiantes.getText()) > 0;
+        return tfNoEstudiantes.getText().matches("[0-9]+") &&
+         Integer.parseInt(tfNoEstudiantes.getText()) > 0;
     }
 
     private Colaboracion obtenerDatosColaboracion() {
@@ -159,24 +164,6 @@ public class FXMLRegistrarColaboracionSinOfertaController implements Initializab
             //TODO
         }
         return planProyecto;
-    }
-    
-    @FXML
-    private void salePanel(MouseEvent event) {
-        TranslateTransition transicion = new TranslateTransition();
-        transicion.setDuration(Duration.millis(500));
-        transicion.setNode(panelDeslisante);
-        transicion.setToX(0);
-        transicion.play();
-    }
-
-    @FXML
-    private void entraPanel(MouseEvent event) {
-        TranslateTransition transicion = new TranslateTransition();
-        transicion.setDuration(Duration.millis(500));
-        transicion.setNode(panelDeslisante);
-        transicion.setToX(210);
-        transicion.play();
     }
 
     @FXML
@@ -215,4 +202,23 @@ public class FXMLRegistrarColaboracionSinOfertaController implements Initializab
         Stage escenarioActual = (Stage) panelDeslisante.getScene().getWindow();
         archivoPlan = dialogoSeleccion.showOpenDialog(escenarioActual);
     }
+    
+    @FXML
+    private void salePanel(MouseEvent event) {
+        TranslateTransition transicion = new TranslateTransition();
+        transicion.setDuration(Duration.millis(500));
+        transicion.setNode(panelDeslisante);
+        transicion.setToX(0);
+        transicion.play();
+    }
+
+    @FXML
+    private void entraPanel(MouseEvent event) {
+        TranslateTransition transicion = new TranslateTransition();
+        transicion.setDuration(Duration.millis(500));
+        transicion.setNode(panelDeslisante);
+        transicion.setToX(210);
+        transicion.play();
+    }
+
 }
