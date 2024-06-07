@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.nio.file.Files;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.ResourceBundle;
 
 import coilvic.modelo.dao.AsignaturaDAO;
@@ -39,7 +40,7 @@ public class FXMLRegistrarColaboracionSinOfertaController implements Initializab
     private File archivoPlan;
     private ObservableList<Asignatura> listaAsignaturas;
     private ObservableList<Departamento> listaDepartamentos;
-    private ObservableList<Asignatura> listaAreasAcademicas;
+    private ObservableList<String> listaAreasAcademicas;
     @FXML
     private Pane panelDeslisante;
     @FXML
@@ -65,7 +66,7 @@ public class FXMLRegistrarColaboracionSinOfertaController implements Initializab
     @FXML
     private TextField tfNoEstudiantes;
     @FXML
-    private ComboBox<Asignatura> cbAreaAcademica;
+    private ComboBox<String> cbAreaAcademica;
     @FXML
     private ComboBox<Asignatura> cbAsignatura;
     @FXML
@@ -76,11 +77,17 @@ public class FXMLRegistrarColaboracionSinOfertaController implements Initializab
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
-        /*
+
+        //Eliminar inicia
+        profesorUv = new ProfesorUv();
+        profesorUv.setNombre("Carlos Fuentes");
+        profesorUv.setCorreo("cfuentes@uv.mx");
+        profesorUv.setIdRegion(1);
+        //Eliminar termina
+
         cargarAreasAcademicas();
-        cargarDepartamentos();
+        configurarSeleccionDepartamento();
         configurarSeleccionAsignatura();
-        */
     }    
     
     public void inicializarValores(ProfesorUv profesor){
@@ -90,36 +97,45 @@ public class FXMLRegistrarColaboracionSinOfertaController implements Initializab
         lbRegionProfesor.setText("Region: " + profesorUv.getIdRegion()); //CAMBIAR POR EL NOMBRE DE LA REGION
     }
 
-    /*
+    
     private void cargarAreasAcademicas(){
         listaAreasAcademicas = FXCollections.observableArrayList();
-        listaAreasAcademicas.addAll
-        ((ArrayList<Asignatura>) AsignaturaDAO.consultarListaAsignatura().get("listaAsignatura"));
+        HashMap<String, Object> obtenerAreaAcademica = AsignaturaDAO.consultarAreaAcademicaPorRegion(profesorUv.getIdRegion());
+        listaAreasAcademicas.addAll((ArrayList<String>) obtenerAreaAcademica.get("listaArea"));
         cbAreaAcademica.setItems(listaAreasAcademicas);
     }
 
     private void configurarSeleccionAsignatura() {
-        cbAreaAcademica.valueProperty().addListener(new ChangeListener<Asignatura>() {
+        cbDepartamento.valueProperty().addListener(new ChangeListener<Departamento>() {
             @Override
-            public void changed(ObservableValue<? extends Asignatura> observable, Asignatura oldValue, Asignatura newValue) {
+            public void changed(ObservableValue<? extends Departamento> observable, Departamento oldValue, Departamento newValue) {
                 cargarAsignaturas(newValue);
             }
         });
     }
 
-    private void cargarAsignaturas(Asignatura asignatura) {
+    private void cargarAsignaturas(Departamento asignatura) {
         listaAsignaturas = FXCollections.observableArrayList();
-        listaAsignaturas.add(asignatura);
+        HashMap<String, Object> obtenerAsignatura = AsignaturaDAO.consultaAsignaturaDepartamento(asignatura.getIdDepartamento());
+        listaAsignaturas.addAll((ArrayList<Asignatura>) obtenerAsignatura.get("listaAsignatura"));
         cbAsignatura.setItems(listaAsignaturas);
     }
 
-    private void cargarDepartamentos() {
+    private void configurarSeleccionDepartamento() {
+        cbAreaAcademica.valueProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+                cargarDepartamentos(newValue); // Llama a cargarDepartamentos con el nombre de la nueva área académica seleccionada
+            }
+        });
+    }
+
+    private void cargarDepartamentos(String areaAcademica) {
         listaDepartamentos = FXCollections.observableArrayList();
-        listaDepartamentos.addAll
-        ((ArrayList<Departamento>) DepartamentoDAO.consultarListaDepartamento().get("nuevoDepartamento"));
+        HashMap<String, Object> obtenerDepartamento = DepartamentoDAO.consultarDepartamentoPorAreaAcad(areaAcademica);
+        listaDepartamentos.addAll((ArrayList<Departamento>) obtenerDepartamento.get("listaDepartamento"));
         cbDepartamento.setItems(listaDepartamentos);
     }
-    */
 
     private boolean camposVacios(){
         return tfNombreColaboracion.getText().isEmpty() || dpFechaInicio.getValue() == null || dpFechaFin.getValue() == null

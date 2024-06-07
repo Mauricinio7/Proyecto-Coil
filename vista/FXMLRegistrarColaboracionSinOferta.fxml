@@ -50,8 +50,8 @@
                   <Label layoutX="102.0" layoutY="342.0" text="Tema de interés:" />
                   <Label layoutX="26.0" layoutY="395.0" text="No de estudiantes externos:" />
                   <Label layoutX="102.0" layoutY="426.0" text="Área académica:" />
-                  <Label layoutX="135.0" layoutY="459.0" text="Asignatura:" />
-                  <Label layoutX="110.0" layoutY="492.0" text="Departamento:" />
+                  <Label layoutX="135.0" layoutY="492.0" text="Asignatura:" />
+                  <Label layoutX="110.0" layoutY="459.0" text="Departamento:" />
                   <Button layoutX="605.0" layoutY="126.0" mnemonicParsing="false" onAction="#btnRegistrarEstudiantes" prefHeight="50.0" prefWidth="184.0" text="Registrar estudiantes" />
                   <Button layoutX="605.0" layoutY="186.0" mnemonicParsing="false" onAction="#btnAsociarProfesorExterno" prefHeight="51.0" prefWidth="184.0" text="Asociar profesor externo" />
                   <Button layoutX="542.0" layoutY="475.0" mnemonicParsing="false" onAction="#btnGuardar" prefHeight="42.0" prefWidth="127.0" text="Guardar" />
@@ -65,8 +65,8 @@
                   <TextArea fx:id="taTemaInteres" layoutX="223.0" layoutY="338.0" prefHeight="51.0" prefWidth="187.0" />
                   <TextField fx:id="tfNoEstudiantes" layoutX="223.0" layoutY="390.0" />
                   <ComboBox fx:id="cbAreaAcademica" layoutX="224.0" layoutY="423.0" prefHeight="31.0" prefWidth="186.0" />
-                  <ComboBox fx:id="cbAsignatura" layoutX="224.0" layoutY="455.0" prefHeight="31.0" prefWidth="186.0" />
-                  <ComboBox fx:id="cbDepartamento" layoutX="224.0" layoutY="488.0" prefHeight="31.0" prefWidth="185.0" />
+                  <ComboBox fx:id="cbAsignatura" layoutX="224.0" layoutY="489.0" prefHeight="31.0" prefWidth="186.0" />
+                  <ComboBox fx:id="cbDepartamento" layoutX="224.0" layoutY="456.0" prefHeight="31.0" prefWidth="186.0" />
                   <Button layoutX="574.0" layoutY="289.0" mnemonicParsing="false" onAction="#btnPlanProyecto" prefHeight="62.0" prefWidth="219.0" text="Plan de proyecto aquí" />
                   <TextArea fx:id="taDescripcionPlan" layoutX="574.0" layoutY="351.0" prefHeight="75.0" prefWidth="219.0" promptText="Descripcion del plan de proyecto" />
                </children>
