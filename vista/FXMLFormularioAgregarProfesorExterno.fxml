@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+
+<AnchorPane id="AnchorPane" prefHeight="574.0" prefWidth="655.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8" fx:controller="coilvic.controlador.FXMLFormularioAgregarProfesorExternoController">
+   <children>
+      <Label layoutX="47.0" layoutY="34.0" text="Agregar profesor externo">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </Label>
+      <Label layoutX="133.0" layoutY="123.0" text="Nombre">
+         <font>
+            <Font size="17.0" />
+         </font>
+      </Label>
+      <Label layoutX="138.0" layoutY="218.0" text="Idioma">
+         <font>
+            <Font size="17.0" />
+         </font>
+      </Label>
+      <Label layoutX="116.0" layoutY="270.0" text="Institución">
+         <font>
+            <Font size="17.0" />
+         </font>
+      </Label>
+      <Label layoutX="155.0" layoutY="319.0" text="País">
+         <font>
+            <Font size="17.0" />
+         </font>
+      </Label>
+      <Label layoutX="139.0" layoutY="169.0" text="Correo">
+         <font>
+            <Font size="17.0" />
+         </font>
+      </Label>
+      <Label layoutX="127.0" layoutY="366.0" text="teléfono">
+         <font>
+            <Font size="17.0" />
+         </font>
+      </Label>
+      <TextField fx:id="tfNombre" layoutX="211.0" layoutY="121.0" prefHeight="31.0" prefWidth="301.0" />
+      <TextField fx:id="tfCorreo" layoutX="211.0" layoutY="168.0" prefHeight="31.0" prefWidth="301.0" />
+      <TextField fx:id="tfIdioma" layoutX="211.0" layoutY="217.0" prefHeight="31.0" prefWidth="301.0" />
+      <TextField fx:id="tfInstitucion" layoutX="211.0" layoutY="268.0" prefHeight="31.0" prefWidth="301.0" />
+      <TextField fx:id="tfPais" layoutX="211.0" layoutY="318.0" prefHeight="31.0" prefWidth="301.0" />
+      <TextField fx:id="tfTelefono" layoutX="211.0" layoutY="364.0" prefHeight="31.0" prefWidth="301.0" />
+      <Button layoutX="123.0" layoutY="452.0" mnemonicParsing="false" onAction="#btnAceptar" prefHeight="56.0" prefWidth="147.0" text="Aceptar" />
+      <Button layoutX="410.0" layoutY="452.0" mnemonicParsing="false" onAction="#btnCancelar" prefHeight="56.0" prefWidth="147.0" text="Cancelar" />
+   </children>
+</AnchorPane>

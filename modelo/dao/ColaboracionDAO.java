@@ -4,7 +4,9 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 
 import coilvic.modelo.ConexionBD;
 import coilvic.modelo.pojo.Colaboracion;
@@ -71,13 +73,13 @@ public class ColaboracionDAO {
                         + " objetivo_general,"
                         + " tema_interes,"
                         + " periodo,"
-                        + " no_estudiantes_externos,"
+                        + " no_estudiante_externo,"
                         + " id_colaboracion,"
-                        + " ProfesorUV_idProfesorUV,"
-                        + " Profesor_externo_idProfesorExterno,"
-                        + " Asignatura_idAsignatura,"
-                        + " Region_idRegion,"
-                        + " Departamento_idDepartamento"
+                        + " ProfesorUV_id_ProfesorUV,"
+                        + " Profesor_externo_id_Profesor_Externo,"
+                        + " Asignatura_id_Asignatura,"
+                        + " Region_id_Region,"
+                        + " Departamento_id_Departamento"
                         + " FROM colaboracion "
                         + "WHERE id_colaboracion = ?";
                 PreparedStatement prepararSentencia = conexionBD.prepareStatement(consulta);
@@ -94,13 +96,13 @@ public class ColaboracionDAO {
                     colaboracion.setObjetivoGeneral(resultado.getString("objetivo_general"));
                     colaboracion.setTemaInteres(resultado.getString("tema_interes"));
                     colaboracion.setPeriodo(resultado.getString("periodo"));
-                    colaboracion.setNoEstudiantesExternos(resultado.getInt("no_estudiantes_externos"));
+                    colaboracion.setNoEstudiantesExternos(resultado.getInt("no_estudiante_externo"));
                     colaboracion.setIdColaboracion(resultado.getInt("id_colaboracion"));
-                    colaboracion.setIdProfesorUV(resultado.getInt("ProfesorUV_idProfesorUV"));
-                    colaboracion.setIdProfesorExterno(resultado.getInt("Profesor_externo_idProfesorExterno"));
-                    colaboracion.setIdAsignatura(resultado.getInt("Asignatura_idAsignatura"));
-                    colaboracion.setIdRegion(resultado.getInt("Region_idRegion"));
-                    colaboracion.setIdDepartamento(resultado.getInt("Departamento_idDepartamento"));
+                    colaboracion.setIdProfesorUV(resultado.getInt("ProfesorUV_id_ProfesorUV"));
+                    colaboracion.setIdProfesorExterno(resultado.getInt("Profesor_externo_id_Profesor_Externo"));
+                    colaboracion.setIdAsignatura(resultado.getInt("Asignatura_id_Asignatura"));
+                    colaboracion.setIdRegion(resultado.getInt("Region_id_Region"));
+                    colaboracion.setIdDepartamento(resultado.getInt("Departamento_id_Departamento"));
                 }
                 respuesta.put(Constantes.KEY_ERROR, false);
                 respuesta.put("Colaboracion", colaboracion);
@@ -114,59 +116,56 @@ public class ColaboracionDAO {
         return respuesta;
     }
 
-    public static HashMap<String, Object> obtenerColaboracionPorNombre(String nombreColaboracion) {
-        HashMap<String, Object> respuesta = new HashMap<>();
+    public static HashMap<String, Object> obtenerColaboracionesConcluidasPorPeriodo(String periodoSeleccionado) {
+        HashMap<String, Object> respuesta = new LinkedHashMap<>();
         respuesta.put(Constantes.KEY_ERROR, true);
         Connection conexionBD = ConexionBD.obtenerConexion();
         if (conexionBD != null) {
             try {
                 String consulta = "SELECT estado,"
-                        + " fecha_inicio,"
-                        + " fecha_fin,"
                         + " idioma,"
                         + " nombre,"
                         + " objetivo_general,"
                         + " tema_interes,"
                         + " periodo,"
-                        + " no_estudiantes_externos,"
+                        + " no_estudiante_externo,"
                         + " id_colaboracion,"
-                        + " ProfesorUV_idProfesorUV,"
-                        + " Profesor_externo_idProfesorExterno,"
-                        + " Asignatura_idAsignatura,"
-                        + " Region_idRegion,"
-                        + " Departamento_idDepartamento"
+                        + " profesoruv_id_profesoruv,"
+                        + " profesor_externo_id_profesor_externo,"
+                        + " asignatura_id_asignatura,"
+                        + " region_id_region,"
+                        + " departamento_id_departamento"
                         + " FROM colaboracion "
-                        + "WHERE nombre = ?";
+                        + "WHERE periodo = ? AND estado = 'Finalizada completamente'";
                 PreparedStatement prepararSentencia = conexionBD.prepareStatement(consulta);
-                prepararSentencia.setString(1, nombreColaboracion);
+                prepararSentencia.setString(1, periodoSeleccionado);
                 ResultSet resultado = prepararSentencia.executeQuery();
-                Colaboracion colaboracion = null;
-                if (resultado.next()) {
-                    colaboracion = new Colaboracion();
+                ArrayList<Colaboracion> colaboraciones = new ArrayList<>();
+                while (resultado.next()) {
+                    Colaboracion colaboracion = new Colaboracion();
                     colaboracion.setEstado(resultado.getString("estado"));
-                    colaboracion.setFechaInicio(resultado.getString("fecha_inicio"));
-                    colaboracion.setFechaFin(resultado.getString("fecha_fin"));
                     colaboracion.setIdioma(resultado.getString("idioma"));
                     colaboracion.setNombre(resultado.getString("nombre"));
                     colaboracion.setObjetivoGeneral(resultado.getString("objetivo_general"));
                     colaboracion.setTemaInteres(resultado.getString("tema_interes"));
                     colaboracion.setPeriodo(resultado.getString("periodo"));
-                    colaboracion.setNoEstudiantesExternos(resultado.getInt("no_estudiantes_externos"));
+                    colaboracion.setNoEstudiantesExternos(resultado.getInt("no_estudiante_externo"));
                     colaboracion.setIdColaboracion(resultado.getInt("id_colaboracion"));
-                    colaboracion.setIdProfesorUV(resultado.getInt("ProfesorUV_idProfesorUV"));
-                    colaboracion.setIdProfesorExterno(resultado.getInt("Profesor_externo_idProfesorExterno"));
-                    colaboracion.setIdAsignatura(resultado.getInt("Asignatura_idAsignatura"));
-                    colaboracion.setIdRegion(resultado.getInt("Region_idRegion"));
-                    colaboracion.setIdDepartamento(resultado.getInt("Departamento_idDepartamento"));
+                    colaboracion.setIdProfesorUV(resultado.getInt("profesoruv_id_Profesoruv"));
+                    colaboracion.setIdProfesorExterno(resultado.getInt("profesor_externo_id_profesor_externo"));
+                    colaboracion.setIdAsignatura(resultado.getInt("asignatura_id_asignatura"));
+                    colaboracion.setIdRegion(resultado.getInt("region_id_region"));
+                    colaboracion.setIdDepartamento(resultado.getInt("departamento_id_departamento"));
+                    colaboraciones.add(colaboracion);
                 }
                 respuesta.put(Constantes.KEY_ERROR, false);
-                respuesta.put("Colaboracion", colaboracion);
+                respuesta.put("colaboraciones", colaboraciones);
                 conexionBD.close();
             } catch (SQLException e) {
                 respuesta.put(Constantes.KEY_MENSAJE, e.getMessage());
             }
         } else {
-            respuesta.put(Constantes.KEY_MENSAJE, Constantes.MENSAJE_ERROR_CONEXION);
+            respuesta.put(Constantes.KEY_MENSAJE, "No se han podido cargar los datos");
         }
         return respuesta;
     }

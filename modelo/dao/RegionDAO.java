@@ -12,26 +12,33 @@ import coilvic.modelo.pojo.Region;
 import coilvic.utilidades.Constantes;
 
 public class RegionDAO {
-    public HashMap<String, Object> consultarListaRegion(){
+    public static HashMap<String, Object> consultarListaRegion(){
         HashMap<String, Object> respuesta = new HashMap<>();
-        ArrayList<Region> listaRegion = new ArrayList<>();
         try(Connection conexionDB = ConexionBD.obtenerConexion()){
             StringBuilder consulta = new StringBuilder();
             consulta.append("SELECT nombre, ");
-            consulta.append("idRegion FROM region");
+            consulta.append("id_region FROM region");
             PreparedStatement sentenciaPreparada = conexionDB.prepareStatement(consulta.toString());
             ResultSet resultado = sentenciaPreparada.executeQuery();
-            while(resultado.next()){
-                Region nuevaRegion = new Region();
-                nuevaRegion.setNombre(resultado.getString("nombre"));
-                nuevaRegion.setIdRegion(resultado.getInt("idRegion"));
-            }
-            respuesta.put("nuevaRegion", listaRegion);
+            respuesta.put("listaRegion", obtenerListaRegion(resultado));
         }catch(SQLException sqlError){
             sqlError.printStackTrace();
         }
         if(respuesta.isEmpty()) respuesta.put(Constantes.KEY_ERROR, null);
         return respuesta;
     }
-    
+    public static ArrayList<Region> obtenerListaRegion(ResultSet resultado){
+        ArrayList<Region> listaRegion = new ArrayList<>();
+        try{
+            while(resultado.next()){
+                Region nuevaRegion = new Region();
+                nuevaRegion.setNombre(resultado.getString("nombre"));
+                nuevaRegion.setIdRegion(resultado.getInt("id_region"));
+                listaRegion.add(nuevaRegion);
+            }
+        }catch(SQLException errorSql){
+            errorSql.printStackTrace();
+        }
+        return listaRegion;
+    }
 }

@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" prefHeight="750.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="coilvic.controlador.FXMLConsultarReporteColaboracionesController">
+   <children>
+      <Pane layoutX="79.0" layoutY="-1.0" prefHeight="182.0" prefWidth="1124.0" style="-fx-background-color: linear-gradient(to bottom left, #e93367, #de8444);">
+         <children>
+            <ImageView fitHeight="143.0" fitWidth="149.0" layoutX="167.0" layoutY="16.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../recursos/LogoCOIL.png" />
+               </image>
+            </ImageView>
+            <Label layoutX="357.0" layoutY="25.0" text="COIL - VIC" textFill="WHITE">
+               <font>
+                  <Font name="Arial Unicode MS" size="93.0" />
+               </font>
+            </Label>
+         </children>
+      </Pane>
+      <Button layoutX="1059.0" layoutY="214.0" mnemonicParsing="false" onAction="#btnSalir" prefHeight="50.0" prefWidth="93.0" text="Salir" />
+      <ComboBox fx:id="cbPeriodo" layoutX="226.0" layoutY="306.0" prefHeight="42.0" prefWidth="201.0" />
+      <Pane layoutX="137.0" layoutY="397.0" prefHeight="137.0" prefWidth="1009.0" style="-fx-background-color: #D4D4D4;">
+         <children>
+            <Label layoutX="61.0" layoutY="57.0" text="Reporte de colaboraciones">
+               <font>
+                  <Font name="Arial Rounded MT Bold" size="20.0" />
+               </font>
+            </Label>
+            <Button layoutX="767.0" layoutY="33.0" mnemonicParsing="false" onAction="#btnDescargar" prefHeight="72.0" prefWidth="191.0" text="Descargar" />
+         </children>
+      </Pane>
+      <Label layoutX="142.0" layoutY="223.0" text="Consultar Reporte de Colaboraciones">
+         <font>
+            <Font name="Arial Rounded MT Bold" size="26.0" />
+         </font>
+      </Label>
+      <Label layoutX="142.0" layoutY="312.0" text="Periodo">
+         <font>
+            <Font size="21.0" />
+         </font>
+      </Label>
+      <Pane fx:id="panelDeslisante" layoutX="-252.0" layoutY="-2.0" onMouseEntered="#entraPanel" onMouseExited="#salePanel" prefHeight="752.0" prefWidth="349.0" style="-fx-background-color: linear-gradient(to bottom, #e93367, #cd18ed);">
+         <children>
+            <ImageView fitHeight="58.0" fitWidth="61.0" layoutX="272.0" layoutY="159.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../recursos/home.png" />
+               </image>
+            </ImageView>
+            <ImageView fitHeight="67.0" fitWidth="62.0" layoutX="272.0" layoutY="262.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../recursos/colaboracion.png" />
+               </image>
+            </ImageView>
+            <Label layoutX="140.0" layoutY="177.0" text="Inicio" textFill="WHITE">
+               <font>
+                  <Font name="Arial Black" size="28.0" />
+               </font>
+            </Label>
+            <Label layoutX="102.0" layoutY="268.0" text="Ofertas" textFill="WHITE">
+               <font>
+                  <Font name="Arial Black" size="28.0" />
+               </font>
+            </Label>
+            <Label layoutX="33.0" layoutY="378.0" prefHeight="32.0" prefWidth="220.0" text="Registrar profesor" textFill="WHITE">
+               <font>
+                  <Font name="Arial Black" size="21.0" />
+               </font>
+            </Label>
+            <Label layoutX="33.0" layoutY="404.0" prefHeight="32.0" prefWidth="219.0" text="externo." textFill="WHITE">
+               <font>
+                  <Font name="Arial Black" size="22.0" />
+               </font>
+            </Label>
+            <Label layoutX="281.0" layoutY="-39.0" text="_" textFill="WHITE">
+               <font>
+                  <Font name="Arial Black" size="80.0" />
+               </font>
+            </Label>
+            <Label layoutX="282.0" layoutY="-22.0" text="_" textFill="WHITE">
+               <font>
+                  <Font name="Arial Black" size="80.0" />
+               </font>
+            </Label>
+            <Label layoutX="283.0" layoutY="-4.0" text="_" textFill="WHITE">
+               <font>
+                  <Font name="Arial Black" size="80.0" />
+               </font>
+            </Label>
+            <ImageView fitHeight="67.0" fitWidth="62.0" layoutX="267.0" layoutY="487.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../recursos/colaboracion.png" />
+               </image>
+            </ImageView>
+            <ImageView fitHeight="67.0" fitWidth="62.0" layoutX="273.0" layoutY="377.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../recursos/colaboracion.png" />
+               </image>
+            </ImageView>
+            <Label layoutX="79.0" layoutY="495.0" text="Consultas" textFill="WHITE">
+               <font>
+                  <Font name="Arial Black" size="28.0" />
+               </font>
+            </Label>
+         </children></Pane>
+      <Pane layoutX="800.0" layoutY="550.0" prefHeight="200.0" prefWidth="401.0">
+         <children>
+            <Pane fx:id="panelDescarga" layoutX="93.0" layoutY="200.0" prefHeight="137.0" prefWidth="310.0" style="-fx-background-color: #E6E5E5;">
+               <children>
+                  <Label layoutX="51.0" layoutY="54.0" text="Descargando el reporte">
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                  </Label>
+               </children>
+            </Pane>
+         </children>
+      </Pane>
+   </children>
+</AnchorPane>

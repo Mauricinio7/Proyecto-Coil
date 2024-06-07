@@ -36,4 +36,8 @@ public class Asignatura {
     public void setIdAsignatura(int idAsignatura) {
         this.idAsignatura = idAsignatura;
     }
+    @Override
+    public String toString(){
+        return "- " + getNombre();
+    }
 }

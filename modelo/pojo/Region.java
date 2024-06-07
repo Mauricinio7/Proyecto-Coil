@@ -27,5 +27,8 @@ public class Region {
     public void setIdRegion(int idRegion) {
         this.idRegion = idRegion;
     }
-    
+    @Override
+    public String toString(){
+        return "- " + getNombre();
+    }
 }
