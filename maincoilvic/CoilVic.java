@@ -11,12 +11,14 @@ import javafx.stage.Stage;
 
 
 public class CoilVic extends Application {
-    
+
     @Override
     public void start(Stage stage) throws Exception {
+        ConexionBD conexion = new ConexionBD();
+        if(conexion !=  null) System.out.println("Conexion Exitosa");
+        //Parent root = FXMLLoader.load(getClass().getResource("../vista/FXMLConsultarReporteColaboraciones.fxml"));
         //Parent root = FXMLLoader.load(getClass().getResource("../vista/FXMLLogin.fxml"));
         Parent root = FXMLLoader.load(getClass().getResource("../vista/FXMLRegistrarColaboracionSinOferta.fxml"));
-        
         Scene scene = new Scene(root);
         
         stage.setScene(scene);
