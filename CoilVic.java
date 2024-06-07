@@ -17,10 +17,11 @@ public class CoilVic extends Application {
 
         ConexionBD conexion = new ConexionBD();
         if(conexion !=  null) System.out.println("Conexion Exitosa");
+
         //Parent root = FXMLLoader.load(getClass().getResource("vista/FXMLVistaAdmin.fxml"));
         //Parent root = FXMLLoader.load(getClass().getResource("../vista/FXMLLogin.fxml"));
         Parent root = FXMLLoader.load(getClass().getResource("../vista/FXMLRegistrarProfesorExterno.fxml"));
-        
+
         Scene scene = new Scene(root);
         
         stage.setScene(scene);
