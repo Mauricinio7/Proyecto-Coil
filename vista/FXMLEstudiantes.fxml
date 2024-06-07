@@ -18,7 +18,7 @@
                         <Font size="27.0" />
                      </font>
                   </Label>
-                  <Button layoutX="180.0" layoutY="265.0" mnemonicParsing="false" prefHeight="76.0" prefWidth="127.0" text="Añadir">
+                  <Button layoutX="180.0" layoutY="265.0" mnemonicParsing="false" onAction="#clicAnadir" prefHeight="76.0" prefWidth="127.0" text="Añadir">
                      <font>
                         <Font size="31.0" />
                      </font>

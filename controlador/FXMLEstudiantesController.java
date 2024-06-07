@@ -51,12 +51,17 @@ public class FXMLEstudiantesController implements Initializable, ObservadorEstud
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         iniciarColaboracion();
+        //FIX it do exception
+        System.out.println(colaboracion == null);
         cargarRegistroEstudiantes(colaboracion.getIdColaboracion());
     }    
 
         //TODO este es un metodo en lo que se pasa a la ventana la colab
     private void iniciarColaboracion(){
         HashMap<String, Object> consulta = ColaboracionDAO.obtenerColaboracionPorId(4); //TODO Hardcode
+        if((boolean)consulta.get(Constantes.KEY_ERROR)){
+            Utils.mostrarAlertaSimple("Error", "" + consulta.get(Constantes.KEY_MENSAJE), Alert.AlertType.ERROR);
+        }
         colaboracion = (Colaboracion)consulta.get("Colaboracion");
     }
 
@@ -79,7 +84,7 @@ public class FXMLEstudiantesController implements Initializable, ObservadorEstud
     private void irRegistrarEstudiante(){
         try {
             Stage escenario = new Stage();
-            FXMLLoader loader = Utils.obtenerLoader("../vista/FXMLRegistrarEstudiante.fxml");
+            FXMLLoader loader = Utils.obtenerLoader("vista/FXMLRegistrarEstudiante.fxml");
             Parent root = loader.load();
             FXMLRegistrarEstudianteController controlador = loader.getController();
             controlador.inicializarValores(colaboracion, this);

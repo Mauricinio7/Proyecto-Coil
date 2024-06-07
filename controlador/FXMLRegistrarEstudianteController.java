@@ -45,12 +45,15 @@ public class FXMLRegistrarEstudianteController implements Initializable {
         if(!(camposVacios())){
             if(!datosInvalidos()){
                 HashMap<String, Object> consulta = EstudiantesDAO.comprobarExistenciaEstudiante(txtMatricula.getText());
+                if((boolean)consulta.get(Constantes.KEY_ERROR)){
+                    Utils.mostrarAlertaSimple("Error", "" + consulta.get(Constantes.KEY_MENSAJE), Alert.AlertType.ERROR);
+                }
             
             if((boolean)consulta.get("encontrado")){
                 if(!probarExisteEstudianteColaboracion()){
                     asociarEstudiante((int) consulta.get("idEstudiante"));
                     observador.operacionExitosa("Asociar", txtNombre.getText());
-                    System.out.println("Si existe, ID: " + consulta.get("idEstudiante"));
+                    System.out.println("Si existe, ID: " + consulta.get("id_Estudiante"));
                 }else{
                     Utils.mostrarAlertaSimple("Error", "El estudiante ya se encuentra registrado en esta colaboración", Alert.AlertType.WARNING);
                     System.out.println("El estudiante ya esta en la colab");

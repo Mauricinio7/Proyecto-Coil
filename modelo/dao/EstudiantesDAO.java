@@ -22,9 +22,9 @@ public class EstudiantesDAO {
         Connection conexionBD = ConexionBD.obtenerConexion();
         if(conexionBD != null){
             try{
-                String consulta = "SELECT e.nombre, e.matricula, e.correo, e.idEstudiante, ec.Colaboracion_id_colaboracion AS idColaboracion " +
+                String consulta = "SELECT e.nombre, e.matricula, e.correo, e.id_Estudiante, ec.Colaboracion_id_colaboracion AS idColaboracion " +
                 "FROM estudiante e " +
-                "INNER JOIN estudianteColaboracion ec ON e.idEstudiante = ec.estudiante_idEstudiante " +
+                "INNER JOIN colaboracion_has_estudiante ec ON e.id_Estudiante = ec.estudiante_id_Estudiante " +
                 "WHERE ec.Colaboracion_id_colaboracion = ? ";
                 PreparedStatement prepararSentencia = conexionBD.prepareStatement(consulta);
                 prepararSentencia.setInt(1, idColaboracion);
@@ -35,7 +35,7 @@ public class EstudiantesDAO {
                     estudiante.setNombre(resultado.getString("nombre"));
                     estudiante.setMatricula(resultado.getString("matricula"));
                     estudiante.setCorreo(resultado.getString("correo"));
-                    estudiante.setIdEstudiante(resultado.getInt("idEstudiante"));
+                    estudiante.setIdEstudiante(resultado.getInt("id_Estudiante"));
                     estudiante.setIdColaboracion(resultado.getInt("idColaboracion"));
 
                     estudiantes.add(estudiante);
@@ -58,7 +58,7 @@ public class EstudiantesDAO {
         Connection conexionBD = ConexionBD.obtenerConexion();
         if(conexionBD != null){
             try{
-                String consulta = "SELECT COUNT(*) as count, idEstudiante FROM estudiante WHERE matricula = ?";
+                String consulta = "SELECT COUNT(*) as count, id_Estudiante FROM estudiante WHERE matricula = ?";
                 PreparedStatement prepararSentencia = conexionBD.prepareStatement(consulta);
                 prepararSentencia.setString(1, matricula);
                 ResultSet resultado = prepararSentencia.executeQuery();
@@ -68,7 +68,7 @@ public class EstudiantesDAO {
                     if(count > 0){
                         respuesta.put(Constantes.KEY_ERROR, false);
                         respuesta.put("encontrado", true);
-                        respuesta.put("idEstudiante", resultado.getInt("idEstudiante"));
+                        respuesta.put("id_Estudiante", resultado.getInt("id_Estudiante"));
                     } else {
                         respuesta.put(Constantes.KEY_ERROR, false);
                         respuesta.put("encontrado", false);
@@ -91,9 +91,9 @@ public class EstudiantesDAO {
         if(conexionBD != null){
             try{
                 String consulta = "SELECT COUNT(*) AS count " +
-                "FROM estudiantecolaboracion " +
-                "INNER JOIN estudiante ON estudiante.idEstudiante = estudiantecolaboracion.estudiante_idEstudiante " +
-                "WHERE estudiantecolaboracion.Colaboracion_id_colaboracion = ? " +
+                "FROM colaboracion_has_estudiante " +
+                "INNER JOIN estudiante ON estudiante.id_Estudiante = colaboracion_has_estudiante.estudiante_id_Estudiante " +
+                "WHERE colaboracion_has_estudiante.Colaboracion_id_colaboracion = ? " +
                 "AND estudiante.matricula = ?";
                 PreparedStatement prepararSentencia = conexionBD.prepareStatement(consulta);
                 prepararSentencia.setInt(1, colaboracion.getIdColaboracion());
@@ -147,13 +147,11 @@ public class EstudiantesDAO {
                 generatedKeys.close();
                 prepararSentencia.close();
 
-                String sentencia2 = "INSERT INTO estudiantecolaboracion (estudiante_idEstudiante, Colaboracion_id_colaboracion, Colaboracion_ProfesorUV_idProfesorUV, Colaboracion_Profesor_externo_idProfesorExterno)" +
-                "VALUES (?, ?, ?, ?)";
+                String sentencia2 = "INSERT INTO colaboracion_has_estudiante (estudiante_id_Estudiante, Colaboracion_id_colaboracion)" +
+                "VALUES (?, ?)";
                 PreparedStatement prepararSentencia2 = conexionBD.prepareStatement(sentencia2);
                 prepararSentencia2.setInt(1, idEstudianteGenerado);
                 prepararSentencia2.setInt(2, colaboracion.getIdColaboracion());
-                prepararSentencia2.setInt(3, colaboracion.getIdProfesorUV());
-                prepararSentencia2.setInt(4, colaboracion.getIdProfesorExterno());
                 int filasAfectadasEstudianteColaboracion = prepararSentencia2.executeUpdate();
 
                 if (filasAfectadasEstudiante > 0 && filasAfectadasEstudianteColaboracion > 0) {
@@ -180,13 +178,11 @@ public class EstudiantesDAO {
         Connection conexionBD = ConexionBD.obtenerConexion();
         if (conexionBD != null) {
             try {
-                String sentencia = "INSERT INTO estudiantecolaboracion (estudiante_idEstudiante, Colaboracion_id_colaboracion, Colaboracion_ProfesorUV_idProfesorUV, Colaboracion_Profesor_externo_idProfesorExterno)" +
-                "VALUES (?, ?, ?, ?)";
+                String sentencia = "INSERT INTO colaboracion_has_estudiante (estudiante_id_Estudiante, Colaboracion_id_colaboracion)" +
+                "VALUES (?, ?)";
                 PreparedStatement prepararSentencia = conexionBD.prepareStatement(sentencia);
                 prepararSentencia.setInt(1, idEstudiante);
                 prepararSentencia.setInt(2, colaboracion.getIdColaboracion());
-                prepararSentencia.setInt(3, colaboracion.getIdProfesorUV());
-                prepararSentencia.setInt(4, colaboracion.getIdProfesorExterno());
                 int filasAfectadasEstudianteColaboracion = prepararSentencia.executeUpdate();
 
                 if (filasAfectadasEstudianteColaboracion > 0) {
@@ -211,7 +207,7 @@ public class EstudiantesDAO {
         Connection conexionBD = ConexionBD.obtenerConexion();
         if(conexionBD != null){
             try{
-                String consulta = "SELECT COUNT(*) AS count FROM estudiantecolaboracion WHERE estudiante_idEstudiante = ?";
+                String consulta = "SELECT COUNT(*) AS count FROM colaboracion_has_estudiante WHERE estudiante_id_Estudiante = ?";
                 PreparedStatement prepararSentencia = conexionBD.prepareStatement(consulta);
                 prepararSentencia.setInt(1, idEstudiante);
                 ResultSet resultado = prepararSentencia.executeQuery();
@@ -243,7 +239,7 @@ public class EstudiantesDAO {
         Connection conexionBD = ConexionBD.obtenerConexion();
         if (conexionBD != null) {
             try {    
-                String sentencia = "DELETE From estudiantecolaboracion where estudiante_idEstudiante = ? AND Colaboracion_id_colaboracion = ?";
+                String sentencia = "DELETE From colaboracion_has_estudiante where estudiante_id_Estudiante = ? AND Colaboracion_id_colaboracion = ?";
                 PreparedStatement prepararSentencia = conexionBD.prepareStatement(sentencia);
                 prepararSentencia.setInt(1, idEstudiante);
                 prepararSentencia.setInt(2, idColaboracion);
@@ -274,13 +270,13 @@ public class EstudiantesDAO {
         if (conexionBD != null) {
             try {    
                 conexionBD.setAutoCommit(false);
-                String sentenciaRelacion= "DELETE From estudiantecolaboracion where estudiante_idEstudiante = ? AND Colaboracion_id_colaboracion = ?";
+                String sentenciaRelacion= "DELETE From colaboracion_has_estudiante where estudiante_id_Estudiante = ? AND Colaboracion_id_colaboracion = ?";
                 PreparedStatement prepararSentenciaRelacion = conexionBD.prepareStatement(sentenciaRelacion);
                 prepararSentenciaRelacion.setInt(1, idEstudiante);
                 prepararSentenciaRelacion.setInt(2, idColaboracion);
                 int filasAfectadasRelacion = prepararSentenciaRelacion.executeUpdate();
 
-                String sentenciaEstudiante = "DELETE From estudiante where idEstudiante = ?";
+                String sentenciaEstudiante = "DELETE From estudiante where id_Estudiante = ?";
                 PreparedStatement prepararSentenciaEstudiante = conexionBD.prepareStatement(sentenciaEstudiante);
                 prepararSentenciaEstudiante.setInt(1, idEstudiante);
                 int filasAfectadasEstudiante = prepararSentenciaEstudiante.executeUpdate();

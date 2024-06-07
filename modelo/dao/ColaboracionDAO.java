@@ -73,13 +73,13 @@ public class ColaboracionDAO {
                         + " objetivo_general,"
                         + " tema_interes,"
                         + " periodo,"
-                        + " no_estudiantes_externos,"
+                        + " no_estudiante_externo,"
                         + " id_colaboracion,"
-                        + " ProfesorUV_idProfesorUV,"
-                        + " Profesor_externo_idProfesorExterno,"
-                        + " Asignatura_idAsignatura,"
-                        + " Region_idRegion,"
-                        + " Departamento_idDepartamento"
+                        + " ProfesorUV_id_ProfesorUV,"
+                        + " Profesor_externo_id_Profesor_Externo,"
+                        + " Asignatura_id_Asignatura,"
+                        + " Region_id_Region,"
+                        + " Departamento_id_Departamento"
                         + " FROM colaboracion "
                         + "WHERE id_colaboracion = ?";
                 PreparedStatement prepararSentencia = conexionBD.prepareStatement(consulta);
@@ -96,13 +96,13 @@ public class ColaboracionDAO {
                     colaboracion.setObjetivoGeneral(resultado.getString("objetivo_general"));
                     colaboracion.setTemaInteres(resultado.getString("tema_interes"));
                     colaboracion.setPeriodo(resultado.getString("periodo"));
-                    colaboracion.setNoEstudiantesExternos(resultado.getInt("no_estudiantes_externos"));
+                    colaboracion.setNoEstudiantesExternos(resultado.getInt("no_estudiante_externo"));
                     colaboracion.setIdColaboracion(resultado.getInt("id_colaboracion"));
-                    colaboracion.setIdProfesorUV(resultado.getInt("ProfesorUV_idProfesorUV"));
-                    colaboracion.setIdProfesorExterno(resultado.getInt("Profesor_externo_idProfesorExterno"));
-                    colaboracion.setIdAsignatura(resultado.getInt("Asignatura_idAsignatura"));
-                    colaboracion.setIdRegion(resultado.getInt("Region_idRegion"));
-                    colaboracion.setIdDepartamento(resultado.getInt("Departamento_idDepartamento"));
+                    colaboracion.setIdProfesorUV(resultado.getInt("ProfesorUV_id_ProfesorUV"));
+                    colaboracion.setIdProfesorExterno(resultado.getInt("Profesor_externo_id_Profesor_Externo"));
+                    colaboracion.setIdAsignatura(resultado.getInt("Asignatura_id_Asignatura"));
+                    colaboracion.setIdRegion(resultado.getInt("Region_id_Region"));
+                    colaboracion.setIdDepartamento(resultado.getInt("Departamento_id_Departamento"));
                 }
                 respuesta.put(Constantes.KEY_ERROR, false);
                 respuesta.put("Colaboracion", colaboracion);
