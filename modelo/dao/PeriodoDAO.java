@@ -18,7 +18,7 @@ public class PeriodoDAO {
         Connection conexionBD = ConexionBD.obtenerConexion();
         if (conexionBD != null) {
             try {
-                String consulta = "SELECT DISTINCT periodo FROM colaboracion WHERE estado = 'Concluida'";
+                String consulta = "SELECT DISTINCT periodo FROM colaboracion WHERE estado = 'Finalizada completamente'";
                 PreparedStatement prepararSentencia = (PreparedStatement) conexionBD.prepareStatement(consulta);
                 ResultSet resultado = prepararSentencia.executeQuery();
                 ArrayList<String> periodosConcluidos = new ArrayList();

@@ -17,6 +17,8 @@ import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
 
+import coilvic.utilidades.Utils;
+import javafx.scene.control.Alert.AlertType;
 import coilvic.modelo.dao.ColaboracionDAO;
 import coilvic.modelo.dao.ProfesorUvDAO;
 import coilvic.utilidades.Constantes;
@@ -28,23 +30,22 @@ public class ReporteColaboraciones {
     private FileOutputStream fileOutputStream;
     private Font fuenteTitulo = new Font(Font.FontFamily.TIMES_ROMAN, 16, Font.BOLD);
     private Font fuenteNormal = new Font(Font.FontFamily.TIMES_ROMAN, 12, Font.NORMAL);
-    private String ruta;
 
-    public ReporteColaboraciones(String ruta) {
-        this.ruta = ruta;
+    public ReporteColaboraciones(String ruta, String periodo) {
+        generarPdf(ruta, periodo);
     }
 
-    public void crearDocumento() throws FileNotFoundException, DocumentException {
+    private void crearDocumento(String ruta) throws FileNotFoundException, DocumentException {
         documento = new Document(PageSize.A4, 36, 36, 36, 36);
         fileOutputStream = new FileOutputStream(ruta + "/ReporteColaboraciones.pdf");
         PdfWriter.getInstance(documento, fileOutputStream);
     }
 
-    public void abrirDocumento() {
+    private void abrirDocumento() {
         documento.open();
     }
 
-    public void agregarTitulo(String texto) throws DocumentException {
+    private void agregarTitulo(String texto) throws DocumentException {
         PdfPTable tabla = new PdfPTable(1);
         PdfPCell celda = new PdfPCell(new com.itextpdf.text.Paragraph(texto, fuenteTitulo));
         celda.setColspan(5);
@@ -54,19 +55,19 @@ public class ReporteColaboraciones {
         documento.add(tabla);
     }
 
-    public void agregarParrafo(String texto) throws DocumentException {
+    private void agregarParrafo(String texto) throws DocumentException {
         Paragraph parrafo = new Paragraph();
         parrafo.add(new Phrase(texto, fuenteNormal));
         documento.add(parrafo);
     }
 
-    public void agregarSaltoLinea() throws DocumentException {
+    private void agregarSaltoLinea() throws DocumentException {
         Paragraph saltoLinea = new Paragraph();
         saltoLinea.add(new Phrase(Chunk.NEWLINE));
         documento.add(saltoLinea);
     }
 
-    public void agregarTablaColaboraciones(String periodo) throws DocumentException {
+    private void agregarTablaColaboraciones(String periodo) throws DocumentException {
         PdfPTable tabla = new PdfPTable(5);
         tabla.addCell("Nombre");
         tabla.addCell("Idioma");
@@ -83,7 +84,7 @@ public class ReporteColaboraciones {
             tabla.addCell(profesorUv.getNoPersonal());
         }
         documento.add(tabla);
-        cerrarDocumento();
+        documento.close();
     }
 
     private void obtenerColaboraciones(String periodo) {
@@ -91,7 +92,7 @@ public class ReporteColaboraciones {
         if (!(boolean) resultado.get(Constantes.KEY_ERROR)) {
             colaboraciones = (ArrayList<Colaboracion>) resultado.get("colaboraciones");
         } else {
-            System.out.println("Error: " + resultado.get(Constantes.KEY_MENSAJE));
+            Utils.mostrarAlertaSimple("", ""+resultado.get(Constantes.KEY_MENSAJE), AlertType.ERROR);
         }
     }    
 
@@ -105,8 +106,19 @@ public class ReporteColaboraciones {
         return profesorUv;
     }
 
-    public void cerrarDocumento() {
-        documento.close();
+    private void generarPdf(String ruta, String periodo) {
+        try {
+            crearDocumento(ruta);
+            abrirDocumento();
+            agregarTitulo("Reporte de Colaboraciones");
+            agregarSaltoLinea();
+            agregarSaltoLinea();
+            agregarParrafo("Periodo: " + periodo);
+            agregarSaltoLinea();
+            agregarSaltoLinea();
+            agregarTablaColaboraciones(periodo);
+        } catch (DocumentException | FileNotFoundException ex) {
+            Utils.mostrarAlertaSimple("", "No se han podido cargar los datos", AlertType.ERROR);
+        }
     }
-
 }

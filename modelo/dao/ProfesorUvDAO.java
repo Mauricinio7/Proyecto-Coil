@@ -22,10 +22,10 @@ public class ProfesorUvDAO {
                         + "nombre,"
                         + "correo,"
                         + "no_personal,"
-                        + "idProfesorUV,"
-                        + "Region_idRegion"
+                        + "id_profesoruv,"
+                        + "region_id_region"
                         + " FROM profesorUv "
-                        + "WHERE idProfesorUV = ?";
+                        + "WHERE id_profesoruv = ?";
                 PreparedStatement prepararSentencia = conexionBD.prepareStatement(consulta);
                 prepararSentencia.setInt(1, idProfesorUv);
                 ResultSet resultado = prepararSentencia.executeQuery();
@@ -35,8 +35,8 @@ public class ProfesorUvDAO {
                     profesorUv.setNombre(resultado.getString("nombre"));
                     profesorUv.setCorreo(resultado.getString("correo"));
                     profesorUv.setNoPersonal(resultado.getString("no_personal"));
-                    profesorUv.setIdProfesorUv(resultado.getInt("idProfesorUV"));
-                    profesorUv.setIdRegion(resultado.getInt("Region_idRegion"));
+                    profesorUv.setIdProfesorUv(resultado.getInt("id_profesoruv"));
+                    profesorUv.setIdRegion(resultado.getInt("region_id_region"));
                 }
                 respuesta.put(Constantes.KEY_ERROR, false);
                 respuesta.put("Profesor", profesorUv);
