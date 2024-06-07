@@ -17,13 +17,13 @@ public class AsignaturaDAO {
         HashMap<String, Object> respuesta = new HashMap<>();
         try(Connection conexionDB = ConexionBD.obtenerConexion()){
             StringBuilder consulta = new StringBuilder();
-            consulta.append("SELECT DISTINCT a.idAsignatura, a.nombre, a.areaAcademica ");
+            consulta.append("SELECT DISTINCT a.id_asignatura, a.nombre, a.area_academica ");
             consulta.append("FROM asignatura a ");
-            consulta.append("JOIN asignaturaprogramaeducativo ape ON a.idAsignatura = ape.Asignatura_idAsignatura ");
-            consulta.append("JOIN programaeducativo pe ON ape.ProgramaEducativo_idPrograma = pe.idPrograma ");
-            consulta.append("JOIN departamento_has_programaeducativo dhpe ON pe.idPrograma = dhpe.ProgramaEducativo_idPrograma ");
-            consulta.append("JOIN departamento d ON dhpe.Departamento_idDepartamento = d.idDepartamento ");
-            consulta.append("WHERE d.idDepartamento = ?");
+            consulta.append("JOIN asignatura_has_programa_educativo ahpe ON a.id_asignatura = ahpe.asignatura_id_asignatura ");
+            consulta.append("JOIN programa_educativo pe ON ahpe.programa_educativo_id_programa = pe.id_programa ");
+            consulta.append("JOIN departamento_has_programa_educativo dhpe ON pe.id_programa = dhpe.programa_educativo_id_programa ");
+            consulta.append("JOIN departamento d ON dhpe.departamento_id_departamento = d.id_departamento ");
+            consulta.append("WHERE d.id_departamento = ?");            
             PreparedStatement sentenciaPreparada = conexionDB.prepareStatement(consulta.toString());
             sentenciaPreparada.setInt(1, idDepartamento);
             ResultSet resultado = sentenciaPreparada.executeQuery();
@@ -38,15 +38,16 @@ public class AsignaturaDAO {
         HashMap<String, Object> respuesta = new HashMap<>();
         try (Connection conexionDB = ConexionBD.obtenerConexion()) {
             StringBuilder consulta = new StringBuilder();
-            consulta.append("SELECT DISTINCT a.areaAcademica ");
+            consulta.append("SELECT DISTINCT a.area_academica ");
             consulta.append("FROM asignatura a ");
-            consulta.append("JOIN asignaturaprogramaeducativo ape ON a.idAsignatura = ape.Asignatura_idAsignatura ");
-            consulta.append("JOIN programaeducativo pe ON ape.ProgramaEducativo_idPrograma = pe.idPrograma ");
-            consulta.append("JOIN departamento_has_programaeducativo dhp ON pe.idPrograma = dhp.ProgramaEducativo_idPrograma ");
-            consulta.append("JOIN departamento d ON dhp.Departamento_idDepartamento = d.idDepartamento ");
-            consulta.append("JOIN region_has_departamento rhd ON d.idDepartamento = rhd.Departamento_idDepartamento ");
-            consulta.append("JOIN region r ON rhd.Region_idRegion = r.idRegion ");
-            consulta.append("WHERE r.idRegion = ?");
+            consulta.append("JOIN asignatura_has_programa_educativo ahpe ON a.id_asignatura = ahpe.asignatura_id_asignatura ");
+            consulta.append("JOIN programa_educativo pe ON ahpe.programa_educativo_id_programa = pe.id_programa ");
+            consulta.append("JOIN departamento_has_programa_educativo dhpe ON pe.id_programa = dhpe.programa_educativo_id_programa ");
+            consulta.append("JOIN departamento d ON dhpe.departamento_id_departamento = d.id_departamento ");
+            consulta.append("JOIN region_has_departamento rhd ON d.id_departamento = rhd.departamento_id_departamento ");
+            consulta.append("JOIN region r ON rhd.region_id_region = r.id_region ");
+            consulta.append("WHERE r.id_region = ?");
+
             PreparedStatement consultaPreparada = conexionDB.prepareStatement(consulta.toString());
             consultaPreparada.setInt(1, idRegion);
             ResultSet resultado = consultaPreparada.executeQuery();
@@ -66,8 +67,8 @@ public class AsignaturaDAO {
             while(resultado.next()){
                 Asignatura nuevAsignatura = new Asignatura();
                 nuevAsignatura.setNombre(resultado.getString("nombre"));
-                nuevAsignatura.setIdAsignatura(resultado.getInt("idAsignatura"));
-                nuevAsignatura.setAreaAcademical(resultado.getString("areaAcademica"));
+                nuevAsignatura.setIdAsignatura(resultado.getInt("id_asignatura"));
+                nuevAsignatura.setAreaAcademical(resultado.getString("area_academica"));
                 listaAsignatura.add(nuevAsignatura);
             }
         }catch(SQLException errorSql){
@@ -79,7 +80,7 @@ public class AsignaturaDAO {
         ArrayList<String> listaAsignatura = new ArrayList<>();
         try{
             while(resultado.next()){
-                listaAsignatura.add(resultado.getString("areaAcademica"));
+                listaAsignatura.add(resultado.getString("area_academica"));
             }
         }catch(SQLException error){
             error.printStackTrace();

@@ -17,7 +17,7 @@ public class RegionDAO {
         try(Connection conexionDB = ConexionBD.obtenerConexion()){
             StringBuilder consulta = new StringBuilder();
             consulta.append("SELECT nombre, ");
-            consulta.append("idRegion FROM region");
+            consulta.append("id_region FROM region");
             PreparedStatement sentenciaPreparada = conexionDB.prepareStatement(consulta.toString());
             ResultSet resultado = sentenciaPreparada.executeQuery();
             respuesta.put("listaRegion", obtenerListaRegion(resultado));
@@ -33,7 +33,7 @@ public class RegionDAO {
             while(resultado.next()){
                 Region nuevaRegion = new Region();
                 nuevaRegion.setNombre(resultado.getString("nombre"));
-                nuevaRegion.setIdRegion(resultado.getInt("idRegion"));
+                nuevaRegion.setIdRegion(resultado.getInt("id_region"));
                 listaRegion.add(nuevaRegion);
             }
         }catch(SQLException errorSql){

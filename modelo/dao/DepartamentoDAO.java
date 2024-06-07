@@ -16,12 +16,12 @@ public class DepartamentoDAO {
         HashMap<String, Object> respuesta = new HashMap<>();
         try (Connection conexionDB = ConexionBD.obtenerConexion()) {
             StringBuilder consulta = new StringBuilder();
-            consulta.append("SELECT DISTINCT d.nombre, d.idDepartamento ");
+            consulta.append("SELECT DISTINCT d.nombre, d.id_departamento ");
             consulta.append("FROM departamento d ");
-            consulta.append("JOIN departamento_has_programaeducativo dhpe ON d.idDepartamento = dhpe.Departamento_idDepartamento ");
-            consulta.append("JOIN asignaturaprogramaeducativo ape ON dhpe.ProgramaEducativo_idPrograma = ape.ProgramaEducativo_idPrograma ");
-            consulta.append("JOIN asignatura a ON ape.Asignatura_idAsignatura = a.idAsignatura ");
-            consulta.append("WHERE a.areaAcademica = ?");
+            consulta.append("JOIN departamento_has_programa_educativo dhpe ON d.id_departamento = dhpe.departamento_id_departamento ");
+            consulta.append("JOIN asignatura_has_programa_educativo ahpe ON dhpe.programa_educativo_id_programa = ahpe.programa_educativo_id_programa ");
+            consulta.append("JOIN asignatura a ON ahpe.asignatura_id_asignatura = a.id_asignatura ");
+            consulta.append("WHERE a.area_academica = ?");
             PreparedStatement sentenciaPreparada = conexionDB.prepareStatement(consulta.toString());
             sentenciaPreparada.setString(1, areaAcad);
             ResultSet resultado = sentenciaPreparada.executeQuery();
@@ -41,7 +41,7 @@ public class DepartamentoDAO {
             while(resultado.next()){
                 Departamento nuevoDepartamento = new Departamento();
                 nuevoDepartamento.setNombre(resultado.getString("nombre"));
-                nuevoDepartamento.setIdDepartamento(resultado.getInt("idDepartamento"));
+                nuevoDepartamento.setIdDepartamento(resultado.getInt("id_departamento"));
                 listaDepartamento.add(nuevoDepartamento);
             }
         }catch(SQLException errorSql){
