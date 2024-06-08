@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.nio.file.Files;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.ResourceBundle;
@@ -25,6 +26,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.DateCell;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
@@ -34,6 +36,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import javafx.util.Callback;
 import javafx.util.Duration;
 
 public class FXMLRegistrarColaboracionSinOfertaController implements Initializable {
@@ -85,15 +88,17 @@ public class FXMLRegistrarColaboracionSinOfertaController implements Initializab
         profesorUv.setNombre("Carlos Fuentes");
         profesorUv.setCorreo("cfuentes@uv.mx");
         profesorUv.setIdRegion(1);
+        inicializarValores(profesorUv);
         //Eliminar termina
 
         limitarCaracteres();
-
         cargarAreasAcademicas();
         cbDepartamento.setDisable(true);
         cbAsignatura.setDisable(true);
         configurarSeleccionDepartamento();
         configurarSeleccionAsignatura();
+        configurarFechaFin();
+        dpFechaFin.setDisable(true);
     }    
     
     public void inicializarValores(ProfesorUv profesor){
@@ -153,6 +158,33 @@ public class FXMLRegistrarColaboracionSinOfertaController implements Initializab
         HashMap<String, Object> obtenerDepartamento = DepartamentoDAO.consultarDepartamentoPorAreaAcad(areaAcademica);
         listaDepartamentos.addAll((ArrayList<Departamento>) obtenerDepartamento.get("listaDepartamento"));
         cbDepartamento.setItems(listaDepartamentos);
+    }
+
+    private void configurarFechaFin() {
+        dpFechaInicio.valueProperty().addListener(new ChangeListener<LocalDate>() {
+            @Override
+            public void changed(ObservableValue<? extends LocalDate> observable, LocalDate oldValue, LocalDate newValue) {
+                if (newValue != null) {
+                    dpFechaFin.setDisable(false);
+                    dpFechaFin.setDayCellFactory(new Callback<DatePicker, DateCell>() {
+                        @Override
+                        public DateCell call(DatePicker datePicker) {
+                            return new DateCell() {
+                                @Override
+                                public void updateItem(LocalDate item, boolean empty) {
+                                    super.updateItem(item, empty);
+                                    if (item.isBefore(newValue.plusDays(1))) {
+                                        setDisable(true);
+                                    }
+                                }
+                            };
+                        }
+                    });
+                } else {
+                    dpFechaFin.setDisable(true);
+                }
+            }
+        });
     }
 
     private boolean camposVacios(){
