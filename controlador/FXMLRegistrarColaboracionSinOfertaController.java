@@ -15,6 +15,7 @@ import coilvic.modelo.pojo.Colaboracion;
 import coilvic.modelo.pojo.Departamento;
 import coilvic.modelo.pojo.PlanProyecto;
 import coilvic.modelo.pojo.ProfesorUv;
+import coilvic.utilidades.Utils;
 import javafx.animation.TranslateTransition;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -28,6 +29,7 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.stage.FileChooser;
@@ -166,7 +168,12 @@ public class FXMLRegistrarColaboracionSinOfertaController implements Initializab
 
     private boolean validarNoEstudiantes(){
         return tfNoEstudiantes.getText().matches("[0-9]+") &&
-         Integer.parseInt(tfNoEstudiantes.getText()) > 0;
+         Integer.parseInt(tfNoEstudiantes.getText()) > 0 && 
+         Integer.parseInt(tfNoEstudiantes.getText()) < 1000;
+    }
+
+    private boolean validarLongitudNombrePlanProyecto() {
+        return archivoPlan.getName().length() <= 45;
     }
 
     private Colaboracion obtenerDatosColaboracion() {
@@ -211,10 +218,17 @@ public class FXMLRegistrarColaboracionSinOfertaController implements Initializab
     @FXML
     private void btnGuardar(ActionEvent event) {
         if(!camposVacios()) {
-            Colaboracion colaboracion = obtenerDatosColaboracion();
-            PlanProyecto planProyecto = obtenerDatosPlanProyecto();
-
-            //GUARDAR COLABORACION Y PLAN PROYECTO
+            if(validarFechas() && validarNoEstudiantes() && validarLongitudNombrePlanProyecto()) {
+                Colaboracion colaboracion = obtenerDatosColaboracion();
+                PlanProyecto planProyecto = obtenerDatosPlanProyecto();
+                //GUARDAR COLABORACION Y PLAN PROYECTO
+            } else {
+                Utils.mostrarAlertaSimple
+                ("", "Se han introducido datos inválidos", AlertType.ERROR);
+            }
+        } else {
+            Utils.mostrarAlertaSimple
+            ("Rellenar campos obligatorios", "Se han dejado campos obligatorios vacíos", AlertType.ERROR);
         }
     }
 
