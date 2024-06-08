@@ -22,9 +22,9 @@ public class ColaboracionDAO {
             try {
             String sentencia = "INSERT INTO colaboracion ("
                     + "estado, fecha_inicio, fecha_fin, idioma, nombre, objetivo_general,"
-                    + " tema_interes, periodo, no_estudiantes_externos, ProfesorUV_idProfesorUV,"
-                    + " Profesor_externo_idProfesorExterno, Asignatura_idAsignatura, Region_idRegion,"
-                    + " Departamento_idDepartamento) "
+                    + " tema_interes, periodo, no_estudiante_externo, profesoruv_id_profesoruv,"
+                    + " profesor_externo_id_profesor_externo, asignatura_id_asignatura, region_id_region,"
+                    + " departamento_id_departamento) "
                     + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
             PreparedStatement prepararSentencia = conexionBD.prepareStatement(sentencia);
             prepararSentencia.setString(1, colaboracion.getEstado());
@@ -46,8 +46,7 @@ public class ColaboracionDAO {
                     respuesta.put(Constantes.KEY_ERROR, false);
                     respuesta.put(Constantes.KEY_MENSAJE, "Colaboración registrada con éxito");
                 } else {
-                    respuesta.put(Constantes.KEY_MENSAJE, "Hubo un error al guardar los datos de la colaboración"
-                            + ", favor de verificar");
+                    respuesta.put(Constantes.KEY_MENSAJE, "No se han podido guardar los datos.");
                 }
                 conexionBD.close();
             } catch(SQLException ex) {
