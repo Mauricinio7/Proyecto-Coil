@@ -18,8 +18,8 @@ public class OfertaColaboracionDAO {
             StringBuilder consulta = new StringBuilder();
             consulta.append("INSERT INTO oferta_colaboracion ");
             consulta.append("(idioma, nombre, objetivo_general, periodo, tema_interes, ");
-            consulta.append("ProfesorUV_idProfesorUV, idAsignatura, idDepartamento) ");
-            consulta.append("VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
+            consulta.append("profesoruv_id_profesoruv, asignatura_id_asignatura) ");
+            consulta.append("VALUES (?, ?, ?, ?, ?, ?, ?)");
             PreparedStatement prepararSentencia = conexionDB.prepareStatement(consulta.toString());
             prepararSentencia.setString(1, nuevaOferta.getIdioma());
             prepararSentencia.setString(2, nuevaOferta.getNombre());
@@ -31,7 +31,7 @@ public class OfertaColaboracionDAO {
             prepararSentencia.setInt(8, idDepartamento);
             int filasAfectada =prepararSentencia.executeUpdate();
             if(filasAfectada > 0){
-                respuesta.put("guardado", true);
+                respuesta.put("ofertaColaboracion", true);
             }else{
                 respuesta.put(Constantes.KEY_ERROR, false);
             } 
@@ -47,7 +47,7 @@ public class OfertaColaboracionDAO {
         try(Connection conexionDB = ConexionBD.obtenerConexion()){
             StringBuilder consulta = new StringBuilder();
             consulta.append("SELECT idioma, nombre, objetivo_general, periodo, tema_interes, ");
-            consulta.append("ProfesorUV_idProfesorUV, idAsignatura, idDepartamento ");
+            consulta.append("profesoruv_id_profesoruv, asignatura_id_asignatura ");
             consulta.append("FROM oferta_colaboracion");
             PreparedStatement sentenciaPreparada = conexionDB.prepareStatement(consulta.toString());
             ResultSet resultado = sentenciaPreparada.executeQuery();
@@ -58,12 +58,11 @@ public class OfertaColaboracionDAO {
                 nuevaOferta.setObjetivoGeneral(resultado.getString("objetivo_general"));
                 nuevaOferta.setPeriodo(resultado.getString("periodo"));
                 nuevaOferta.setTemaInteres(resultado.getString("tema_interes"));
-                nuevaOferta.setIdProfesor(resultado.getInt("ProfesorUV_idProfesorUV"));
-                nuevaOferta.setIdAsignatura(resultado.getInt("idAsignatura"));
-                nuevaOferta.setIdDepartamento(resultado.getInt("idDepartamento"));
+                nuevaOferta.setIdProfesor(resultado.getInt("profesoruv_id_profesoruv"));
+                nuevaOferta.setIdAsignatura(resultado.getInt("asignatura_id_asignatura"));
                 listaOferta.add(nuevaOferta);
             }
-            respuesta.put("nuevaOferta", listaOferta);
+            respuesta.put("consultaOferta", listaOferta);
         }catch(SQLException errorSql){
             errorSql.printStackTrace();
             respuesta.put(Constantes.KEY_ERROR, null);

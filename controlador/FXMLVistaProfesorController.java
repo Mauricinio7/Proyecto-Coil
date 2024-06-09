@@ -6,9 +6,13 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.ResourceBundle;
 
+import com.mysql.jdbc.Constants;
+import com.mysql.jdbc.Util;
+
 import coilvic.CoilVic;
 import coilvic.modelo.dao.ProfesorUvDAO;
 import coilvic.modelo.pojo.ProfesorUv;
+import coilvic.utilidades.Utils;
 import javafx.animation.TranslateTransition;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -66,7 +70,7 @@ public class FXMLVistaProfesorController implements Initializable {
             ProfesorUv profesorUvSesion = (ProfesorUv) mapProfesorUV.get("Profesor");
             irPantallaOfertasColaboracion(profesorUvSesion);
         }else{
-            System.out.println("id no enton");
+            System.out.println("Error al conectar con la bd");
         }
         
     }
@@ -78,7 +82,7 @@ public class FXMLVistaProfesorController implements Initializable {
             ProfesorUv profesorUvSesion = (ProfesorUv) mapProfesorUV.get("Profesor");
             irPantallaOfertasColaboracion(profesorUvSesion);
         }else{
-
+            System.out.println("Error al conectar con la bd");
         }
     }
 

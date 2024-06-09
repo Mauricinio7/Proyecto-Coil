@@ -9,7 +9,6 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.ResourceBundle;
-import java.util.Stack;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -19,9 +18,13 @@ import coilvic.modelo.dao.DepartamentoDAO;
 import coilvic.modelo.dao.RegionDAO;
 import coilvic.modelo.pojo.Asignatura;
 import coilvic.modelo.pojo.Departamento;
+import coilvic.modelo.pojo.OfertaColaboracion;
 import coilvic.modelo.pojo.ProfesorUv;
 import coilvic.modelo.pojo.Region;
 import coilvic.utilidades.Constantes;
+import coilvic.utilidades.ThreadVerifyRepetitiveChars;
+import coilvic.utilidades.Utils;
+import coilvic.utilidades.VerifyValidCharsThread;
 import javafx.animation.TranslateTransition;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -34,6 +37,8 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.control.TextInputControl;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.util.Duration;
@@ -46,7 +51,12 @@ import javafx.util.Duration;
  */
 public class FXMLVistaOfertaColaboracionController implements Initializable {
 
-    
+    String expresionValidaNombreColaboracion = "[a-zA-Z0-9íáéóúüñÁÉÍÓÚÑÜ. ]+";
+    Pattern patronNombreColaboracion = Pattern.compile(expresionValidaNombreColaboracion);
+    String expresionValidaNombreIdioma = "[a-zA-ZíáéóúñÁÉÍÓÚÑÜ. ]+";
+    Pattern patronNombreIdioma = Pattern.compile(expresionValidaNombreIdioma);
+    String expresionValidaTopic = "[a-zA-Z0-9()íáéóúñÁÉÍÓÚÑÜ¿?.\\[\\]\\- ]+";
+    Pattern patronTopic= Pattern.compile(expresionValidaTopic);
     ProfesorUv profesorSesion;
     private ObservableList<Region> observadorRegion;
     private ObservableList<Asignatura> observadorAsignatura;
@@ -103,10 +113,13 @@ public class FXMLVistaOfertaColaboracionController implements Initializable {
         modificarAreaAcademica();
         modificarDepartamento();
         modificarAsignatura();
+        verifyNonValideCharsNameColaboracion();
+        verifyNonValideCharsLenguage();
+        verifyNonValideCharsObjetivo();
+        verifyNonValidTopic();
     }
     //metodos de crud
     public void fillRegion(){
-        disableCombobox();
         HashMap<String, Object> obtenerRegion = RegionDAO.consultarListaRegion();
         verificarConsulta(obtenerRegion, cbRegion, observadorRegion, "listaRegion");
     }
@@ -126,18 +139,32 @@ public class FXMLVistaOfertaColaboracionController implements Initializable {
         if(consulta != null && consulta.containsKey(key)){
             observador = FXCollections.observableArrayList((ArrayList<T>)consulta.get(key));
             comboAModificar.setItems(observador);
+            comboAModificar.setValue(observador.get(0));
+            setComboboxValues(observador.get(0));
         }else{
-
+            Utils.mostrarAlertaSimple(Constantes.TITTLE_ERROR_CONEXION, Constantes.ERROR_CARGAR_DATOS, AlertType.ERROR);
         }
+    }
+    public boolean setComboboxValues(Object classType){
+        if(classType == null) return false;
+        if(classType instanceof Region){
+            fillAreaAcademicaPorRegion(cbRegion.getSelectionModel().getSelectedItem().getIdRegion());
+            fillDepartamentoPorAreaAcad(cbAreaAcad.getSelectionModel().getSelectedItem());
+            fillAsignaturaPorDepartamento(cbDepartamento.getSelectionModel().getSelectedItem().getIdDepartamento());
+        }else if(classType instanceof Asignatura && classType instanceof String){
+            fillDepartamentoPorAreaAcad(cbAreaAcad.getSelectionModel().getSelectedItem());
+            fillAsignaturaPorDepartamento(cbDepartamento.getSelectionModel().getSelectedItem().getIdDepartamento());
+        }else if(classType instanceof Departamento){
+            fillAsignaturaPorDepartamento(cbDepartamento.getSelectionModel().getSelectedItem().getIdDepartamento());
+        }
+        return true;
     }
     //listerners 
     public void modificarAreaAcademica(){
         cbRegion.valueProperty().addListener(new ChangeListener<Region>(){
             @Override
             public void changed(ObservableValue<? extends Region> observable, Region oldValue, Region newValue) {
-                disableCombobox();
                 if(newValue != null){
-                    cbAreaAcad.setDisable(false);
                     fillAreaAcademicaPorRegion(newValue.getIdRegion());
                 }
             }
@@ -178,6 +205,59 @@ public class FXMLVistaOfertaColaboracionController implements Initializable {
             error.printStackTrace();
         }
     }
+    public void verifyNonValideCharsNameColaboracion(){
+        tfNameCol.textProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+                if(newValue.length() == 0){
+                    tfNameCol.setText("");
+                }else{
+                    threadValidationInputText(oldValue, tfNameCol);              
+                }
+            }
+        });
+    }
+    public void verifyNonValideCharsLenguage(){
+        tfIdioma.textProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+                if(newValue.length() == 0){
+                    tfIdioma.setText("");
+                }else{
+                    threadValidationInputText(oldValue, tfIdioma);
+                }
+            }
+            
+        });
+    }
+    void verifyNonValideCharsObjetivo(){
+        taObjetivo.textProperty().addListener(new ChangeListener<String>() {
+
+            @Override
+            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+                if(newValue.length() == 0){
+                    taObjetivo.setText("");
+                }else{
+                    threadValidationInputText(oldValue, taObjetivo);
+                }
+            }
+            
+        });
+    }
+    void verifyNonValidTopic(){
+        taTemaInteres.textProperty().addListener(new ChangeListener<String>() {
+
+            @Override
+            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+                if(newValue.length() == 0){
+                    taTemaInteres.setText("");
+                }else{
+                    threadValidationInputText(oldValue, taTemaInteres);
+                }
+            }
+            
+        });
+    }
     public void fillPeriodo(){
         ObservableList<String> observablePeriodo =  FXCollections.observableArrayList();
         ArrayList<String> listaPeriodos = new ArrayList<>();
@@ -192,6 +272,12 @@ public class FXMLVistaOfertaColaboracionController implements Initializable {
             }
             observablePeriodo.addAll(listaPeriodos);
             cbPeriodo.setItems(observablePeriodo);
+    }
+    public void threadValidationInputText(String oldValue, TextInputControl component){
+        Thread threadVerifyValidCharsName = new Thread(new VerifyValidCharsThread(component, patronNombreColaboracion, oldValue));
+        Thread threadVerifyRepetitiveChars = new Thread(new ThreadVerifyRepetitiveChars(component, oldValue));
+        threadVerifyValidCharsName.start(); 
+        threadVerifyRepetitiveChars.start(); 
     }
      //metodos de animacion 
      @FXML
@@ -251,19 +337,14 @@ public class FXMLVistaOfertaColaboracionController implements Initializable {
         btScale.setScaleX(1);
         btScale.setScaleY(1);
     }
-    public void disableCombobox(){
-        cbAreaAcad.setDisable(true);
-        cbAsignatura.setDisable(true);
-        cbDepartamento.setDisable(true);
-    }
     @FXML
     private void clicSave(MouseEvent event) {
-        if(!areComboboxEmpty() && validNameForColaboracion(tfNameCol.getText()) && validNameForLenguage(tfIdioma.getText()) && validObjetiveTopic(taObjetivo.getText())
-            && validObjetiveTopic(taTemaInteres.getText()) && passRepetiveFilter()){
-            System.out.println("aprobado");
-         }else{
-
-         }
+       if(!areComboboxEmpty() && isValidText(tfNameCol.getText(), patronNombreColaboracion) && isValidText(tfIdioma.getText(), patronNombreIdioma)
+            && (taObjetivo.getText().length() == 0 || isValidText(taObjetivo.getText(), patronTopic)) && isValidText(taTemaInteres.getText(), patronTopic)){
+                
+       }else{
+            Utils.mostrarAlertaSimple(Constantes.TITTLE_CAMPOS_VACIOS, Constantes.CAMPOS_VACIOS, AlertType.WARNING);
+       }
     }
 
     @FXML
@@ -277,58 +358,14 @@ public class FXMLVistaOfertaColaboracionController implements Initializable {
         }
         return false;
     }
-    public static boolean validNameForColaboracion(String nombre){
-        String regex = "[a-zA-Z0-9íáéóúñÁÉÍÓÚÑÜ. ]+";
-        Pattern patronCoincidencias = Pattern.compile(regex);
-        Matcher coincidencias = patronCoincidencias.matcher(nombre);
-        return coincidencias.matches();
-    }
-    public static boolean validNameForLenguage(String idioma){
-        String regex = "[a-zA-Z0-99íáéóúñÁÉÍÓÚÑÜ.]+";
-        Pattern patron = Pattern.compile(regex);
-        Matcher coincidencias = patron.matcher(idioma);
-        return coincidencias.matches();
-    }
-    public static boolean validObjetiveTopic(String objetivoTema){
-        String regex = "[a-zA-Z0-9()íáéóúñÁÉÍÓÚÑÜ¿?.\\[\\] ]+";
-        Pattern patrones = Pattern.compile(regex);
-        Matcher coincidencias = patrones.matcher(objetivoTema);
-        return coincidencias.matches();
-    }
-    public static boolean containRepetiveWords(String cadena){
-        String regex = "[a-zA-Z0-9()íáéóúñÁÉÍÓÚÑÜ¿?.\\[\\] ]+";
-        Stack <String> colaTokens = new Stack<>();
-        int countRepetiveWords = 0;
-        Pattern patron = Pattern.compile(regex);
-        Matcher coincidencias = patron.matcher(cadena);
-        while(coincidencias.find()){
-            String token = coincidencias.group();
-            if(colaTokens.empty()){
-                colaTokens.push(token);
-                countRepetiveWords++;
-            }else if(colaTokens.peek().equals(token)){
-                colaTokens.push(token);
-                countRepetiveWords++;
-                if(isSpecialChar(token) && countRepetiveWords == 2){
-                    return true;
-                }
-            }else{
-                colaTokens.push(token);
-                countRepetiveWords = 1; 
-            }
-        }
-        return false;
-    }
-    public static boolean isSpecialChar(String token){
-        if(token.equals(".") || token.equals("?")|| token.equals("¿") || token.equals("-")){
-            return true;
-        }
-        return false;
-    }
-    public boolean passRepetiveFilter(){
-        if(!(containRepetiveWords(tfNameCol.getText()) && containRepetiveWords(tfIdioma.getText()) && containRepetiveWords(taObjetivo.getText()) && containRepetiveWords(taTemaInteres.getText()))){
-                return true;
-        }
-        return false;
+    // public static boolean isSpecialChar(String token){
+    //     if(token.equals(".") || token.equals("?")|| token.equals("¿") || token.equals("-")){
+    //         return true;
+    //     }
+    //     return false;
+    // }
+    public boolean isValidText(String text, Pattern patron){
+        Matcher coincidencia = patron.matcher(text);
+        return coincidencia.matches();
     }
 }
