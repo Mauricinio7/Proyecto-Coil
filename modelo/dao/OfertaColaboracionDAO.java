@@ -12,7 +12,7 @@ import coilvic.modelo.pojo.OfertaColaboracion;
 import coilvic.utilidades.Constantes;
 
 public class OfertaColaboracionDAO {
-    public static HashMap<String, Boolean> guardarOferta(int idAsignatura, int idDepartamento, OfertaColaboracion nuevaOferta){
+    public static HashMap<String, Boolean> guardarOferta(OfertaColaboracion nuevaOferta){
         HashMap<String, Boolean> respuesta = new HashMap<>();
         try(Connection conexionDB = ConexionBD.obtenerConexion()){
             StringBuilder consulta = new StringBuilder();
@@ -27,8 +27,7 @@ public class OfertaColaboracionDAO {
             prepararSentencia.setString(4, nuevaOferta.getPeriodo());
             prepararSentencia.setString(5, nuevaOferta.getTemaInteres());
             prepararSentencia.setInt(6, nuevaOferta.getIdProfesor());
-            prepararSentencia.setInt(7, idAsignatura);
-            prepararSentencia.setInt(8, idDepartamento);
+            prepararSentencia.setInt(7, nuevaOferta.getIdAsignatura());
             int filasAfectada =prepararSentencia.executeUpdate();
             if(filasAfectada > 0){
                 respuesta.put("ofertaColaboracion", true);

@@ -7,19 +7,17 @@ public class OfertaColaboracion {
     String periodo;
     String temaInteres;
     int idAsignatura;
-    int idOfertaColaboracion;
     int idProfesor;
 
     public OfertaColaboracion() {
     }
 
-    public OfertaColaboracion(String idioma, String nombre, String objetivoGeneral, String periodo, String temaInteres, int idOfertaColaboracion, int idProfesor, int idAsignatura) {
+    public OfertaColaboracion(String idioma, String nombre, String objetivoGeneral, String periodo, String temaInteres, int idProfesor, int idAsignatura) {
         this.idioma = idioma;
         this.nombre = nombre;
         this.objetivoGeneral = objetivoGeneral;
         this.periodo = periodo;
         this.temaInteres = temaInteres;
-        this.idOfertaColaboracion = idOfertaColaboracion;
         this.idProfesor = idProfesor;
         this.idAsignatura = idAsignatura;
     }
@@ -47,10 +45,6 @@ public class OfertaColaboracion {
         return temaInteres;
     }
 
-    public int getIdOfertaColaboracion() {
-        return idOfertaColaboracion;
-    }
-
     public int getIdProfesor() {
         return idProfesor;
     }
@@ -73,10 +67,6 @@ public class OfertaColaboracion {
 
     public void setTemaInteres(String temaInteres) {
         this.temaInteres = temaInteres;
-    }
-
-    public void setIdOfertaColaboracion(int idOfertaColaboracion) {
-        this.idOfertaColaboracion = idOfertaColaboracion;
     }
 
     public void setIdProfesor(int idProfesor) {

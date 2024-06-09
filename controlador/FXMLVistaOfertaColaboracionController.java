@@ -15,6 +15,7 @@ import java.util.regex.Pattern;
 import coilvic.modelo.ConexionApacheNet;
 import coilvic.modelo.dao.AsignaturaDAO;
 import coilvic.modelo.dao.DepartamentoDAO;
+import coilvic.modelo.dao.OfertaColaboracionDAO;
 import coilvic.modelo.dao.RegionDAO;
 import coilvic.modelo.pojo.Asignatura;
 import coilvic.modelo.pojo.Departamento;
@@ -41,6 +42,7 @@ import javafx.scene.control.TextInputControl;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
+import javafx.stage.Stage;
 import javafx.util.Duration;
 
 
@@ -51,7 +53,7 @@ import javafx.util.Duration;
  */
 public class FXMLVistaOfertaColaboracionController implements Initializable {
 
-    String expresionValidaNombreColaboracion = "[a-zA-Z0-9íáéóúüñÁÉÍÓÚÑÜ. ]+";
+    String expresionValidaNombreColaboracion = "[a-zA-Z0-9íáéóúüñÁÉÍÓÚÑÜ.\\- ]+";
     Pattern patronNombreColaboracion = Pattern.compile(expresionValidaNombreColaboracion);
     String expresionValidaNombreIdioma = "[a-zA-ZíáéóúñÁÉÍÓÚÑÜ. ]+";
     Pattern patronNombreIdioma = Pattern.compile(expresionValidaNombreIdioma);
@@ -142,7 +144,8 @@ public class FXMLVistaOfertaColaboracionController implements Initializable {
             comboAModificar.setValue(observador.get(0));
             setComboboxValues(observador.get(0));
         }else{
-            Utils.mostrarAlertaSimple(Constantes.TITTLE_ERROR_CONEXION, Constantes.ERROR_CARGAR_DATOS, AlertType.ERROR);
+            Stage stagePrincipal = (Stage) tfIdioma.getScene().getWindow();
+            Utils.mostrarAlertaSimple(Constantes.TITTLE_ERROR_CONEXION, Constantes.ERROR_CARGAR_DATOS, AlertType.ERROR, stagePrincipal);
         }
     }
     public boolean setComboboxValues(Object classType){
@@ -341,14 +344,32 @@ public class FXMLVistaOfertaColaboracionController implements Initializable {
     private void clicSave(MouseEvent event) {
        if(!areComboboxEmpty() && isValidText(tfNameCol.getText(), patronNombreColaboracion) && isValidText(tfIdioma.getText(), patronNombreIdioma)
             && (taObjetivo.getText().length() == 0 || isValidText(taObjetivo.getText(), patronTopic)) && isValidText(taTemaInteres.getText(), patronTopic)){
-                
+                OfertaColaboracion nuevaOfertaColaboracion = new OfertaColaboracion();
+                nuevaOfertaColaboracion.setNombre(tfNameCol.getText());
+                nuevaOfertaColaboracion.setIdAsignatura(cbAsignatura.getSelectionModel().getSelectedItem().getIdAsignatura());
+                nuevaOfertaColaboracion.setIdProfesor(profesorSesion.getIdProfesorUv());
+                nuevaOfertaColaboracion.setIdioma(tfIdioma.getText());
+                nuevaOfertaColaboracion.setObjetivoGeneral(taObjetivo.getText());
+                nuevaOfertaColaboracion.setPeriodo(cbPeriodo.getSelectionModel().getSelectedItem());
+                nuevaOfertaColaboracion.setTemaInteres(taTemaInteres.getText());
+                HashMap <String, Boolean> mapGuardadoOferta = OfertaColaboracionDAO.guardarOferta(nuevaOfertaColaboracion);
+                if(mapGuardadoOferta != null && mapGuardadoOferta.containsKey("ofertaColaboracion")){
+                    Stage stagePrincipal = (Stage)tfIdioma.getScene().getWindow();
+                    Utils.mostrarAlertaSimple("Guardado correcto", Constantes.SAVE_OFERTA_MESSAGE, AlertType.INFORMATION, stagePrincipal);
+                }
        }else{
-            Utils.mostrarAlertaSimple(Constantes.TITTLE_CAMPOS_VACIOS, Constantes.CAMPOS_VACIOS, AlertType.WARNING);
+            Stage stagePrincipal = (Stage) tfIdioma.getScene().getWindow();
+            Utils.mostrarAlertaSimple(Constantes.TITTLE_CAMPOS_VACIOS, Constantes.CAMPOS_VACIOS, AlertType.WARNING, stagePrincipal);
        }
     }
 
     @FXML
-    private void clicCancel(MouseEvent event) {   
+    private void clicCancel(MouseEvent event) {  
+        Stage stagePrincipal = (Stage) tfIdioma.getScene().getWindow();
+        boolean confirmarSalida = Utils.mostrarAlertaConfirmacion("Salir", "¿Seguro que desea salir sin registrar la oferta?", AlertType.CONFIRMATION, stagePrincipal);
+        if(confirmarSalida){
+            System.out.println("Clic Aceptar");
+        }
     }
     //validacions
     public boolean areComboboxEmpty(){
@@ -358,12 +379,6 @@ public class FXMLVistaOfertaColaboracionController implements Initializable {
         }
         return false;
     }
-    // public static boolean isSpecialChar(String token){
-    //     if(token.equals(".") || token.equals("?")|| token.equals("¿") || token.equals("-")){
-    //         return true;
-    //     }
-    //     return false;
-    // }
     public boolean isValidText(String text, Pattern patron){
         Matcher coincidencia = patron.matcher(text);
         return coincidencia.matches();
