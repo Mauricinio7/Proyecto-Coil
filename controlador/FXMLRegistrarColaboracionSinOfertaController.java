@@ -10,12 +10,14 @@ import java.util.HashMap;
 import java.util.ResourceBundle;
 
 import coilvic.modelo.dao.AsignaturaDAO;
+import coilvic.modelo.dao.ColaboracionDAO;
 import coilvic.modelo.dao.DepartamentoDAO;
 import coilvic.modelo.pojo.Asignatura;
 import coilvic.modelo.pojo.Colaboracion;
 import coilvic.modelo.pojo.Departamento;
 import coilvic.modelo.pojo.PlanProyecto;
 import coilvic.modelo.pojo.ProfesorUv;
+import coilvic.utilidades.Constantes;
 import coilvic.utilidades.Utils;
 import javafx.animation.TranslateTransition;
 import javafx.beans.value.ChangeListener;
@@ -88,6 +90,7 @@ public class FXMLRegistrarColaboracionSinOfertaController implements Initializab
         profesorUv.setNombre("Carlos Fuentes");
         profesorUv.setCorreo("cfuentes@uv.mx");
         profesorUv.setIdRegion(1);
+        profesorUv.setIdProfesorUv(1);
         inicializarValores(profesorUv);
         //Eliminar termina
 
@@ -211,6 +214,7 @@ public class FXMLRegistrarColaboracionSinOfertaController implements Initializab
     private Colaboracion obtenerDatosColaboracion() {
         Colaboracion colaboracion = new Colaboracion();
         colaboracion.setNombre(tfNombreColaboracion.getText());
+        colaboracion.setEstado("Activa");
         colaboracion.setFechaInicio(dpFechaInicio.getValue().toString());
         colaboracion.setFechaFin(dpFechaFin.getValue().toString());
         colaboracion.setIdioma(tfIdioma.getText());
@@ -221,6 +225,7 @@ public class FXMLRegistrarColaboracionSinOfertaController implements Initializab
         colaboracion.setIdAsignatura(cbAsignatura.getValue().getIdAsignatura());
         colaboracion.setIdDepartamento(cbDepartamento.getValue().getIdDepartamento());
         colaboracion.setIdProfesorUV(profesorUv.getIdProfesorUv());
+        colaboracion.setIdRegion(profesorUv.getIdRegion());
         return colaboracion;
     }
 
@@ -253,7 +258,7 @@ public class FXMLRegistrarColaboracionSinOfertaController implements Initializab
             if(validarFechas() && validarNoEstudiantes() && validarLongitudNombrePlanProyecto()) {
                 Colaboracion colaboracion = obtenerDatosColaboracion();
                 PlanProyecto planProyecto = obtenerDatosPlanProyecto();
-                //GUARDAR COLABORACION Y PLAN PROYECTO
+                guardarColaboracionConPlanProyecto(colaboracion, planProyecto);
             } else {
                 Utils.mostrarAlertaSimple
                 ("", "Se han introducido datos inválidos", AlertType.ERROR);
@@ -261,6 +266,15 @@ public class FXMLRegistrarColaboracionSinOfertaController implements Initializab
         } else {
             Utils.mostrarAlertaSimple
             ("Rellenar campos obligatorios", "Se han dejado campos obligatorios vacíos", AlertType.ERROR);
+        }
+    }
+
+    private void guardarColaboracionConPlanProyecto(Colaboracion colaboracion, PlanProyecto planProyecto) {
+        HashMap<String, Object> respuesta = ColaboracionDAO.guardarColaboracionConPlanProyecto(colaboracion, planProyecto);
+        if (!(Boolean) respuesta.get(Constantes.KEY_ERROR)) {
+            Utils.mostrarAlertaSimple(null, ""+respuesta.get(Constantes.KEY_MENSAJE), AlertType.INFORMATION);
+        } else {
+            Utils.mostrarAlertaSimple("Error", ""+respuesta.get(Constantes.KEY_MENSAJE), AlertType.ERROR);
         }
     }
 
