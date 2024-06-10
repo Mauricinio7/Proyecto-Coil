@@ -168,6 +168,7 @@ public class FXMLRegistrarColaboracionSinOfertaController implements Initializab
             @Override
             public void changed(ObservableValue<? extends LocalDate> observable, LocalDate oldValue, LocalDate newValue) {
                 if (newValue != null) {
+                    dpFechaFin.setValue(null);
                     dpFechaFin.setDisable(false);
                     dpFechaFin.setDayCellFactory(new Callback<DatePicker, DateCell>() {
                         @Override
