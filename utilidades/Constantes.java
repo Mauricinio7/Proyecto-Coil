@@ -3,7 +3,7 @@ package coilvic.utilidades;
 public class Constantes {
     
     public static final String DRIVER = "com.mysql.jdbc.Driver";
-    public static final String NOMBRE_BD = "COIL";
+    public static final String NOMBRE_BD = "coil";
     public static final String HOSTNAME = "127.0.1";
     public static final String PUERTO = "3306";
     public static final String USUARIO = "coiluser";

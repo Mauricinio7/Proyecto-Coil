@@ -27,6 +27,7 @@ public class RegionDAO {
         if(respuesta.isEmpty()) respuesta.put(Constantes.KEY_ERROR, null);
         return respuesta;
     }
+
     public static ArrayList<Region> obtenerListaRegion(ResultSet resultado){
         ArrayList<Region> listaRegion = new ArrayList<>();
         try{
@@ -40,5 +41,29 @@ public class RegionDAO {
             errorSql.printStackTrace();
         }
         return listaRegion;
+    }
+
+    public static HashMap<String, Object> consultarRegionPorId(int idRegion){
+        HashMap<String, Object> respuesta = new HashMap<>();
+        respuesta.put(Constantes.KEY_ERROR, true);
+        Connection conexionBD = ConexionBD.obtenerConexion();
+        if (conexionBD != null) {
+            try {
+                String consulta = "SELECT nombre FROM region WHERE id_region = ?";
+                PreparedStatement prepararSentencia = conexionBD.prepareStatement(consulta);
+                prepararSentencia.setInt(1, idRegion);
+                ResultSet resultado = prepararSentencia.executeQuery();
+                if (resultado.next()) {
+                    respuesta.put(Constantes.KEY_ERROR, false);
+                    respuesta.put("region", resultado.getString("nombre"));
+                }
+                conexionBD.close();
+            } catch (SQLException e) {
+                respuesta.put(Constantes.KEY_MENSAJE, e.getMessage());
+            }
+        } else {
+            respuesta.put(Constantes.KEY_MENSAJE, Constantes.MENSAJE_ERROR_CONEXION);
+        }
+        return respuesta;
     }
 }
