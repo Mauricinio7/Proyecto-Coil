@@ -15,6 +15,7 @@ import coilvic.modelo.dao.DepartamentoDAO;
 import coilvic.modelo.pojo.Asignatura;
 import coilvic.modelo.pojo.Colaboracion;
 import coilvic.modelo.pojo.Departamento;
+import coilvic.modelo.pojo.OfertaColaboracion;
 import coilvic.modelo.pojo.PlanProyecto;
 import coilvic.modelo.pojo.ProfesorUv;
 import coilvic.utilidades.Constantes;
@@ -43,6 +44,7 @@ import javafx.util.Duration;
 
 public class FXMLRegistrarColaboracionSinOfertaController implements Initializable {
 
+    private OfertaColaboracion ofertaColaboracion;
     private ProfesorUv profesorUv;
     private File archivoPlan;
     private ObservableList<Asignatura> listaAsignaturas;
@@ -106,6 +108,14 @@ public class FXMLRegistrarColaboracionSinOfertaController implements Initializab
     
     public void inicializarValores(ProfesorUv profesor){
         this.profesorUv = profesor;
+        lbNombreProfesor.setText("Nombre profesor: " + profesorUv.getNombre());
+        lbCorreoProfesor.setText("Correo: " + profesorUv.getCorreo());
+        lbRegionProfesor.setText("Region: " + profesorUv.getIdRegion()); //CAMBIAR POR EL NOMBRE DE LA REGION
+    }
+
+    public void inicializarValores(ProfesorUv profesor, OfertaColaboracion oferta) {
+        this.profesorUv = profesor;
+        this.ofertaColaboracion = oferta;
         lbNombreProfesor.setText("Nombre profesor: " + profesorUv.getNombre());
         lbCorreoProfesor.setText("Correo: " + profesorUv.getCorreo());
         lbRegionProfesor.setText("Region: " + profesorUv.getIdRegion()); //CAMBIAR POR EL NOMBRE DE LA REGION
