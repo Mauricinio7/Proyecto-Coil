@@ -12,6 +12,7 @@ import java.util.ResourceBundle;
 import coilvic.modelo.dao.AsignaturaDAO;
 import coilvic.modelo.dao.ColaboracionDAO;
 import coilvic.modelo.dao.DepartamentoDAO;
+import coilvic.modelo.dao.RegionDAO;
 import coilvic.modelo.pojo.Asignatura;
 import coilvic.modelo.pojo.Colaboracion;
 import coilvic.modelo.pojo.Departamento;
@@ -120,7 +121,16 @@ public class FXMLRegistrarColaboracionSinOfertaController implements Initializab
     private void cargarDatosProfesor() {
         lbNombreProfesor.setText("Nombre profesor: " + profesorUv.getNombre());
         lbCorreoProfesor.setText("Correo: " + profesorUv.getCorreo());
-        lbRegionProfesor.setText("Region: " + profesorUv.getIdRegion()); //CAMBIAR POR EL NOMBRE DE LA REGION
+        lbRegionProfesor.setText("Region: " + obtenerRegionProfesor());
+    }
+
+    private String obtenerRegionProfesor() {
+        HashMap<String, Object> obtenerRegion = RegionDAO.consultarRegionPorId(profesorUv.getIdRegion());
+        if (!(Boolean) obtenerRegion.get(Constantes.KEY_ERROR)) {
+            return (String) obtenerRegion.get("region");
+        } else {
+            return "no disponible por el momento";
+        }
     }
     
     private void cargarAreasAcademicas() {
