@@ -108,14 +108,16 @@ public class FXMLRegistrarColaboracionSinOfertaController implements Initializab
     
     public void inicializarValores(ProfesorUv profesor){
         this.profesorUv = profesor;
-        lbNombreProfesor.setText("Nombre profesor: " + profesorUv.getNombre());
-        lbCorreoProfesor.setText("Correo: " + profesorUv.getCorreo());
-        lbRegionProfesor.setText("Region: " + profesorUv.getIdRegion()); //CAMBIAR POR EL NOMBRE DE LA REGION
+        cargarDatosProfesor();
     }
 
     public void inicializarValores(ProfesorUv profesor, OfertaColaboracion oferta) {
         this.profesorUv = profesor;
         this.ofertaColaboracion = oferta;
+        cargarDatosProfesor();
+    }
+
+    private void cargarDatosProfesor() {
         lbNombreProfesor.setText("Nombre profesor: " + profesorUv.getNombre());
         lbCorreoProfesor.setText("Correo: " + profesorUv.getCorreo());
         lbRegionProfesor.setText("Region: " + profesorUv.getIdRegion()); //CAMBIAR POR EL NOMBRE DE LA REGION
