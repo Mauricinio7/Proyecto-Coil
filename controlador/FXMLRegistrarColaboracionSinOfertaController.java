@@ -36,6 +36,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.Button;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.stage.FileChooser;
@@ -83,6 +84,8 @@ public class FXMLRegistrarColaboracionSinOfertaController implements Initializab
     private ComboBox<Departamento> cbDepartamento;
     @FXML
     private TextArea taDescripcionPlan;
+    @FXML
+    private Button btnPlanProyecto;
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -335,6 +338,7 @@ public class FXMLRegistrarColaboracionSinOfertaController implements Initializab
     private void btnGuardar(ActionEvent event) {
         if(!camposVacios()) {
             if(validarFechas() && validarNoEstudiantes() && validarLongitudNombrePlanProyecto()) {
+                btnPlanProyecto.setStyle("");
                 Colaboracion colaboracion = obtenerDatosColaboracion();
                 PlanProyecto planProyecto = obtenerDatosPlanProyecto();
                 guardarColaboracionConPlanProyecto(colaboracion, planProyecto);
@@ -343,6 +347,9 @@ public class FXMLRegistrarColaboracionSinOfertaController implements Initializab
                 ("", "Se han introducido datos inválidos", AlertType.ERROR);
             }
         } else {
+            if (archivoPlan == null) {
+                btnPlanProyecto.setStyle("-fx-border-width: 3px; -fx-border-color: lightcoral;");
+            }
             Utils.mostrarAlertaSimple
             ("Rellenar campos obligatorios", "Se han dejado campos obligatorios vacíos", AlertType.ERROR);
         }
@@ -372,6 +379,11 @@ public class FXMLRegistrarColaboracionSinOfertaController implements Initializab
         dialogoSeleccion.getExtensionFilters().add(filtro);
         Stage escenarioActual = (Stage) panelDeslisante.getScene().getWindow();
         archivoPlan = dialogoSeleccion.showOpenDialog(escenarioActual);
+        if (archivoPlan != null) {
+            btnPlanProyecto.setStyle("-fx-border-width: 3px; -fx-border-color: lightgreen;");
+        } else {
+            btnPlanProyecto.setStyle("");
+        }
     }
     
     @FXML
