@@ -4,6 +4,7 @@
  */
 package coilvic.controlador;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -13,14 +14,10 @@ import java.util.regex.Pattern;
 import coilvic.modelo.dao.AsignaturaDAO;
 import coilvic.modelo.dao.ColaboracionDAO;
 import coilvic.modelo.dao.DepartamentoDAO;
-import coilvic.modelo.dao.PlanProyectoDAO;
 import coilvic.modelo.dao.ProfesorExternoDAO;
 import coilvic.modelo.dao.ProfesorUvDAO;
 import coilvic.modelo.dao.RegionDAO;
 import coilvic.modelo.pojo.Colaboracion;
-import coilvic.modelo.pojo.Departamento;
-import coilvic.modelo.pojo.OfertaColaboracion;
-import coilvic.modelo.pojo.PlanProyecto;
 import coilvic.utilidades.Constantes;
 import coilvic.utilidades.ThreadVerifyRepetitiveChars;
 import coilvic.utilidades.Utils;
@@ -33,17 +30,22 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextInputControl;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
@@ -56,7 +58,7 @@ public class FXMLConsultarHistorialController implements Initializable {
 
     String expresionValidaNombreColaboracion = "[a-zA-Z0-9íáéóúüñÁÉÍÓÚÑÜ.\\- ]+";
     Pattern patronNombreColaboracion = Pattern.compile(expresionValidaNombreColaboracion);
-    ObservableList<Colaboracion> listaColaboracionObservable = FXCollections.observableArrayList();
+    ObservableList<Colaboracion> listaColaboracionObservable;
     private ObservableList<String> listaEstado;
     @FXML
     private Pane panelDeslisante;
@@ -126,12 +128,44 @@ public class FXMLConsultarHistorialController implements Initializable {
     }
     public void configurarTabla(){
         clAsignatura.setCellValueFactory(new PropertyValueFactory<>("nombreAsignatura"));
-        clDepartamento.setCellFactory(new PropertyValueFactory<>("nombreDepartamento"));
-        clName.setCellFactory(new PropertyValueFactory<>("nombre"));
-        clPeriodo.setCellFactory(new PropertyValueFactory<>("periodo"));
-        clProfesor.setCellFactory(new PropertyValueFactory<>("nombreProfesorUV"));
-        clRegion.setCellFactory(new PropertyValueFactory<>("nombreRegion"));
-        clInformacion.setCellFactory(new PropertyValueFactory<>("idColaboracion"));
+        clDepartamento.setCellValueFactory(new PropertyValueFactory<>("nombreDepartamento"));
+        clName.setCellValueFactory(new PropertyValueFactory<>("nombre"));
+        clPeriodo.setCellValueFactory(new PropertyValueFactory<>("periodo"));
+        clProfesor.setCellValueFactory(new PropertyValueFactory<>("nombreProfesorUV"));
+        clRegion.setCellValueFactory(new PropertyValueFactory<>("nombreRegion"));
+        clInformacion.setCellFactory(column -> { return new TableCell<Colaboracion, String>() {
+                Button botonInformacion = new Button("Información");
+
+                {
+                    botonInformacion.setOnAction(event -> {
+                        Colaboracion colaboracion = getTableView().getItems().get(getIndex());
+                        try{
+                            Stage stagePrincipal = (Stage)tfName.getScene().getWindow();
+                            FXMLLoader loader = new FXMLLoader(getClass().getResource("/coilvic/vista/FXMLConsultaColaboracion.fxml"));
+                            Parent root = loader.load();
+                            FXMLConsultaColaboracionController controlador = loader.getController();
+                            controlador.inicializarValores(colaboracion);
+                            Scene nuevaEscena = new Scene(root);
+                            stagePrincipal.setScene(nuevaEscena);
+                            stagePrincipal.setTitle("Consulta Colaboración");
+                            stagePrincipal.show();
+                        }catch(IOException error){
+
+                        }
+                    });
+                }
+
+                @Override
+                protected void updateItem(String item, boolean empty) {
+                    super.updateItem(item, empty);
+                    if (empty) {
+                        setGraphic(null);
+                    } else {
+                        setGraphic(botonInformacion);
+                    }
+                }
+            };
+        });
     }
     public void verifyNonValideTfName(){
         tfName.textProperty().addListener(new ChangeListener<String>() {
@@ -159,7 +193,6 @@ public class FXMLConsultarHistorialController implements Initializable {
         String posibleEstado;
         String posibleEstado2;
         String seleccionCombobox = cbEstado.getSelectionModel().getSelectedItem();
-        Stage stage = (Stage)tfName.getScene().getWindow();
         if(seleccionCombobox.equals("Colaboraciones Activas")){
             posibleEstado = "Activo";
             posibleEstado2 = "";
@@ -198,22 +231,9 @@ public class FXMLConsultarHistorialController implements Initializable {
                     colaboracion.setNombreProfesorExterno((String) profesorExternoUv.get("nombreProfesorExterno"));
                     System.out.println(colaboracion.getNombreProfesorExterno());
                 }
-                
-                HashMap<String, Object> planProyecto = new HashMap<>();
-                if(colaboracion.getIdColaboracion() != null){
-                    System.out.println(colaboracion.getIdColaboracion());
-                }else{
-                    System.out.println("No hay id");
-                }
-                PlanProyectoDAO.obtenerPlanProyectoPorIdColaboracion(colaboracion.getIdColaboracion());
-                if(planProyecto.containsKey("planProyecto")){
-                    PlanProyecto nuevoPlanProyecto = (PlanProyecto) planProyecto.get("planProyecto");
-                    if(planProyecto != null){
-                        System.out.println(nuevoPlanProyecto.getNombre());
-                    }
-                }
             }
-            // tvColaboraciones.setItems(listaColaboracionObservable);
+            listaColaboracionObservable = FXCollections.observableArrayList(listaColaboracion);
+            tvColaboraciones.setItems(listaColaboracionObservable);
         }else{
             Utils.mostrarAlertaSimple(Constantes.KEY_ERROR, Constantes.ERROR_CARGAR_DATOS, AlertType.ERROR, (Stage)tfName.getScene().getWindow());
         }
