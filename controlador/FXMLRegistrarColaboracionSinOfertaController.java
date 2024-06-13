@@ -140,6 +140,7 @@ public class FXMLRegistrarColaboracionSinOfertaController implements Initializab
         cargarDatosProfesor();
         cargarDatosOfertaColaboracionSeleccionada();
         cargarEstadoComponentes();
+        cargarDepartamentos(cbAreaAcademica.getValue());
     }
 
     private void cargarEstadoComponentes() {
