@@ -172,6 +172,77 @@ public class ColaboracionDAO {
         return respuesta;
     }
 
+    public static HashMap<String, Object> obtenerColaboracionesPorProfesor(int idProfesorUV) {
+        HashMap<String, Object> respuesta = new LinkedHashMap<>();
+        respuesta.put(Constantes.KEY_ERROR, true);
+        Connection conexionBD = ConexionBD.obtenerConexion();
+        if (conexionBD != null) {
+            try {
+                String consulta = "SELECT estado,"
+                        + " nombre,"
+                        + "estado,"
+                        + "id_colaboracion "
+                        + "FROM colaboracion "
+                        + "WHERE profesoruv_id_profesoruv = ? "
+                        + "AND estado <> 'cancelado'";
+                PreparedStatement prepararSentencia = conexionBD.prepareStatement(consulta);
+                prepararSentencia.setInt(1, idProfesorUV);
+                ResultSet resultado = prepararSentencia.executeQuery();
+                ArrayList<Colaboracion> colaboraciones = new ArrayList<>();
+                while (resultado.next()) {
+                    Colaboracion colaboracion = new Colaboracion();
+                    colaboracion.setEstado(resultado.getString("estado"));
+                    colaboracion.setNombre(resultado.getString("nombre"));
+                    colaboracion.setIdColaboracion(resultado.getInt("id_colaboracion"));
+                    colaboraciones.add(colaboracion);
+                }
+                respuesta.put(Constantes.KEY_ERROR, false);
+                respuesta.put("colaboraciones", colaboraciones);
+                conexionBD.close();
+            } catch (SQLException e) {
+                respuesta.put(Constantes.KEY_MENSAJE, e.getMessage());
+            }
+        } else {
+            respuesta.put(Constantes.KEY_MENSAJE, "No se han podido cargar los datos");
+        }
+        return respuesta;
+    }
+
+    public static HashMap<String, Object> obtenerColaboracionesPorProfesorConFiltro(int idProfesorUV, String filtro) {
+        HashMap<String, Object> respuesta = new LinkedHashMap<>();
+        respuesta.put(Constantes.KEY_ERROR, true);
+        Connection conexionBD = ConexionBD.obtenerConexion();
+        if (conexionBD != null) {
+            try {
+                String consulta = "SELECT estado,"
+                        + " nombre,"
+                        + "id_colaboracion "
+                        + "FROM colaboracion "
+                        + "WHERE profesoruv_id_profesoruv = ? AND estado = ?";
+                PreparedStatement prepararSentencia = conexionBD.prepareStatement(consulta);
+                prepararSentencia.setInt(1, idProfesorUV);
+                prepararSentencia.setString(2, filtro);
+                ResultSet resultado = prepararSentencia.executeQuery();
+                ArrayList<Colaboracion> colaboraciones = new ArrayList<>();
+                while (resultado.next()) {
+                    Colaboracion colaboracion = new Colaboracion();
+                    colaboracion.setEstado(filtro);
+                    colaboracion.setNombre(resultado.getString("nombre"));
+                    colaboracion.setIdColaboracion(resultado.getInt("id_colaboracion"));
+                    colaboraciones.add(colaboracion);
+                }
+                respuesta.put(Constantes.KEY_ERROR, false);
+                respuesta.put("colaboraciones", colaboraciones);
+                conexionBD.close();
+            } catch (SQLException e) {
+                respuesta.put(Constantes.KEY_MENSAJE, e.getMessage());
+            }
+        } else {
+            respuesta.put(Constantes.KEY_MENSAJE, "No se han podido cargar los datos");
+        }
+        return respuesta;
+    }
+
     public static HashMap<String, Object> guardarColaboracionConPlanProyecto (Colaboracion colaboracion, PlanProyecto planProyecto) {
         HashMap<String, Object> respuesta = new HashMap<>();
         respuesta.put(Constantes.KEY_ERROR, true);
