@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.ResourceBundle;
 import java.awt.Desktop;
 import coilvic.modelo.dao.PeriodoDAO;
-import coilvic.modelo.pojo.ReporteColaboraciones;
+import coilvic.modelo.pojo.Reporte;
 import coilvic.utilidades.Utils;
 import javafx.animation.PauseTransition;
 import javafx.animation.TranslateTransition;
@@ -113,9 +113,9 @@ public class FXMLConsultarReporteColaboracionesController implements Initializab
 
     private void generarReporte(String ruta) {
         if (cbPeriodo.getValue() != null) {
-            new ReporteColaboraciones(ruta, cbPeriodo.getValue());
+            new Reporte(ruta, cbPeriodo.getValue(), "colaboraciones");
         } else {
-            new ReporteColaboraciones(ruta, "No existen periodos concluidos");
+            new Reporte(ruta, "No existen periodos concluidos", "colaboraciones");
         }
         try {
             abrirArchivo(ruta + "/ReporteColaboraciones.pdf");
