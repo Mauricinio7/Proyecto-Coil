@@ -165,13 +165,10 @@ public class FXMLVerColaboracionController implements Initializable {
     @FXML
     private void btnClicConcluir(ActionEvent event) {
         //TODO llamar concluir colaboracion
-        //TODO llamar concluir colaboracion
     }
 
     @FXML
     private void btnClicCancelar(ActionEvent event) {
-        //TODO llamarCancelar colaboracion
-        Utils.mostrarAlertaSimple("Working", "Esta parte aún está en construcción", Alert.AlertType.INFORMATION, (Stage) lblColaboracion.getScene().getWindow());
         //TODO llamarCancelar colaboracion
         Utils.mostrarAlertaSimple("Working", "Esta parte aún está en construcción", Alert.AlertType.INFORMATION, (Stage) lblColaboracion.getScene().getWindow());
     }
