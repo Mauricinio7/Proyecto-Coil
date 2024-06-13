@@ -8,12 +8,16 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.ResourceBundle;
 import javafx.animation.TranslateTransition;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
@@ -30,6 +34,16 @@ public class FXMLSubirEvidenciasExtemporaneasController implements Initializable
     private ImageView ivMisOfertas;
     @FXML
     private Label lbMisOfertas;
+    @FXML
+    private TextField tfNombre;
+    @FXML
+    private TextArea taDescripcion;
+    @FXML
+    private Button btnSolicitarConstancias;
+    @FXML
+    private Button btnGuardar;
+    @FXML
+    private Button btnCancelar;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -100,6 +114,10 @@ public class FXMLSubirEvidenciasExtemporaneasController implements Initializable
         }catch(IOException error){
             error.printStackTrace();
         }
+    }
+
+    @FXML
+    private void btnSubirArchivos(ActionEvent event) {
     }
     
 }

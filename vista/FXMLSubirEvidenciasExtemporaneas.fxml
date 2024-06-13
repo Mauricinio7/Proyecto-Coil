@@ -18,7 +18,7 @@
          <children>
             <ImageView fitHeight="143.0" fitWidth="149.0" layoutX="167.0" layoutY="16.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@../recursos/LogoCOIL.png" />
+                  <Image url="@../Desktop/COILVIC/CoilVic/src/coilvic/recursos/LogoCOIL.png" />
                </image>
             </ImageView>
             <Label layoutX="357.0" layoutY="25.0" text="COIL - VIC" textFill="WHITE">
@@ -32,17 +32,17 @@
          <children>
             <ImageView fitHeight="58.0" fitWidth="61.0" layoutX="236.0" layoutY="145.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@../recursos/home.png" />
+                  <Image url="@../Desktop/COILVIC/CoilVic/src/coilvic/recursos/home.png" />
                </image>
             </ImageView>
             <ImageView fx:id="ivMisOfertas" fitHeight="67.0" fitWidth="62.0" layoutX="236.0" layoutY="248.0" onMouseClicked="#clicMisOfertasIV" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@../recursos/colaboracion.png" />
+                  <Image url="@../Desktop/COILVIC/CoilVic/src/coilvic/recursos/colaboracion.png" />
                </image>
             </ImageView>
             <ImageView fitHeight="61.0" fitWidth="60.0" layoutX="237.0" layoutY="359.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@../recursos/mis-Colab.png" />
+                  <Image url="@../Desktop/COILVIC/CoilVic/src/coilvic/recursos/mis-Colab.png" />
                </image>
             </ImageView>
             <Label layoutX="122.0" layoutY="163.0" text="Inicio" textFill="WHITE">
@@ -86,17 +86,21 @@
             <Font name="Arial Rounded MT Bold" size="32.0" />
          </font>
       </Label>
-      <Label layoutX="747.0" layoutY="313.0" text="Nombre:">
+      <Label layoutX="747.0" layoutY="292.0" text="Nombre:">
          <font>
             <Font size="20.0" />
          </font>
       </Label>
-      <Label layoutX="717.0" layoutY="360.0" text="Descripcion:">
+      <Label layoutX="717.0" layoutY="339.0" text="Descripcion:">
          <font>
             <Font size="20.0" />
          </font>
       </Label>
-      <TextField layoutX="838.0" layoutY="313.0" prefHeight="31.0" prefWidth="300.0" />
-      <TextArea layoutX="838.0" layoutY="360.0" prefHeight="163.0" prefWidth="300.0" />
+      <TextField fx:id="tfNombre" layoutX="838.0" layoutY="292.0" prefHeight="31.0" prefWidth="300.0" />
+      <TextArea fx:id="taDescripcion" layoutX="838.0" layoutY="339.0" prefHeight="163.0" prefWidth="300.0" />
+      <Button layoutX="838.0" layoutY="526.0" mnemonicParsing="false" onAction="#btnSubirArchivos" prefHeight="78.0" prefWidth="300.0" style="-fx-background-radius: 30;" text="Subir archivos" />
+      <Button fx:id="btnSolicitarConstancias" layoutX="184.0" layoutY="678.0" mnemonicParsing="false" prefHeight="38.0" prefWidth="171.0" text="Solicitar constancias" />
+      <Button fx:id="btnGuardar" layoutX="573.0" layoutY="678.0" mnemonicParsing="false" prefHeight="38.0" prefWidth="171.0" text="Guardar" />
+      <Button fx:id="btnCancelar" layoutX="967.0" layoutY="678.0" mnemonicParsing="false" prefHeight="38.0" prefWidth="171.0" text="Cancelar" />
    </children>
 </AnchorPane>
