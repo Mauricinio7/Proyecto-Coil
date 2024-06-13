@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
@@ -18,7 +19,7 @@
             <Font name="Droid Arabic Kufi Bold" size="20.0" />
          </font>
       </Label>
-      <Button layoutX="35.0" layoutY="632.0" mnemonicParsing="false" text="Volver" />
+      <Button layoutX="35.0" layoutY="632.0" mnemonicParsing="false" onAction="#clicRegresar" text="Regresar" />
       <Label layoutX="34.0" layoutY="102.0" text="Nombre de la Colaboración" />
       <Label fx:id="lbNameColaboracion" layoutX="253.0" layoutY="102.0" text="Label" />
       <Label layoutX="34.0" layoutY="156.0" text="Profesor" />
@@ -36,14 +37,14 @@
       <Label fx:id="lbCorreo" layoutX="253.0" layoutY="426.0" text="Label" />
       <Label fx:id="lbFechaInicio" layoutX="253.0" layoutY="484.0" text="Label" />
       <Label layoutX="34.0" layoutY="534.0" text="Fecha fin" />
-      <Label layoutX="253.0" layoutY="534.0" text="Label" />
       <Label layoutX="35.0" layoutY="581.0" text="Estado" />
-      <Label fx:id="lbFechaFin" layoutX="253.0" layoutY="581.0" text="Label" />
+      <Label fx:id="lbFechaFin" layoutX="253.0" layoutY="534.0" text="Label" />
       <Label layoutX="635.0" layoutY="111.0" text="Nombre" />
       <Label fx:id="lbNameProfesorExterno" layoutX="742.0" layoutY="111.0" text="Label" />
       <Label fx:id="lbCorreoProfesorExterno" layoutX="742.0" layoutY="165.0" text="Label" />
       <Label fx:id="lbInstitucion" layoutX="742.0" layoutY="215.0" text="Label" />
       <Label layoutX="639.0" layoutY="165.0" text="Correo" />
       <Label layoutX="639.0" layoutY="215.0" text="Institución" />
+      <ComboBox fx:id="cbEstado" layoutX="253.0" layoutY="577.0" prefHeight="26.0" prefWidth="144.0" />
    </children>
 </AnchorPane>
