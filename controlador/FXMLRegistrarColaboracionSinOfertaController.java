@@ -110,8 +110,15 @@ public class FXMLRegistrarColaboracionSinOfertaController implements Initializab
     public void inicializarValores(ProfesorUv profesor){
         this.profesorUv = profesor;
         cargarDatosProfesor();
+
+        limitarCaracteres();
+        cargarAreasAcademicas();
         cbDepartamento.setDisable(true);
-        cargarEstadoComponentes();
+        cbAsignatura.setDisable(true);
+        configurarSeleccionDepartamento();
+        configurarSeleccionAsignatura();
+        configurarFechaFin();
+        dpFechaFin.setDisable(true);
     }
 
     public void inicializarValores(ProfesorUv profesor, OfertaColaboracion oferta) {
@@ -119,6 +126,14 @@ public class FXMLRegistrarColaboracionSinOfertaController implements Initializab
         this.ofertaColaboracion = oferta;
         cargarDatosProfesor();
         cargarDatosOfertaColaboracionSeleccionada();
+
+        limitarCaracteres();
+        cargarAreasAcademicas();
+        cbAsignatura.setDisable(true);
+        configurarSeleccionDepartamento();
+        configurarSeleccionAsignatura();
+        configurarFechaFin();
+        dpFechaFin.setDisable(true);
     }
 
     private void cargarDatosProfesor() {
@@ -135,6 +150,13 @@ public class FXMLRegistrarColaboracionSinOfertaController implements Initializab
         taTemaInteres.setText(ofertaColaboracion.getTemaInteres());
         cbAreaAcademica.setValue(obtenerAreaAcademicaOfertaColaboracion().getAreaAcademical());
         cbAsignatura.setValue(obtenerAreaAcademicaOfertaColaboracion());
+        tfNombreColaboracion.setDisable(true);
+        tfIdioma.setDisable(true);
+        taObjetivo.setDisable(true);
+        tfPeriodo.setDisable(true);
+        taTemaInteres.setDisable(true);
+        cbAreaAcademica.setDisable(true);
+        cbAsignatura.setDisable(true);
     }
 
     private String obtenerRegionProfesor() {
