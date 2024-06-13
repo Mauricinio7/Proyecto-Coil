@@ -7,6 +7,7 @@ import coilvic.modelo.dao.ProfesorUvDAO;
 import coilvic.modelo.pojo.Colaboracion;
 import coilvic.modelo.pojo.Evidencia;
 import coilvic.modelo.pojo.ProfesorUv;
+import coilvic.utilidades.Constantes;
 import coilvic.utilidades.Utils;
 
 import java.io.IOException;
@@ -35,7 +36,7 @@ import javafx.util.Duration;
 
 public class FXMLSubirEvidenciasExtemporaneasController implements Initializable {
 
-    private ArrayList<Evidencia> evidencias = new ArrayList<>();
+    private ArrayList<Evidencia> evidencias;
     private Colaboracion colaboracion;
     @FXML
     private Pane panelDeslisante;
@@ -57,6 +58,11 @@ public class FXMLSubirEvidenciasExtemporaneasController implements Initializable
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
+
+        //Eliminar inicia
+        obtenerColaboracion(4);
+        obtenerListaEvidencias();
+        //Eliminar termina
     }    
     
     public void inicializarValores(Integer idColaboracion){
@@ -79,7 +85,7 @@ public class FXMLSubirEvidenciasExtemporaneasController implements Initializable
         if (!(boolean)mapEvidencias.get("error")){
             evidencias = (ArrayList<Evidencia>) mapEvidencias.get("evidencias");
         }else{
-            Utils.mostrarAlertaSimple(null, "No se han podido cargar los datos", AlertType.ERROR);
+            Utils.mostrarAlertaSimple(null, ""+mapEvidencias.get(Constantes.KEY_MENSAJE), AlertType.ERROR);
         }
     }
     

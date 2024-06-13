@@ -24,10 +24,9 @@ public class EvidenciaDAO {
                         + " archivo_adjunto,"
                         + " descripcion,"
                         + " fecha_entrega,"
-                        + " nombre,"
-                        + " colaboracion_id_colaboracion"
+                        + " nombre"
                         + " FROM evidencia"
-                        + " WHERE id_colaboracion = ?";
+                        + " WHERE colaboracion_id_colaboracion = ?";
                 PreparedStatement prepararSentencia = conexionBD.prepareStatement(consulta);
                 prepararSentencia.setInt(1, idColaboracion);
                 ResultSet resultado = prepararSentencia.executeQuery();
@@ -39,7 +38,7 @@ public class EvidenciaDAO {
                     evidencia.setDescripcion(resultado.getString("descripcion"));
                     evidencia.setFechaEntrega(resultado.getString("fecha_entrega"));
                     evidencia.setNombre(resultado.getString("nombre"));
-                    evidencia.setIdColaboracion(resultado.getInt("colaboracion_id_colaboracion"));
+                    evidencia.setIdColaboracion(idColaboracion);
                     evidencias.add(evidencia);
                 }
                 respuesta.put(Constantes.KEY_ERROR, false);
