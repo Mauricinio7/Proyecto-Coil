@@ -94,7 +94,16 @@ public class FXMLRegistrarColaboracionSinOfertaController implements Initializab
         profesorUv.setCorreo("cfuentes@uv.mx");
         profesorUv.setIdRegion(1);
         profesorUv.setIdProfesorUv(1);
-        inicializarValores(profesorUv);
+        //inicializarValores(profesorUv);
+        ofertaColaboracion = new OfertaColaboracion();
+        ofertaColaboracion.setIdAsignatura(420);
+        ofertaColaboracion.setIdProfesor(1);
+        ofertaColaboracion.setIdioma("Español");
+        ofertaColaboracion.setNombre("Colaboración 1");
+        ofertaColaboracion.setObjetivoGeneral("Objetivo general de la colaboración");
+        ofertaColaboracion.setPeriodo("Enero - Junio 2020");
+        ofertaColaboracion.setTemaInteres("Tema de interés");
+        inicializarValores(profesorUv, ofertaColaboracion);
         //Eliminar termina
 
         limitarCaracteres();
@@ -116,6 +125,7 @@ public class FXMLRegistrarColaboracionSinOfertaController implements Initializab
         this.profesorUv = profesor;
         this.ofertaColaboracion = oferta;
         cargarDatosProfesor();
+        cargarDatosOfertaColaboracionSeleccionada();
     }
 
     private void cargarDatosProfesor() {
@@ -130,9 +140,8 @@ public class FXMLRegistrarColaboracionSinOfertaController implements Initializab
         taObjetivo.setText(ofertaColaboracion.getObjetivoGeneral());
         tfPeriodo.setText(ofertaColaboracion.getPeriodo());
         taTemaInteres.setText(ofertaColaboracion.getTemaInteres());
-        cbAreaAcademica.setValue(ofertaColaboracion.getNombreAreaAcademica());
-        cbDepartamento.setValue(ofertaColaboracion.getNombreDepartamento());
-        cbAsignatura.setValue(ofertaColaboracion.getNombreAsignatura());
+        cbAreaAcademica.setValue(obtenerAreaAcademicaOfertaColaboracion().getAreaAcademical());
+        cbAsignatura.setValue(obtenerAreaAcademicaOfertaColaboracion());
     }
 
     private String obtenerRegionProfesor() {
@@ -144,13 +153,14 @@ public class FXMLRegistrarColaboracionSinOfertaController implements Initializab
         }
     }
 
-    private String obtenerAreaAcademicaOfertaColaboracion() {
+    private Asignatura obtenerAreaAcademicaOfertaColaboracion() {
         HashMap<String, Object> obtenerAreaAcademica = 
-        AsignaturaDAO.consultarAreaAcademicaPorRegion(ofertaColaboracion.getIdRegion());
+        AsignaturaDAO.consultarAreaAcademicaPorId(ofertaColaboracion.getIdAsignatura());
         if (!(Boolean) obtenerAreaAcademica.get(Constantes.KEY_ERROR)) {
-            return (String) obtenerAreaAcademica.get("areaAcademica");
+            return (Asignatura) obtenerAreaAcademica.get("area");
         } else {
-            return "no disponible por el momento";
+            Utils.mostrarAlertaSimple("", "No se han podido cargar los datos", AlertType.ERROR);
+            return null;
         }
     }
     

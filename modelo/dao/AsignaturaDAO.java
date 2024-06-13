@@ -87,4 +87,29 @@ public class AsignaturaDAO {
         }
         return listaAsignatura;
     }
+
+    public static HashMap<String, Object> consultarAreaAcademicaPorId(Integer idAsignatura) {
+        HashMap<String, Object> respuesta = new HashMap<>();
+        respuesta.put(Constantes.KEY_ERROR, true);
+        Connection conexionBD = ConexionBD.obtenerConexion();
+        if (conexionBD != null) {
+            try {
+                String consulta = "SELECT area_academica, nombre FROM asignatura WHERE id_asignatura = ?";
+                PreparedStatement prepararSentencia = conexionBD.prepareStatement(consulta);
+                prepararSentencia.setInt(1, idAsignatura);
+                ResultSet resultado = prepararSentencia.executeQuery();
+                if (resultado.next()) {
+                    Asignatura asignatura = new Asignatura();
+                    asignatura.setAreaAcademical(resultado.getString("area_academica"));
+                    asignatura.setNombre(resultado.getString("nombre"));
+                    respuesta.put(Constantes.KEY_ERROR, false);
+                    respuesta.put("area", asignatura);
+                }
+                conexionBD.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return respuesta;
+    }
 }
