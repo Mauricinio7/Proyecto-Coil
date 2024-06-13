@@ -73,26 +73,6 @@ public class ProfesorUvDAO {
         return respuesta;
     }
 
-    public static HashMap<String, Object> obtenerNombreProfesorPorId(int idProfesor){
-        HashMap<String, Object> respuesta = new HashMap<>();
-        try(Connection conexionDB = ConexionBD.obtenerConexion()){
-            StringBuilder consulta = new StringBuilder();
-            consulta.append("SELECT nombre ");
-            consulta.append("FROM profesoruv ");
-            consulta.append("WHERE id_profesoruv = ?");
-            PreparedStatement sentenciaPreparada = conexionDB.prepareStatement(consulta.toString());
-            sentenciaPreparada.setInt(1, idProfesor);
-            ResultSet resultado = sentenciaPreparada.executeQuery();
-            if(resultado.next()){
-                respuesta.put("nombreProfesor", resultado.getString("nombre"));
-            }
-        }catch(SQLException errorSql){
-            respuesta.put(Constantes.KEY_MENSAJE, "No se han podido cargar los datos");
-            errorSql.printStackTrace();
-        }
-        return respuesta;
-    }
-
     public static HashMap<String, Object> obtenerProfesoresPeriodoConcluido(String periodoSeleccionado) {
         HashMap<String, Object> respuesta = new LinkedHashMap<>();
         respuesta.put(Constantes.KEY_ERROR, true);
@@ -127,6 +107,25 @@ public class ProfesorUvDAO {
             }
         } else {
             respuesta.put(Constantes.KEY_MENSAJE, "No se han podido cargar los datos");
+        }
+        return respuesta;
+    }
+    public static HashMap<String, Object> obtenerCorreoPorIdProfesor(int idProfesoruv){
+        HashMap<String, Object> respuesta = new  HashMap<>();
+        try(Connection conexionDB = ConexionBD.obtenerConexion()){
+            StringBuilder consulta = new StringBuilder();
+            consulta.append("SELECT correo ");
+            consulta.append("FROM profesoruv ");
+            consulta.append("WHERE id_profesoruv = ?");
+            PreparedStatement sentenciaPreparada = conexionDB.prepareStatement(consulta.toString());
+            sentenciaPreparada.setInt(1, 1);
+            ResultSet resultado = sentenciaPreparada.executeQuery();
+            if(resultado.next()){
+                respuesta.put("correo", resultado.getString("correo"));
+            }
+        }catch(SQLException errorSql){
+            respuesta.put(Constantes.KEY_MENSAJE, "No se han podido cargar los datos");
+            errorSql.printStackTrace();
         }
         return respuesta;
     }
