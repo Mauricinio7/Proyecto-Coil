@@ -2,9 +2,12 @@ package coilvic.controlador;
 
 import coilvic.CoilVic;
 import coilvic.modelo.dao.ProfesorUvDAO;
+import coilvic.modelo.pojo.Evidencia;
 import coilvic.modelo.pojo.ProfesorUv;
+
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.ResourceBundle;
 import javafx.animation.TranslateTransition;
@@ -27,6 +30,7 @@ import javafx.util.Duration;
 
 public class FXMLSubirEvidenciasExtemporaneasController implements Initializable {
 
+    private ArrayList<Evidencia> evidencias = new ArrayList<>();
     private Integer idColaboracion;
     @FXML
     private Pane panelDeslisante;
