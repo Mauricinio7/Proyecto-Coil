@@ -15,12 +15,13 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.nio.file.Files;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.ResourceBundle;
 import javafx.animation.TranslateTransition;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -32,7 +33,9 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Alert.AlertType;
-import javafx.scene.control.ScrollPane;
+import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
@@ -45,9 +48,7 @@ public class FXMLSubirEvidenciasExtemporaneasController implements Initializable
 
     private File archivoEvidencia;
     private Evidencia evidencia = new Evidencia();
-    private Pane contenedor;
-    private double nextYPosition;
-    private ArrayList<Evidencia> evidencias;
+    private ObservableList<Evidencia> evidencias;
     private Colaboracion colaboracion;
     @FXML
     private Pane panelDeslisante;
@@ -60,9 +61,11 @@ public class FXMLSubirEvidenciasExtemporaneasController implements Initializable
     @FXML
     private TextArea taDescripcion;
     @FXML
-    private ScrollPane scPanePrincipal;
-    @FXML
     private Button btnSubirArchivo;
+    @FXML
+    private TableView<Evidencia> tvArchivosEvidencias;
+    @FXML
+    private TableColumn tcArchivosEvidencias;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -71,16 +74,19 @@ public class FXMLSubirEvidenciasExtemporaneasController implements Initializable
         //Eliminar inicia
         obtenerColaboracion(4);
         obtenerListaEvidencias();
-
         //Eliminar termina
 
         limitarCaracteres();
+        configurarTabla();
     }    
     
     public void inicializarValores(Integer idColaboracion){
         obtenerColaboracion(idColaboracion);
         obtenerListaEvidencias();
-        
+    }
+
+    private void configurarTabla() {
+        tcArchivosEvidencias.setCellValueFactory(new PropertyValueFactory("nombre"));
     }
 
     private void obtenerColaboracion(Integer idColaboracion) {
@@ -93,39 +99,16 @@ public class FXMLSubirEvidenciasExtemporaneasController implements Initializable
     }
 
     private void obtenerListaEvidencias() {
+        evidencias = FXCollections.observableArrayList();
         HashMap<String, Object> mapEvidencias = 
         EvidenciaDAO.obtenerEvidenciasPorIdColaboracion(colaboracion.getIdColaboracion());
         if (!(boolean)mapEvidencias.get("error")){
-            evidencias = (ArrayList<Evidencia>) mapEvidencias.get("evidencias");
+            ArrayList<Evidencia> listaEvidencias = (ArrayList<Evidencia>) mapEvidencias.get("evidencias");
+            evidencias.addAll(listaEvidencias);
+            tvArchivosEvidencias.setItems(evidencias);
         }else{
             Utils.mostrarAlertaSimple(null, ""+mapEvidencias.get(Constantes.KEY_MENSAJE), AlertType.ERROR);
         }
-    }
-
-    private void crearFichaEvidencia(String nombre) {
-        Pane objeto = new Pane();
-        objeto.setPrefSize(300, 80);
-        objeto.setLayoutX(0);
-        objeto.setLayoutY(nextYPosition);
-        objeto.setStyle("-fx-background-color: #303030;");
-        Label lbNombre = new Label(nombre);
-        lbNombre.setStyle("-fx-text-fill: #FFFFFF; -fx-font-size: 17px;");
-        lbNombre.setLayoutX(10);
-        lbNombre.setLayoutY(20);
-        objeto.getChildren().add(lbNombre);
-        contenedor.getChildren().add(objeto);
-        nextYPosition += 82;
-        contenedor.setPrefHeight(nextYPosition);
-    }
-
-    private void cargarPanelScroll(){
-        nextYPosition = 0;
-        contenedor = new Pane();
-        contenedor.setPrefSize(470, 10);
-        contenedor.setLayoutX(0);
-        contenedor.setLayoutY(0);
-        contenedor.setStyle("-fx-background-color: #FFFFFF;");
-        scPanePrincipal.setContent(contenedor);
     }
     
     public void irPantallaOfertasColaboracion(ProfesorUv profesorUv){
@@ -177,7 +160,13 @@ public class FXMLSubirEvidenciasExtemporaneasController implements Initializable
             obtenerDatosEvidencia();
             HashMap<String, Object> mapEvidencia = EvidenciaDAO.insertarEvidencia(evidencia);
             if (!(boolean)mapEvidencia.get("error")){
-                Utils.mostrarAlertaSimple(null, ""+Constantes.KEY_MENSAJE, AlertType.INFORMATION);
+                if (evidencias.size() < 6) {
+                    Utils.mostrarAlertaSimple(null, ""+mapEvidencia.get(Constantes.KEY_MENSAJE), AlertType.INFORMATION);
+                    evidencias.add(evidencia);
+                    limpiarCampos();
+                } else {
+                    Utils.mostrarAlertaSimple(null, "No se pueden subir más de 6 archivos", AlertType.WARNING);
+                }
             }else{
                 Utils.mostrarAlertaSimple(null, ""+mapEvidencia.get(Constantes.KEY_MENSAJE), AlertType.ERROR);
             }
@@ -211,7 +200,7 @@ public class FXMLSubirEvidenciasExtemporaneasController implements Initializable
 
     private void limitarCaracteres() {
         tfNombre.textProperty().addListener((observable, oldValue, newValue) -> {
-            if (newValue.length() > 45) {
+            if (newValue.length() > 20) {
                 tfNombre.setText(oldValue);
             }
         });
@@ -238,6 +227,10 @@ public class FXMLSubirEvidenciasExtemporaneasController implements Initializable
         } catch (IOException ex) {
             Utils.mostrarAlertaSimple("Error", "Error al abrir la ventana", AlertType.ERROR);
         }
+    }
+
+    private void actualizarTabla() {
+        tvArchivosEvidencias.refresh();
     }
     
     @FXML
