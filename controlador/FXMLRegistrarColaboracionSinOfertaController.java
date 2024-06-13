@@ -111,6 +111,7 @@ public class FXMLRegistrarColaboracionSinOfertaController implements Initializab
         ofertaColaboracion.setObjetivoGeneral("Objetivo general de la colaboración");
         ofertaColaboracion.setPeriodo("Enero - Junio 2020");
         ofertaColaboracion.setTemaInteres("Tema de interés");
+        ofertaColaboracion.setIdDepartamento(103);
         inicializarValores(profesorUv, ofertaColaboracion);
         //Eliminar termina
     }    
@@ -128,7 +129,6 @@ public class FXMLRegistrarColaboracionSinOfertaController implements Initializab
         cargarDatosProfesor();
         cargarDatosOfertaColaboracionSeleccionada();
         cargarEstadoComponentes();
-        cargarDepartamentos(cbAreaAcademica.getValue());
     }
 
     private void cargarEstadoComponentes() {
@@ -155,6 +155,7 @@ public class FXMLRegistrarColaboracionSinOfertaController implements Initializab
         taTemaInteres.setText(ofertaColaboracion.getTemaInteres());
         cbAreaAcademica.setValue(obtenerAreaAcademicaOfertaColaboracion().getAreaAcademical());
         cbAsignatura.setValue(obtenerAreaAcademicaOfertaColaboracion());
+        cbDepartamento.setValue(obtenerNombreDepartamentoOfertaColaboracion());
         tfNombreColaboracion.setDisable(true);
         tfIdioma.setDisable(true);
         taObjetivo.setDisable(true);
@@ -162,6 +163,7 @@ public class FXMLRegistrarColaboracionSinOfertaController implements Initializab
         taTemaInteres.setDisable(true);
         cbAreaAcademica.setDisable(true);
         cbAsignatura.setDisable(true);
+        cbDepartamento.setDisable(true);
     }
 
     private String obtenerRegionProfesor() {
@@ -179,6 +181,17 @@ public class FXMLRegistrarColaboracionSinOfertaController implements Initializab
         AsignaturaDAO.consultarAreaAcademicaPorId(ofertaColaboracion.getIdAsignatura());
         if (!(Boolean) obtenerAreaAcademica.get(Constantes.KEY_ERROR)) {
             return (Asignatura) obtenerAreaAcademica.get("area");
+        } else {
+            Utils.mostrarAlertaSimple("", "No se han podido cargar los datos", AlertType.ERROR);
+            return null;
+        }
+    }
+
+    private Departamento obtenerNombreDepartamentoOfertaColaboracion() {
+        HashMap<String, Object> obtenerDepartamento =
+        DepartamentoDAO.consultarDepartamentoPorId(ofertaColaboracion.getIdDepartamento());
+        if (!(Boolean) obtenerDepartamento.get(Constantes.KEY_ERROR)) {
+            return (Departamento) obtenerDepartamento.get("departamento");
         } else {
             Utils.mostrarAlertaSimple("", "No se han podido cargar los datos", AlertType.ERROR);
             return null;
