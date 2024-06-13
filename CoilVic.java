@@ -22,8 +22,9 @@ public class CoilVic extends Application {
         //Parent root = FXMLLoader.load(getClass().getResource("vista/FXMLLogin.fxml"));
         //Parent root = FXMLLoader.load(getClass().getResource("vista/FXMLRegistrarProfesorExterno.fxml"));
         //Parent root = FXMLLoader.load(getClass().getResource("vista/FXMLVistaProfesor.fxml"));
-        Parent root = FXMLLoader.load(getClass().getResource("vista/FXMLConsultarColaboraciones.fxml"));
+        //Parent root = FXMLLoader.load(getClass().getResource("vista/FXMLConsultarColaboraciones.fxml"));
         //Parent root = FXMLLoader.load(getClass().getResource("vista/FXMLEstudiantes.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("vista/FXMLRegistrarColaboracionSinOderta.fxml"));
         Scene scene = new Scene(root);
         
         stage.setScene(scene);
