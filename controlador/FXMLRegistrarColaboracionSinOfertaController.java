@@ -118,15 +118,8 @@ public class FXMLRegistrarColaboracionSinOfertaController implements Initializab
     public void inicializarValores(ProfesorUv profesor){
         this.profesorUv = profesor;
         cargarDatosProfesor();
-
-        limitarCaracteres();
-        cargarAreasAcademicas();
         cbDepartamento.setDisable(true);
-        cbAsignatura.setDisable(true);
-        configurarSeleccionDepartamento();
-        configurarSeleccionAsignatura();
-        configurarFechaFin();
-        dpFechaFin.setDisable(true);
+        cargarEstadoComponentes();
     }
 
     public void inicializarValores(ProfesorUv profesor, OfertaColaboracion oferta) {
@@ -134,7 +127,10 @@ public class FXMLRegistrarColaboracionSinOfertaController implements Initializab
         this.ofertaColaboracion = oferta;
         cargarDatosProfesor();
         cargarDatosOfertaColaboracionSeleccionada();
+        cargarEstadoComponentes();
+    }
 
+    private void cargarEstadoComponentes() {
         limitarCaracteres();
         cargarAreasAcademicas();
         cbAsignatura.setDisable(true);
