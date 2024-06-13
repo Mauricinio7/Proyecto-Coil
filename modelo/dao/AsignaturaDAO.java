@@ -60,7 +60,26 @@ public class AsignaturaDAO {
         }
         return respuesta;
     }
-    
+    public static HashMap<String, Object> consultarNombreAsignaturaPorId(Integer idAsignatura){
+        HashMap<String, Object> respuesta = new HashMap<>();
+        try(Connection conexionDB = ConexionBD.obtenerConexion()){
+            StringBuilder consulta = new StringBuilder();
+            consulta.append("SELECT nombre ");
+            consulta.append("FROM asignatura ");
+            consulta.append("WHERE id_asignatura = ?");
+            PreparedStatement sentenciaPreparada = conexionDB.prepareStatement(consulta.toString());
+            sentenciaPreparada.setInt(1, idAsignatura);
+            ResultSet resultado = sentenciaPreparada.executeQuery();
+            if(resultado.next()){
+                respuesta.put("nombreAsignatura", resultado.getString("nombre"));
+            }
+        }catch(SQLException errorSql){
+            respuesta.put(Constantes.KEY_MENSAJE, "No se han podido cargar los datos");
+            errorSql.printStackTrace();
+        }
+        if(respuesta.isEmpty()) respuesta.put(Constantes.KEY_ERROR, null);
+        return respuesta;
+    }
     public static ArrayList<Asignatura> obtenerListaAsignatura(ResultSet resultado){
         ArrayList<Asignatura> listaAsignatura = new ArrayList<>();
         try{

@@ -37,6 +37,26 @@ public class DepartamentoDAO {
         return respuesta;
 
     }
+    public static HashMap<String, Object> obtenerNombreDepartamentoPorId(int idDepartamento){
+        HashMap<String, Object> respuesta = new HashMap<>();
+        try(Connection conexionDB = ConexionBD.obtenerConexion()){
+            StringBuilder consulta = new StringBuilder();
+            consulta.append("SELECT nombre ");
+            consulta.append("FROM departamento ");
+            consulta.append("WHERE id_departamento = ?");
+            PreparedStatement sentenciaPreparada = conexionDB.prepareStatement(consulta.toString());
+            sentenciaPreparada.setInt(1, idDepartamento);
+            ResultSet resultado = sentenciaPreparada.executeQuery();
+            if(resultado.next()){
+                respuesta.put("nombreDepartamento", resultado.getString("nombre"));
+            }
+        }catch(SQLException errorSql){
+            respuesta.put(Constantes.KEY_MENSAJE, "No se han podido cargar los datos");
+            errorSql.printStackTrace();
+        }
+        if(respuesta.isEmpty()) respuesta.put(Constantes.KEY_ERROR, null);
+        return respuesta;
+    }
 
     public static ArrayList<Departamento> listaDepartamento(ResultSet resultado){
         ArrayList<Departamento> listaDepartamento = new ArrayList<>();
