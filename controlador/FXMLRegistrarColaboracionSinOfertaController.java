@@ -28,6 +28,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DateCell;
@@ -35,11 +36,14 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.stage.FileChooser;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Callback;
 import javafx.util.Duration;
@@ -359,6 +363,7 @@ public class FXMLRegistrarColaboracionSinOfertaController implements Initializab
         HashMap<String, Object> respuesta = ColaboracionDAO.guardarColaboracionConPlanProyecto(colaboracion, planProyecto);
         if (!(Boolean) respuesta.get(Constantes.KEY_ERROR)) {
             Utils.mostrarAlertaSimple(null, ""+respuesta.get(Constantes.KEY_MENSAJE), AlertType.INFORMATION);
+            cerrarVentana();
         } else {
             Utils.mostrarAlertaSimple("Error", ""+respuesta.get(Constantes.KEY_MENSAJE), AlertType.ERROR);
         }
@@ -366,7 +371,7 @@ public class FXMLRegistrarColaboracionSinOfertaController implements Initializab
 
     @FXML
     private void btnCancelar(ActionEvent event) {
-        //REGRESA A LA VENTANA ANTERIOR
+        cerrarVentana();
     }
 
     @FXML
@@ -385,7 +390,20 @@ public class FXMLRegistrarColaboracionSinOfertaController implements Initializab
             btnPlanProyecto.setStyle("");
         }
     }
-    
+
+    private void cerrarVentana() {
+        try {
+            Stage stage = (Stage) panelDeslisante.getScene().getWindow();
+            FXMLLoader loader = Utils.obtenerLoader("/coilvic/vista/FXMLVistaProfesor.fxml");
+            Parent root = loader.load();
+            Scene escenaPrincipal = new Scene(root);
+            stage.setScene(escenaPrincipal);
+            stage.show();
+        } catch (IOException ex) {
+            Utils.mostrarAlertaSimple("Error", "Error al abrir la ventana", AlertType.ERROR);
+        }
+    }
+
     @FXML
     private void salePanel(MouseEvent event) {
         TranslateTransition transicion = new TranslateTransition();
