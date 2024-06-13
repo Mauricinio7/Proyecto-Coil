@@ -22,6 +22,7 @@ import javafx.stage.Stage;
  */
 public class FXMLConsultaColaboracionController implements Initializable {
 
+    String tipoConsulta;
     Colaboracion colaboracion;
     @FXML
     private Label lbNameColaboracion;
@@ -58,8 +59,10 @@ public class FXMLConsultaColaboracionController implements Initializable {
         // TODO
     }    
     public void inicializarValores(Colaboracion colaboracion, String tipoConsulta, String estado){
-        if(tipoConsulta.equals("Historial")){
-            cbEstado.setDisable(true);
+        this.tipoConsulta = tipoConsulta;
+        cbEstado.setDisable(true);
+        if(tipoConsulta.equals("Inactiva")){
+            cbEstado.setDisable(false);
         }
         this.colaboracion = colaboracion;
         cargarDatos();
@@ -84,7 +87,12 @@ public class FXMLConsultaColaboracionController implements Initializable {
     private void clicRegresar(ActionEvent event) {
         try{
             Stage stage = (Stage) lbNameColaboracion.getScene().getWindow();
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/coilvic/vista/FXMLConsultarHistorial.fxml"));
+            FXMLLoader loader = null;
+            if(tipoConsulta.equals("Historial")){
+                loader = new FXMLLoader(getClass().getResource("/coilvic/vista/FXMLConsultarHistorial.fxml"));
+            }else{
+                loader = new FXMLLoader(getClass().getResource("/coilvic/vista/FXMLVistaRevisarRegistrosColaboracion.fxml"));
+            }
             Parent root = loader.load();
             Scene scene = new Scene(root);
             stage.setScene(scene);
