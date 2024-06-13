@@ -27,6 +27,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
@@ -36,6 +37,8 @@ import javafx.util.Duration;
 
 public class FXMLSubirEvidenciasExtemporaneasController implements Initializable {
 
+    private Pane contenedor;
+    private double nextYPosition;
     private ArrayList<Evidencia> evidencias;
     private Colaboracion colaboracion;
     @FXML
@@ -54,6 +57,8 @@ public class FXMLSubirEvidenciasExtemporaneasController implements Initializable
     private Button btnGuardar;
     @FXML
     private Button btnCancelar;
+    @FXML
+    private ScrollPane scPanePrincipal;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -87,6 +92,55 @@ public class FXMLSubirEvidenciasExtemporaneasController implements Initializable
         }else{
             Utils.mostrarAlertaSimple(null, ""+mapEvidencias.get(Constantes.KEY_MENSAJE), AlertType.ERROR);
         }
+    }
+
+    private void crearFichaEvidencia(String nombre) {
+        Pane objeto = new Pane();
+        objeto.setPrefSize(300, 80);
+        objeto.setLayoutX(0);
+        objeto.setLayoutY(nextYPosition);
+        objeto.setStyle("-fx-background-color: #303030;");
+        Label lbNombre = new Label(nombre);
+        lbNombre.setStyle("-fx-text-fill: #FFFFFF; -fx-font-size: 17px;");
+        lbNombre.setLayoutX(10);
+        lbNombre.setLayoutY(20);
+        objeto.getChildren().add(lbNombre);
+        contenedor.getChildren().add(objeto);
+        nextYPosition += 82;
+        contenedor.setPrefHeight(nextYPosition);
+    }
+
+    private void cargarPanelScroll(){
+        nextYPosition = 0;
+        contenedor = new Pane();
+        contenedor.setPrefSize(470, 10);
+        contenedor.setLayoutX(0);
+        contenedor.setLayoutY(0);
+        contenedor.setStyle("-fx-background-color: #FFFFFF;");
+        scPanePrincipal.setContent(contenedor);
+    }
+    
+    public void irPantallaOfertasColaboracion(ProfesorUv profesorUv){
+        try{
+            Stage stageInformacion = new Stage();
+            stageInformacion.initStyle(StageStyle.UTILITY);
+            FXMLLoader cargarObjeto = new FXMLLoader(CoilVic.class.getResource("/coilvic/vista/FXMLVistaOfertaColaboracion.fxml"));
+            Parent root = cargarObjeto.load();
+            FXMLVistaOfertaColaboracionController vistaOfertaCol = cargarObjeto.getController();
+            vistaOfertaCol.inicializarValores(profesorUv);
+            Scene nuevaScena = new Scene(root);
+            stageInformacion.setTitle("Registrar ofertas de colaboracion");
+            stageInformacion.setScene(nuevaScena);
+            stageInformacion.show();
+            Stage stagePrincipal = (Stage)ivMisOfertas.getScene().getWindow();
+            stagePrincipal.close();
+        }catch(IOException error){
+            error.printStackTrace();
+        }
+    }
+
+    @FXML
+    private void btnSubirArchivos(ActionEvent event) {
     }
     
     @FXML
@@ -131,28 +185,4 @@ public class FXMLSubirEvidenciasExtemporaneasController implements Initializable
             System.out.println("Error al conectar con la bd");
         }
     }
-    
-    public void irPantallaOfertasColaboracion(ProfesorUv profesorUv){
-        try{
-            Stage stageInformacion = new Stage();
-            stageInformacion.initStyle(StageStyle.UTILITY);
-            FXMLLoader cargarObjeto = new FXMLLoader(CoilVic.class.getResource("/coilvic/vista/FXMLVistaOfertaColaboracion.fxml"));
-            Parent root = cargarObjeto.load();
-            FXMLVistaOfertaColaboracionController vistaOfertaCol = cargarObjeto.getController();
-            vistaOfertaCol.inicializarValores(profesorUv);
-            Scene nuevaScena = new Scene(root);
-            stageInformacion.setTitle("Registrar ofertas de colaboracion");
-            stageInformacion.setScene(nuevaScena);
-            stageInformacion.show();
-            Stage stagePrincipal = (Stage)ivMisOfertas.getScene().getWindow();
-            stagePrincipal.close();
-        }catch(IOException error){
-            error.printStackTrace();
-        }
-    }
-
-    @FXML
-    private void btnSubirArchivos(ActionEvent event) {
-    }
-    
 }
