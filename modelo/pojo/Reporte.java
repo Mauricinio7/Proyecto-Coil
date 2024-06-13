@@ -23,21 +23,26 @@ import coilvic.modelo.dao.ColaboracionDAO;
 import coilvic.modelo.dao.ProfesorUvDAO;
 import coilvic.utilidades.Constantes;
 
-public class ReporteColaboraciones {
+public class Reporte {
     
     private ArrayList<Colaboracion> colaboraciones = new ArrayList<>();
+    private ArrayList<ProfesorUv> profesoresUv = new ArrayList<>();
     private Document documento;
     private FileOutputStream fileOutputStream;
     private Font fuenteTitulo = new Font(Font.FontFamily.TIMES_ROMAN, 16, Font.BOLD);
     private Font fuenteNormal = new Font(Font.FontFamily.TIMES_ROMAN, 12, Font.NORMAL);
 
-    public ReporteColaboraciones(String ruta, String periodo) {
-        generarPdf(ruta, periodo);
+    public Reporte(String ruta, String periodo, String tipo) {
+        if (tipo.equals("Profesores")) {
+            generarPdfProfesores(ruta, periodo);
+        } else if (tipo.equals("Colaboraciones")) {
+            generarPdfColaboraciones(ruta, periodo);
+        }
     }
 
-    private void crearDocumento(String ruta) throws FileNotFoundException, DocumentException {
+    private void crearDocumento(String ruta, String nombreArchivo) throws FileNotFoundException, DocumentException {
         documento = new Document(PageSize.A4, 36, 36, 36, 36);
-        fileOutputStream = new FileOutputStream(ruta + "/ReporteColaboraciones.pdf");
+        fileOutputStream = new FileOutputStream(ruta + nombreArchivo);
         PdfWriter.getInstance(documento, fileOutputStream);
     }
 
@@ -106,9 +111,35 @@ public class ReporteColaboraciones {
         return profesorUv;
     }
 
-    private void generarPdf(String ruta, String periodo) {
+    private void agregarTablaProfesores(String periodo) throws DocumentException {
+        PdfPTable tabla = new PdfPTable(4);
+        tabla.addCell("Nombre");
+        tabla.addCell("Correo");
+        tabla.addCell("No Personal");
+        tabla.addCell("Región");
+        obtenerProfesores(periodo);
+        for (ProfesorUv profesorUv : profesoresUv) {
+            tabla.addCell(profesorUv.getNombre());
+            tabla.addCell(profesorUv.getCorreo());
+            tabla.addCell(profesorUv.getNoPersonal());
+            tabla.addCell(profesorUv.getNombreRegion());
+        }
+        documento.add(tabla);
+        documento.close();
+    }
+
+    private void obtenerProfesores(String periodo) {
+        HashMap<String, Object> resultado = ProfesorUvDAO.obtenerProfesoresPeriodoConcluido(periodo);
+        if (!(boolean) resultado.get(Constantes.KEY_ERROR)) {
+            profesoresUv = (ArrayList<ProfesorUv>) resultado.get("profesoresuv");
+        } else {
+            Utils.mostrarAlertaSimple("", ""+resultado.get(Constantes.KEY_MENSAJE), AlertType.ERROR);
+        }
+    }
+
+    private void generarPdfColaboraciones(String ruta, String periodo) {
         try {
-            crearDocumento(ruta);
+            crearDocumento(ruta, "/ReporteColaboraciones.pdf");
             abrirDocumento();
             agregarTitulo("Reporte de Colaboraciones");
             agregarSaltoLinea();
@@ -117,6 +148,22 @@ public class ReporteColaboraciones {
             agregarSaltoLinea();
             agregarSaltoLinea();
             agregarTablaColaboraciones(periodo);
+        } catch (DocumentException | FileNotFoundException ex) {
+            Utils.mostrarAlertaSimple("", "No se han podido cargar los datos", AlertType.ERROR);
+        }
+    }
+
+    private void generarPdfProfesores(String ruta, String periodo) {
+        try {
+            crearDocumento(ruta, "/ReporteProfesores.pdf");
+            abrirDocumento();
+            agregarTitulo("Reporte de Profesores");
+            agregarSaltoLinea();
+            agregarSaltoLinea();
+            agregarParrafo("Periodo: " + periodo);
+            agregarSaltoLinea();
+            agregarSaltoLinea();
+            agregarTablaProfesores(periodo);
         } catch (DocumentException | FileNotFoundException ex) {
             Utils.mostrarAlertaSimple("", "No se han podido cargar los datos", AlertType.ERROR);
         }
