@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import coilvic.modelo.ConexionBD;
+import coilvic.modelo.pojo.Asignatura;
 import coilvic.modelo.pojo.Departamento;
 import coilvic.utilidades.Constantes;
 
@@ -50,5 +51,30 @@ public class DepartamentoDAO {
             errorSql.printStackTrace();
         }
         return listaDepartamento;
+    }
+
+    public static HashMap<String, Object> consultarDepartamentoPorId(int idDepartamento) {
+        HashMap<String, Object> respuesta = new HashMap<>();
+        respuesta.put(Constantes.KEY_ERROR, true);
+        Connection conexionBD = ConexionBD.obtenerConexion();
+        if (conexionBD != null) {
+            try {
+                String consulta = "SELECT nombre FROM departamento WHERE id_departamento = ?";
+                PreparedStatement prepararSentencia = conexionBD.prepareStatement(consulta);
+                prepararSentencia.setInt(1, idDepartamento);
+                ResultSet resultado = prepararSentencia.executeQuery();
+                if (resultado.next()) {
+                    Departamento departamento = new Departamento();
+                    departamento.setNombre(resultado.getString("nombre"));
+                    departamento.setIdDepartamento(idDepartamento);
+                    respuesta.put(Constantes.KEY_ERROR, false);
+                    respuesta.put("departamento", departamento);
+                }
+                conexionBD.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return respuesta;
     }
 }
