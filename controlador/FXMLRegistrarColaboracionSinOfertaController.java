@@ -100,6 +100,7 @@ public class FXMLRegistrarColaboracionSinOfertaController implements Initializab
         profesorUv.setNombre("Carlos Fuentes");
         profesorUv.setCorreo("cfuentes@uv.mx");
         profesorUv.setIdRegion(1);
+        profesorUv.setNombreRegion("Xalapa");
         profesorUv.setIdProfesorUv(1);
         //inicializarValores(profesorUv);
         ofertaColaboracion = new OfertaColaboracion();
@@ -154,7 +155,7 @@ public class FXMLRegistrarColaboracionSinOfertaController implements Initializab
     private void cargarDatosProfesor() {
         lbNombreProfesor.setText("Nombre profesor: " + profesorUv.getNombre());
         lbCorreoProfesor.setText("Correo: " + profesorUv.getCorreo());
-        lbRegionProfesor.setText("Region: " + obtenerRegionProfesor());
+        lbRegionProfesor.setText("Region: " + profesorUv.getNombreRegion());
     }
 
     private void cargarDatosOfertaColaboracionSeleccionada() {
@@ -174,15 +175,6 @@ public class FXMLRegistrarColaboracionSinOfertaController implements Initializab
         cbAreaAcademica.setDisable(true);
         cbAsignatura.setDisable(true);
         cbDepartamento.setDisable(true);
-    }
-
-    private String obtenerRegionProfesor() {
-        HashMap<String, Object> obtenerRegion = RegionDAO.consultarRegionPorId(profesorUv.getIdRegion());
-        if (!(Boolean) obtenerRegion.get(Constantes.KEY_ERROR)) {
-            return (String) obtenerRegion.get("region");
-        } else {
-            return "no disponible por el momento";
-        }
     }
 
     private Asignatura obtenerAreaAcademicaOfertaColaboracion() {
