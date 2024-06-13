@@ -145,17 +145,9 @@ public class FXMLRegistrarColaboracionSinOfertaController implements Initializab
         taObjetivo.setText(ofertaColaboracion.getObjetivoGeneral());
         tfPeriodo.setText(ofertaColaboracion.getPeriodo());
         taTemaInteres.setText(ofertaColaboracion.getTemaInteres());
-        cbAreaAcademica.setValue(obtenerAreaAcademicaOfertaColaboracion().getAreaAcademical());
-        cbAsignatura.setValue(obtenerAreaAcademicaOfertaColaboracion());
-        cbDepartamento.setValue(obtenerNombreDepartamentoOfertaColaboracion());
-        tfNombreColaboracion.setDisable(true);
-        tfIdioma.setDisable(true);
-        taObjetivo.setDisable(true);
-        tfPeriodo.setDisable(true);
-        taTemaInteres.setDisable(true);
-        cbAreaAcademica.setDisable(true);
-        cbAsignatura.setDisable(true);
-        cbDepartamento.setDisable(true);
+        cbAreaAcademica.setValue(ofertaColaboracion.getNombreAreaAcademica());
+        cbDepartamento.setValue(ofertaColaboracion.getNombreDepartamento());
+        cbAsignatura.setValue(ofertaColaboracion.getNombreAsignatura());
     }
 
     private String obtenerRegionProfesor() {
@@ -167,25 +159,13 @@ public class FXMLRegistrarColaboracionSinOfertaController implements Initializab
         }
     }
 
-    private Asignatura obtenerAreaAcademicaOfertaColaboracion() {
+    private String obtenerAreaAcademicaOfertaColaboracion() {
         HashMap<String, Object> obtenerAreaAcademica = 
-        AsignaturaDAO.consultarAreaAcademicaPorId(ofertaColaboracion.getIdAsignatura());
+        AsignaturaDAO.consultarAreaAcademicaPorRegion(ofertaColaboracion.getIdRegion());
         if (!(Boolean) obtenerAreaAcademica.get(Constantes.KEY_ERROR)) {
-            return (Asignatura) obtenerAreaAcademica.get("area");
+            return (String) obtenerAreaAcademica.get("areaAcademica");
         } else {
-            Utils.mostrarAlertaSimple("", "No se han podido cargar los datos", AlertType.ERROR);
-            return null;
-        }
-    }
-
-    private Departamento obtenerNombreDepartamentoOfertaColaboracion() {
-        HashMap<String, Object> obtenerDepartamento =
-        DepartamentoDAO.consultarDepartamentoPorId(ofertaColaboracion.getIdDepartamento());
-        if (!(Boolean) obtenerDepartamento.get(Constantes.KEY_ERROR)) {
-            return (Departamento) obtenerDepartamento.get("departamento");
-        } else {
-            Utils.mostrarAlertaSimple("", "No se han podido cargar los datos", AlertType.ERROR);
-            return null;
+            return "no disponible por el momento";
         }
     }
     
