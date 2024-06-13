@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.image.*?>
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" prefHeight="740.0" prefWidth="807.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="coilvic.controlador.FXMLConcluirColaboracionController">
+   <children>
+      <Label fx:id="lblColaboracion" layoutX="35.0" layoutY="122.0" text="Nombre: ">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <Label fx:id="lblFechaInicio" layoutX="416.0" layoutY="159.0" text="Fecha incio: ">
+         <font>
+            <Font size="17.0" />
+         </font>
+      </Label>
+      <Label layoutX="416.0" layoutY="190.0" text="Fecha fin: ">
+         <font>
+            <Font size="17.0" />
+         </font>
+      </Label>
+      <Label fx:id="lblIdioma" layoutX="33.0" layoutY="159.0" text="Idioma: ">
+         <font>
+            <Font size="17.0" />
+         </font>
+      </Label>
+      <Label layoutX="29.0" layoutY="190.0" text="Objetivo general:">
+         <font>
+            <Font size="17.0" />
+         </font>
+      </Label>
+      <TextArea fx:id="txtAreaObjetivo" editable="false" layoutX="23.0" layoutY="223.0" prefHeight="62.0" prefWidth="370.0" />
+      <Label fx:id="lblTemaInteres" layoutX="28.0" layoutY="304.0" text="Tema de interes: ">
+         <font>
+            <Font size="17.0" />
+         </font>
+      </Label>
+      <Button layoutX="680.0" layoutY="672.0" mnemonicParsing="false" onAction="#btnClicCancelar" prefHeight="0.0" prefWidth="100.0" text="Cancelar">
+         <font>
+            <Font size="19.0" />
+         </font>
+      </Button>
+      <Label layoutX="417.0" layoutY="326.0" text="Plan de proyecto:">
+         <font>
+            <Font size="17.0" />
+         </font>
+      </Label>
+      <ImageView fx:id="imgPlanProyecto" fitHeight="214.0" fitWidth="356.0" layoutX="417.0" layoutY="365.0" pickOnBounds="true" preserveRatio="true" />
+      <Label layoutX="222.0" layoutY="26.0" text="Concluir colaboración">
+         <font>
+            <Font size="31.0" />
+         </font>
+      </Label>
+      <Label fx:id="lblProfesorUV" layoutX="28.0" layoutY="343.0" text="Profesor UV: ">
+         <font>
+            <Font size="17.0" />
+         </font>
+      </Label>
+      <Label fx:id="lblEstado" layoutX="416.0" layoutY="123.0" text="Estado: ">
+         <font>
+            <Font size="17.0" />
+         </font>
+      </Label>
+      <Label fx:id="lblProfesorExterno" layoutX="416.0" layoutY="243.0" text="Profesor externo: ">
+         <font>
+            <Font size="17.0" />
+         </font>
+      </Label>
+      <ScrollPane fx:id="scPaneEvidencias" layoutX="23.0" layoutY="437.0" prefHeight="224.0" prefWidth="356.0" />
+      <Label layoutX="28.0" layoutY="406.0" text="Evidencias:">
+         <font>
+            <Font size="17.0" />
+         </font>
+      </Label>
+      <Button layoutX="545.0" layoutY="672.0" mnemonicParsing="false" onAction="#btnClicGuardar" prefHeight="0.0" prefWidth="100.0" text="Guardar">
+         <font>
+            <Font size="19.0" />
+         </font>
+      </Button>
+      <Button layoutX="129.0" layoutY="675.0" mnemonicParsing="false" onAction="#btnClicSubirEvidencias" prefHeight="32.0" prefWidth="145.0" text="Subir evidencias">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </Button>
+      <Button layoutX="573.0" layoutY="324.0" mnemonicParsing="false" onAction="#btnClicModificarPlan" prefHeight="27.0" prefWidth="100.0" text="Modificar plan" />
+      <Button layoutX="545.0" layoutY="611.0" mnemonicParsing="false" onAction="#btnClicModificarEstudiantes" prefHeight="38.0" prefWidth="238.0" text="Modificar lista de estudiantes">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </Button>
+      <DatePicker fx:id="dateFechaFin" editable="false" layoutX="515.0" layoutY="188.0" prefHeight="27.0" prefWidth="160.0" />
+   </children>
+</AnchorPane>

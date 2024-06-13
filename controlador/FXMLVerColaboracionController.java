@@ -1,5 +1,6 @@
 package coilvic.controlador;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -26,6 +27,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -97,17 +99,22 @@ public class FXMLVerColaboracionController implements Initializable {
                     lblDepartamento.setText(lblDepartamento.getText() + colaboracion.getNombreDepartamento());
                 }
 
-                HashMap<String, Object> planProyecto = new HashMap<>();
-                PlanProyectoDAO.obtenerPlanProyectoPorIdColaboracion(colaboracion.getIdColaboracion());
+
+                HashMap<String, Object> planProyecto = PlanProyectoDAO.obtenerPlanProyectoPorIdColaboracion(colaboracion.getIdColaboracion());
                 if(planProyecto.containsKey("planProyecto")){
                     PlanProyecto nuevoPlanProyecto = (PlanProyecto) planProyecto.get("planProyecto");
                     if(planProyecto != null){
-                        System.out.println(nuevoPlanProyecto.getNombre());
+                        try {
+                            ByteArrayInputStream inputPlan = new ByteArrayInputStream(nuevoPlanProyecto.getArchivoAdjunto());
+                            Image image = new Image(inputPlan);
+                            imgPlanProyecto.setImage(image);
+                        } catch (NullPointerException ex) {
+                            Utils.mostrarAlertaSimple("Error en la conexión", "No se han podido cargar los datos.", Alert.AlertType.ERROR);
+                        }
                     }
+                }else{
+                    System.out.println("No se ha encontrado el plan del proyecto");
                 }
-
-        //TODO cargar imagen
-        //imgPlanProyecto.setImage(Utils.convertirImagen()); 
     }
 
     @FXML
@@ -155,8 +162,25 @@ public class FXMLVerColaboracionController implements Initializable {
 
     @FXML
     private void btnClicConcluir(ActionEvent event) {
-        //TODO llamar concluir colaboracion
+        llamarConcluirColaboracion();
     }
+
+    private void llamarConcluirColaboracion(){
+        try{
+            Stage stageVer = new Stage();
+            stageVer.initStyle(StageStyle.UTILITY);
+            FXMLLoader cargarObjeto = new FXMLLoader(CoilVic.class.getResource("vista/FXMLConcluirColaboracion.fxml"));
+            Parent root = cargarObjeto.load();
+            FXMLConcluirColaboracionController verColaboracion = cargarObjeto.getController();
+            verColaboracion.inicializarValores(colaboracion.getIdColaboracion());
+            Scene nuevaScena = new Scene(root);
+            stageVer.setTitle("Colaboracion");
+            stageVer.setScene(nuevaScena);
+            stageVer.showAndWait();
+        }catch(IOException error){
+            error.printStackTrace();
+        }
+        }
 
     @FXML
     private void btnClicCancelar(ActionEvent event) {
