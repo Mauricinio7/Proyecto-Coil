@@ -115,33 +115,6 @@ public class FXMLVerColaboracionController implements Initializable {
                 }
 
         //TODO cargar imagen
-        
-        HashMap<String, Object> asignatura = AsignaturaDAO.consultarNombreAsignaturaPorId(colaboracion.getIdAsignatura());
-                if(asignatura.containsKey("nombreAsignatura")){
-                    colaboracion.setNombreAsignatura((String) asignatura.get("nombreAsignatura"));
-                    lblAsignatura.setText(lblAsignatura.getText() + colaboracion.getNombreAsignatura());
-                }
-                HashMap<String, Object> areaAcademica = AsignaturaDAO.consultarAreaAcademicaPorId(colaboracion.getIdAsignatura());
-                if(areaAcademica.containsKey("area")){
-                    colaboracion.setNombreArea((String) areaAcademica.get("area"));
-                    lblArea.setText(lblArea.getText() + colaboracion.getNombreArea());
-                }
-                HashMap<String, Object> departamento = DepartamentoDAO.obtenerNombreDepartamentoPorId(colaboracion.getIdDepartamento());
-                if(departamento.containsKey("nombreDepartamento")){
-                    colaboracion.setNombreDepartamento((String) departamento.get("nombreDepartamento"));
-                    lblDepartamento.setText(lblDepartamento.getText() + colaboracion.getNombreDepartamento());
-                }
-
-                HashMap<String, Object> planProyecto = new HashMap<>();
-                PlanProyectoDAO.obtenerPlanProyectoPorIdColaboracion(colaboracion.getIdColaboracion());
-                if(planProyecto.containsKey("planProyecto")){
-                    PlanProyecto nuevoPlanProyecto = (PlanProyecto) planProyecto.get("planProyecto");
-                    if(planProyecto != null){
-                        System.out.println(nuevoPlanProyecto.getNombre());
-                    }
-                }
-
-        //TODO cargar imagen
         //imgPlanProyecto.setImage(Utils.convertirImagen()); 
     }
 
@@ -149,24 +122,7 @@ public class FXMLVerColaboracionController implements Initializable {
     private void btnClicRegistrarAlumnos(ActionEvent event) {
         llamarEstudiantes();
     }
-    private void llamarEstudiantes(){
-        try{
-            Stage stageRegistrarEstudiantes = new Stage();
-            stageRegistrarEstudiantes.initStyle(StageStyle.UTILITY);
-            FXMLLoader cargarObjeto = new FXMLLoader(CoilVic.class.getResource("vista/FXMLEstudiantes.fxml"));
-            Parent root = cargarObjeto.load();
-            FXMLEstudiantesController estudiantes = cargarObjeto.getController();
-            estudiantes.inicializarValores(colaboracion);
-            Scene nuevaScena = new Scene(root);
-            stageRegistrarEstudiantes.setTitle("Estudiantes");
-            stageRegistrarEstudiantes.setScene(nuevaScena);
-            stageRegistrarEstudiantes.showAndWait();
-        }catch(IOException error){
-            error.printStackTrace();
-        }
-}
-        llamarEstudiantes();
-    }
+
     private void llamarEstudiantes(){
         try{
             Stage stageRegistrarEstudiantes = new Stage();
