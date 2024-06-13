@@ -121,6 +121,9 @@ public class FXMLRegistrarColaboracionSinOfertaController implements Initializab
         configurarFechaFin();
         dpFechaFin.setDisable(true);
 
+
+        cbDepartamento.setDisable(true);
+        cargarEstadoComponentes();
     }
 
     public void inicializarValores(ProfesorUv profesor, OfertaColaboracion oferta) {
