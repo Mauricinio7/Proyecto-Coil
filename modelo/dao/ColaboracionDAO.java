@@ -303,7 +303,11 @@ public class ColaboracionDAO {
                 }
                 conexionBD.close();
             } catch (SQLException e) {
-                respuesta.put(Constantes.KEY_MENSAJE, e.getMessage());
+                if (e.getErrorCode() == 1062) {
+                    respuesta.put(Constantes.KEY_MENSAJE, "Registro duplicado");
+                } else {
+                    respuesta.put(Constantes.KEY_MENSAJE, "No se han podido cargar los datos");
+                }
             }
         } else {
             respuesta.put(Constantes.KEY_MENSAJE, "No se han podido cargar los datos");
