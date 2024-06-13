@@ -66,4 +66,37 @@ public class RegionDAO {
         }
         return respuesta;
     }
+
+    /* 
+    MariaDB [COIL]> describe region;
+    +-----------+-------------+------+-----+---------+----------------+
+    | Field     | Type        | Null | Key | Default | Extra          |
+    +-----------+-------------+------+-----+---------+----------------+
+    | id_region | int(11)     | NO   | PRI | NULL    | auto_increment |
+    | nombre    | varchar(45) | NO   |     | NULL    |                |
+    +-----------+-------------+------+-----+---------+----------------+
+    2 rows in set (0.001 sec)
+
+
+     */
+    public static HashMap<String, Object> obtenerNombreRegionPorId(Integer idRegion) {
+        HashMap<String, Object> respuesta = new HashMap<>();
+        try(Connection conexionDB = ConexionBD.obtenerConexion()){
+            StringBuilder consulta = new StringBuilder();
+            consulta.append("SELECT nombre ");
+            consulta.append("FROM region ");
+            consulta.append("WHERE id_region = ?");
+            PreparedStatement sentenciaPreparada = conexionDB.prepareStatement(consulta.toString());
+            sentenciaPreparada.setInt(1, idRegion);
+            ResultSet resultado = sentenciaPreparada.executeQuery();
+            if(resultado.next()){
+                respuesta.put("nombreRegion", resultado.getString("nombre"));
+            }
+        }catch(SQLException errorSql){
+            respuesta.put(Constantes.KEY_MENSAJE, "No se han podido cargar los datos");
+            errorSql.printStackTrace();
+        }
+        if(respuesta.isEmpty()) respuesta.put(Constantes.KEY_ERROR, null);
+        return respuesta;
+    }
 }

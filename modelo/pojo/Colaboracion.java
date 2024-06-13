@@ -10,6 +10,11 @@ public class Colaboracion {
     private String objetivoGeneral;
     private String temaInteres;
     private String periodo;
+    private String nombreProfesorUV;
+    private String nombreProfesorExterno;
+    private String nombreAsignatura;
+    private String nombreRegion;
+    private String nombreDepartamento;
     private Integer noEstudiantesExternos;
     private Integer idColaboracion;
     private Integer idProfesorUV;
@@ -93,6 +98,46 @@ public class Colaboracion {
 
     public void setTemaInteres(String temaInteres) {
         this.temaInteres = temaInteres;
+    }
+
+    public void setNombreProfesorUV(String nombreProfesorUV) {
+        this.nombreProfesorUV = nombreProfesorUV;
+    }
+
+    public void setNombreProfesorExterno(String nombreProfesorExterno) {
+        this.nombreProfesorExterno = nombreProfesorExterno;
+    }
+
+    public void setNombreAsignatura(String nombreAsignatura) {
+        this.nombreAsignatura = nombreAsignatura;
+    }
+
+    public void setNombreRegion(String nombreRegion) {
+        this.nombreRegion = nombreRegion;
+    }
+
+    public void setNombreDepartamento(String nombreDepartamento) {
+        this.nombreDepartamento = nombreDepartamento;
+    }
+
+    public String getNombreProfesorUV() {
+        return nombreProfesorUV;
+    }
+
+    public String getNombreProfesorExterno() {
+        return nombreProfesorExterno;
+    }
+
+    public String getNombreAsignatura() {
+        return nombreAsignatura;
+    }
+
+    public String getNombreRegion() {
+        return nombreRegion;
+    }
+
+    public String getNombreDepartamento() {
+        return nombreDepartamento;
     }
 
     public String getPeriodo() {

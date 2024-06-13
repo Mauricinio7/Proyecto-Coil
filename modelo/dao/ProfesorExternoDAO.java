@@ -122,4 +122,23 @@ public class ProfesorExternoDAO {
         }
         return respuesta;
     }
+    public static HashMap<String, Object> obtenerNombreProfesorExternoPorId(Integer idProfesorExterno) {
+        HashMap<String, Object> respuesta = new HashMap<>();
+        try(Connection conexionDB = ConexionBD.obtenerConexion()){
+            StringBuilder consulta = new StringBuilder();
+            consulta.append("SELECT nombre ");
+            consulta.append("FROM profesor_externo ");
+            consulta.append("WHERE id_profesor_externo = ?");
+            PreparedStatement sentenciaPreparada = conexionDB.prepareStatement(consulta.toString());
+            sentenciaPreparada.setInt(1, idProfesorExterno);
+            ResultSet resultado = sentenciaPreparada.executeQuery();
+            if(resultado.next()){
+                respuesta.put("nombreProfesorExterno", resultado.getString("nombre"));
+            }
+        }catch(SQLException errorSql){
+            respuesta.put(Constantes.KEY_MENSAJE, "No se han podido cargar los datos");
+            errorSql.printStackTrace();
+        }
+        return respuesta;
+    }
 }

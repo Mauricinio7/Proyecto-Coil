@@ -2,6 +2,7 @@ package coilvic.modelo.dao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
 
@@ -43,6 +44,46 @@ public class PlanProyectoDAO {
             }
         } else {
             respuesta.put(Constantes.KEY_MENSAJE, Constantes.MENSAJE_ERROR_CONEXION);
+        }
+        return respuesta;
+    }
+    /* 
+     * MariaDB [COIL]> describe plan_proyecto
+    -> ;
+        +------------------------------+--------------+------+-----+---------+----------------+
+        | Field                        | Type         | Null | Key | Default | Extra          |
+        +------------------------------+--------------+------+-----+---------+----------------+
+        | id_plan_proyecto             | int(11)      | NO   | PRI | NULL    | auto_increment |
+        | archivo_adjunto              | longblob     | NO   |     | NULL    |                |
+        | descripcion                  | varchar(100) | YES  |     | NULL    |                |
+        | nombre                       | varchar(45)  | NO   |     | NULL    |                |
+        | colaboracion_id_colaboracion | int(11)      | NO   | MUL | NULL    |                |
+        +------------------------------+--------------+------+-----+---------+----------------+
+
+     */
+    public static HashMap<String, Object> obtenerPlanProyectoPorIdColaboracion(int idColaboracion){
+        HashMap<String, Object> respuesta = new HashMap<>();
+        try(Connection conexionDB = ConexionBD.obtenerConexion()){
+            StringBuilder consulta = new StringBuilder();
+            consulta.append("SELECT id_plan_proyecto, archivo_adjunto, descripcion, nombre ");
+            consulta.append("FROM plan_proyecto ");
+            consulta.append("WHERE colaboracion_id_colaboracion = ?");
+            PreparedStatement sentenciaPreparada = conexionDB.prepareStatement(consulta.toString());
+            sentenciaPreparada.setInt(1, idColaboracion);
+            sentenciaPreparada.executeQuery();
+            ResultSet result = sentenciaPreparada.executeQuery();
+            if(result.next()){
+                PlanProyecto planProyecto = new PlanProyecto();
+                planProyecto.setIdPlanProyecto(sentenciaPreparada.getResultSet().getInt("id_plan_proyecto"));
+                planProyecto.setArchivoAdjunto(sentenciaPreparada.getResultSet().getBytes("archivo_adjunto"));
+                planProyecto.setDescripcion(sentenciaPreparada.getResultSet().getString("descripcion"));
+                planProyecto.setNombre(sentenciaPreparada.getResultSet().getString("nombre"));
+                respuesta.put("planProyecto", planProyecto);
+            }
+            if(respuesta.isEmpty()) respuesta.put(Constantes.KEY_ERROR, false);
+        }catch(SQLException errorSql){ 
+            errorSql.printStackTrace();
+            respuesta.put(Constantes.KEY_MENSAJE, "No se han podido cargar los datos");
         }
         return respuesta;
     }

@@ -13,7 +13,6 @@ public class ThreadVerifyRepetitiveChars implements Runnable{
     @Override
     public void run(){
         Platform.runLater(() -> {
-            //return true when there's three equals chars consecutitive ex, aaaa aaab baaa baaab
             int stringLength = textComponent.getText().length();
             if(stringLength < 3) return;
             String cadena = textComponent.getText();
