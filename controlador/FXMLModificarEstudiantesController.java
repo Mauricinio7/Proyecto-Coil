@@ -35,11 +35,7 @@ import javafx.scene.layout.Pane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
-/**
- * FXML Controller class
- *
- * @author mauricio
- */
+
 public class FXMLModificarEstudiantesController implements Initializable {
 
     @FXML
@@ -80,15 +76,12 @@ public class FXMLModificarEstudiantesController implements Initializable {
 
     @FXML
     private void clicGuardar(ActionEvent event) {
-        //TODO guardar
-        System.out.println("Estudiantes eliminados:");
-
         estudiantesBDEliminados.forEach(est -> System.out.println(est.getNombre() + ": " + est.getMatricula()));
-        if(Utils.mostrarAlertaConfirmacion("Confirmacion", "¿Desea conservar los cambios realizados?", Alert.AlertType.INFORMATION)){
+        if(Utils.mostrarAlertaConfirmacion("Confirmacion", "¿Desea conservar los cambios realizados?", Alert.AlertType.INFORMATION, (Stage) scPanePrincipal.getScene().getWindow())){
             if(eliminarEstudiantes()){
-                Utils.mostrarAlertaSimple("Éxito", "Se han eliminado los estudiantes correctamente", Alert.AlertType.INFORMATION);
+                Utils.mostrarAlertaSimple("Éxito", "Se han eliminado los estudiantes correctamente", Alert.AlertType.INFORMATION, (Stage) scPanePrincipal.getScene().getWindow());
             }else{
-                Utils.mostrarAlertaSimple("Error", "No se han podido guardar los datos", Alert.AlertType.ERROR);
+                Utils.mostrarAlertaSimple("Error", "No se han podido guardar los datos", Alert.AlertType.ERROR, (Stage) scPanePrincipal.getScene().getWindow());
             }
         }
     }

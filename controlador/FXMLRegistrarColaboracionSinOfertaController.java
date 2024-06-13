@@ -100,6 +100,7 @@ public class FXMLRegistrarColaboracionSinOfertaController implements Initializab
         profesorUv.setNombre("Carlos Fuentes");
         profesorUv.setCorreo("cfuentes@uv.mx");
         profesorUv.setIdRegion(1);
+        profesorUv.setNombreRegion("Xalapa");
         profesorUv.setIdProfesorUv(1);
         //inicializarValores(profesorUv);
         ofertaColaboracion = new OfertaColaboracion();
@@ -181,7 +182,8 @@ public class FXMLRegistrarColaboracionSinOfertaController implements Initializab
         if (!(Boolean) obtenerRegion.get(Constantes.KEY_ERROR)) {
             return (String) obtenerRegion.get("region");
         } else {
-            return "no disponible por el momento";
+            Utils.mostrarAlertaSimple("", "No se han podido cargar los datos", AlertType.ERROR);
+            return null;
         }
     }
 

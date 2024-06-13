@@ -54,6 +54,35 @@ public class ProfesorExternoDAO {
         return respuesta;
     }
 
+    public static HashMap<String, Object> comprobarProfesoresExternos() {
+        HashMap<String, Object> respuesta = new HashMap<>();
+        respuesta.put(Constantes.KEY_ERROR, true);
+        Connection conexionBD = ConexionBD.obtenerConexion();
+        
+        if (conexionBD != null) {
+            try {
+                String consulta = "SELECT COUNT(*) AS cantidad FROM profesor_externo";
+                PreparedStatement prepararSentencia = conexionBD.prepareStatement(consulta);
+                ResultSet resultado = prepararSentencia.executeQuery();
+                int cantidadProfesoresExternos = 0;
+                if (resultado.next()) {
+                    cantidadProfesoresExternos = resultado.getInt("cantidad");
+                }
+                respuesta.put("hayProfesoresExternos", cantidadProfesoresExternos > 0);
+                respuesta.put(Constantes.KEY_ERROR, false);
+                
+                conexionBD.close();
+            } catch (SQLException e) {
+                respuesta.put(Constantes.KEY_MENSAJE, e.getMessage());
+            }
+        } else {
+            respuesta.put(Constantes.KEY_MENSAJE, Constantes.MENSAJE_ERROR_CONEXION);
+        }
+        
+        return respuesta;
+    }
+    
+
     public static HashMap<String, Object> obtenerIdProfesor(ProfesorExterno profesorExterno) {
         HashMap<String, Object> respuesta = new HashMap<>();
         respuesta.put(Constantes.KEY_ERROR, true);
@@ -122,6 +151,7 @@ public class ProfesorExternoDAO {
         }
         return respuesta;
     }
+
     public static HashMap<String, Object> obtenerNombreProfesorExternoPorId(Integer idProfesorExterno) {
         HashMap<String, Object> respuesta = new HashMap<>();
         try(Connection conexionDB = ConexionBD.obtenerConexion()){
@@ -141,6 +171,45 @@ public class ProfesorExternoDAO {
         }
         return respuesta;
     }
+
+    
+
+    public static HashMap<String, Object> obtenerProfesoresExternoPorNombre(String nombre) {
+        HashMap<String, Object> respuesta = new HashMap<>();
+        respuesta.put("error", true);
+        respuesta.put(Constantes.KEY_ERROR, true);
+        Connection conexionBD = ConexionBD.obtenerConexion();
+        if (conexionBD != null) {
+            try {
+                StringBuilder consulta = new StringBuilder();
+                consulta.append("SELECT id_profesor_externo, nombre ");
+                consulta.append("FROM profesor_externo ");
+                consulta.append("WHERE nombre LIKE ?");
+                PreparedStatement sentenciaPreparada = conexionBD.prepareStatement(consulta.toString());
+                sentenciaPreparada.setString(1, "%" + nombre + "%");
+                ResultSet resultado = sentenciaPreparada.executeQuery();
+                ArrayList<ProfesorExterno> profesoresExternos = new ArrayList<>();
+                while (resultado.next()) {
+                    ProfesorExterno profesorExterno = new ProfesorExterno();
+                    profesorExterno.setNombre(resultado.getString("nombre"));
+                    profesorExterno.setIdProfesorExterno(resultado.getInt("id_profesor_externo"));
+
+                    profesoresExternos.add(profesorExterno);
+                }
+                respuesta.put("profesoresExternos", profesoresExternos);
+                respuesta.put(Constantes.KEY_ERROR, false);
+                conexionBD.close();
+            } catch (SQLException e) {
+                respuesta.put(Constantes.KEY_MENSAJE, e.getMessage());
+            }
+        } else {
+            respuesta.put(Constantes.KEY_MENSAJE, Constantes.MENSAJE_ERROR_CONEXION);
+        }
+        return respuesta;
+    }
+
+
+
     /* 
      * MariaDB [COIL]> describe profesor_externo;
 +---------------------+--------------+------+-----+---------+----------------+
