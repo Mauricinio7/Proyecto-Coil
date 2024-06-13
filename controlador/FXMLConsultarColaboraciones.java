@@ -154,15 +154,11 @@ public class FXMLConsultarColaboraciones implements Initializable {
                         contenedor.getChildren().clear();
                         nextYPosition = 0;
                         cargarColaboracionesTodas();
-                        System.out.println("Todos");
                     }
                     else{
-                        //TODO cargar por filtro
                         contenedor.getChildren().clear();
                         nextYPosition = 0;
                         cargarColaboracionesFiltro(newValue);
-                        //Filtrar
-                        System.out.println("Filtro");
                     }
               }
             }
@@ -256,7 +252,7 @@ public class FXMLConsultarColaboraciones implements Initializable {
         btnSubirReportes.setLayoutY(55);
         btnSubirReportes.setLayoutX(840);
         btnSubirReportes.setOnAction(e -> {
-            //TODO Subir evidencias extemporaneas
+            //TODO llamar a Subir evidencias extemporaneas
         });
 
         objeto.getChildren().add(btnVerInformacion);
@@ -300,16 +296,16 @@ public class FXMLConsultarColaboraciones implements Initializable {
 
     private void llamarVer(int idColaboracion){
         try{
-            Stage stageInformacion = new Stage();
-            stageInformacion.initStyle(StageStyle.UTILITY);
-            FXMLLoader cargarObjeto = new FXMLLoader(CoilVic.class.getResource("vista/FXMLVerInformacionColaboracion.fxml"));
+            Stage stageVer = new Stage();
+            stageVer.initStyle(StageStyle.UTILITY);
+            FXMLLoader cargarObjeto = new FXMLLoader(CoilVic.class.getResource("vista/FXMLVerColaboracion.fxml"));
             Parent root = cargarObjeto.load();
-            FXMLVerInformacionColaboracionController verInformacion = cargarObjeto.getController();
-            verInformacion.inicializarValores(idColaboracion);
+            FXMLVerColaboracionController verColaboracion = cargarObjeto.getController();
+            verColaboracion.inicializarValores(idColaboracion);
             Scene nuevaScena = new Scene(root);
-            stageInformacion.setTitle("Colaboracion");
-            stageInformacion.setScene(nuevaScena);
-            stageInformacion.showAndWait();
+            stageVer.setTitle("Colaboracion");
+            stageVer.setScene(nuevaScena);
+            stageVer.showAndWait();
         }catch(IOException error){
             error.printStackTrace();
         }
@@ -317,5 +313,6 @@ public class FXMLConsultarColaboraciones implements Initializable {
 
     @FXML
     private void btnClicNuevaColab(ActionEvent event) {
+        // TODO Llamar a registrar sin oferta
     }
 }
