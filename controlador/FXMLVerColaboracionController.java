@@ -1,10 +1,12 @@
 package coilvic.controlador;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.ResourceBundle;
 
+import coilvic.CoilVic;
 import coilvic.modelo.dao.ColaboracionDAO;
 import coilvic.modelo.pojo.Colaboracion;
 import coilvic.modelo.pojo.OfertaColaboracion;
@@ -13,12 +15,16 @@ import coilvic.utilidades.Constantes;
 import coilvic.utilidades.Utils;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 
 public class FXMLVerColaboracionController implements Initializable {
@@ -76,25 +82,41 @@ public class FXMLVerColaboracionController implements Initializable {
         //imgPlanProyecto.setImage(Utils.convertirImagen()); 
     }
 
-    private void btnClicVolver(ActionEvent event) {
-            Stage stage = (Stage) lblColaboracion.getScene().getWindow();
-            stage.close();
-    }
-
     @FXML
     private void btnClicRegistrarAlumnos(ActionEvent event) {
+        llamarEstudiantes();
     }
+    private void llamarEstudiantes(){
+        try{
+            Stage stageRegistrarEstudiantes = new Stage();
+            stageRegistrarEstudiantes.initStyle(StageStyle.UTILITY);
+            FXMLLoader cargarObjeto = new FXMLLoader(CoilVic.class.getResource("vista/FXMLEstudiantes.fxml"));
+            Parent root = cargarObjeto.load();
+            FXMLEstudiantesController estudiantes = cargarObjeto.getController();
+            estudiantes.inicializarValores(colaboracion);
+            Scene nuevaScena = new Scene(root);
+            stageRegistrarEstudiantes.setTitle("Estudiantes");
+            stageRegistrarEstudiantes.setScene(nuevaScena);
+            stageRegistrarEstudiantes.showAndWait();
+        }catch(IOException error){
+            error.printStackTrace();
+        }
+}
 
     @FXML
     private void btnClicRegistrarProfesorEx(ActionEvent event) {
+        //TODO llamar asociar profesor externo
     }
 
     @FXML
     private void btnClicConcluir(ActionEvent event) {
+        //TODO llamar concluir colaboracion
     }
 
     @FXML
     private void btnClicCancelar(ActionEvent event) {
+        //TODO llamarCancelar colaboracion
+        Utils.mostrarAlertaSimple("Working", "Esta parte aún está en construcción", Alert.AlertType.INFORMATION, (Stage) lblColaboracion.getScene().getWindow());
     }
     
 }

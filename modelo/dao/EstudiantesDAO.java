@@ -232,7 +232,6 @@ public class EstudiantesDAO {
         return respuesta;
     }
 
-    //TODO Eliminar el paciente y la relacion de la base de datos
     public static HashMap<String, Object> eliminarEstudianteRelacion(int idEstudiante, int idColaboracion) {
         HashMap<String, Object> respuesta = new HashMap<>();
         respuesta.put(Constantes.KEY_ERROR, true);
