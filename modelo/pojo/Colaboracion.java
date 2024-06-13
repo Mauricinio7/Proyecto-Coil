@@ -15,6 +15,7 @@ public class Colaboracion {
     private String nombreAsignatura;
     private String nombreRegion;
     private String nombreDepartamento;
+    private String nombreArea;
     private Integer noEstudiantesExternos;
     private Integer idColaboracion;
     private Integer idProfesorUV;
@@ -203,6 +204,15 @@ public class Colaboracion {
     public void setIdDepartamento(Integer idDepartamento) {
         this.idDepartamento = idDepartamento;
     }
+
+    public String getNombreArea() {
+        return nombreArea;
+    }
+
+    public void setNombreArea(String nombreArea) {
+        this.nombreArea = nombreArea;
+    }
+    
     
     
 }

@@ -99,6 +99,7 @@ public class FXMLEstudiantesController implements Initializable, ObservadorEstud
 
     @FXML
     private void clicSalir(ActionEvent event) {
+        ((Stage) scPanePrincipal.getScene().getWindow()).close();
     }
 
     private void cargarPanelScroll(){
