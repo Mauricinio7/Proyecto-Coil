@@ -1,6 +1,7 @@
 package coilvic.controlador;
 
 import coilvic.CoilVic;
+import coilvic.modelo.ConexionApacheNet;
 import coilvic.modelo.dao.ColaboracionDAO;
 import coilvic.modelo.dao.EvidenciaDAO;
 import coilvic.modelo.dao.ProfesorUvDAO;
@@ -10,8 +11,12 @@ import coilvic.modelo.pojo.ProfesorUv;
 import coilvic.utilidades.Constantes;
 import coilvic.utilidades.Utils;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.nio.file.Files;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.ResourceBundle;
@@ -31,12 +36,15 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.util.Duration;
 
 public class FXMLSubirEvidenciasExtemporaneasController implements Initializable {
 
+    private File archivoEvidencia;
+    private Evidencia evidencia = new Evidencia();
     private Pane contenedor;
     private double nextYPosition;
     private ArrayList<Evidencia> evidencias;
@@ -52,13 +60,9 @@ public class FXMLSubirEvidenciasExtemporaneasController implements Initializable
     @FXML
     private TextArea taDescripcion;
     @FXML
-    private Button btnSolicitarConstancias;
-    @FXML
-    private Button btnGuardar;
-    @FXML
-    private Button btnCancelar;
-    @FXML
     private ScrollPane scPanePrincipal;
+    @FXML
+    private Button btnSubirArchivo;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -67,12 +71,16 @@ public class FXMLSubirEvidenciasExtemporaneasController implements Initializable
         //Eliminar inicia
         obtenerColaboracion(4);
         obtenerListaEvidencias();
+
         //Eliminar termina
+
+        limitarCaracteres();
     }    
     
     public void inicializarValores(Integer idColaboracion){
         obtenerColaboracion(idColaboracion);
         obtenerListaEvidencias();
+        
     }
 
     private void obtenerColaboracion(Integer idColaboracion) {
@@ -141,6 +149,95 @@ public class FXMLSubirEvidenciasExtemporaneasController implements Initializable
 
     @FXML
     private void btnSubirArchivos(ActionEvent event) {
+        FileChooser dialogoSeleccion = new FileChooser();
+        dialogoSeleccion.setTitle("Selecciona las evidencias pdf");
+        String etiquetaTipoDato = "Archivos pdf (*.pdf)";
+        FileChooser.ExtensionFilter filtroExtension = 
+        new FileChooser.ExtensionFilter(etiquetaTipoDato, "*.pdf");
+        dialogoSeleccion.getExtensionFilters().add(filtroExtension);
+        Stage escenarioActual = (Stage) panelDeslisante.getScene().getWindow();
+        archivoEvidencia = dialogoSeleccion.showOpenDialog(escenarioActual);
+        if (archivoEvidencia != null) {
+            btnSubirArchivo.setStyle("-fx-border-width: 3px; -fx-border-color: lightgreen;");
+        } else {
+            btnSubirArchivo.setStyle("");
+        }
+    }
+
+    @FXML
+    private void btnSolicitarConstancias(ActionEvent event) {
+        Utils.mostrarAlertaSimple(null, "Se han solicitado las constancias", AlertType.INFORMATION);
+    }
+
+    @FXML
+    private void btnGuardar(ActionEvent event) {
+        if (validarCamposVacios()) {
+            Utils.mostrarAlertaSimple(null, "Se han dejado campos obligatorios vacíos", AlertType.WARNING);
+        } else {
+            obtenerDatosEvidencia();
+            HashMap<String, Object> mapEvidencia = EvidenciaDAO.insertarEvidencia(evidencia);
+            if (!(boolean)mapEvidencia.get("error")){
+                Utils.mostrarAlertaSimple(null, ""+Constantes.KEY_MENSAJE, AlertType.INFORMATION);
+            }else{
+                Utils.mostrarAlertaSimple(null, ""+mapEvidencia.get(Constantes.KEY_MENSAJE), AlertType.ERROR);
+            }
+        }
+    }
+
+    private void limpiarCampos() {
+        tfNombre.clear();
+        taDescripcion.clear();
+        evidencia = new Evidencia();
+    }
+
+    private void obtenerDatosEvidencia() {
+        evidencia.setNombre(tfNombre.getText());
+        evidencia.setDescripcion(taDescripcion.getText());
+        evidencia.setIdColaboracion(colaboracion.getIdColaboracion());
+        LocalDateTime fecha = ConexionApacheNet.obtenerFechaHoraServidorNTP(Constantes.SERVIDOR_NTP);
+        String fechaformato = (fecha.getYear() + "-" + fecha.getMonthValue() + "-" + fecha.getDayOfMonth());
+        evidencia.setFechaEntrega(fechaformato);
+        try {
+            byte[] archivo = Files.readAllBytes(archivoEvidencia.toPath());
+            evidencia.setArchivo(archivo);
+        } catch (IOException ex) {
+            Utils.mostrarAlertaSimple(null, "Error al cargar el archivo", AlertType.ERROR);
+        }
+    }
+
+    private boolean validarCamposVacios() {
+        return tfNombre.getText().isEmpty() || taDescripcion.getText().isEmpty() || archivoEvidencia == null;
+    }
+
+    private void limitarCaracteres() {
+        tfNombre.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue.length() > 45) {
+                tfNombre.setText(oldValue);
+            }
+        });
+        taDescripcion.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue.length() > 100) {
+                taDescripcion.setText(oldValue);
+            }
+        });
+    }
+
+    @FXML
+    private void btnCancelar(ActionEvent event) {
+        cerrarVentana();
+    }
+
+    private void cerrarVentana() {
+        try {
+            Stage stage = (Stage) panelDeslisante.getScene().getWindow();
+            FXMLLoader loader = Utils.obtenerLoader("/coilvic/vista/FXMLVistaProfesor.fxml");
+            Parent root = loader.load();
+            Scene escenaPrincipal = new Scene(root);
+            stage.setScene(escenaPrincipal);
+            stage.show();
+        } catch (IOException ex) {
+            Utils.mostrarAlertaSimple("Error", "Error al abrir la ventana", AlertType.ERROR);
+        }
     }
     
     @FXML
@@ -185,4 +282,5 @@ public class FXMLSubirEvidenciasExtemporaneasController implements Initializable
             System.out.println("Error al conectar con la bd");
         }
     }
+
 }

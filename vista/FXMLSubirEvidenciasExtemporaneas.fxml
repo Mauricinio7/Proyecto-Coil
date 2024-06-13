@@ -98,10 +98,10 @@
       </Label>
       <TextField fx:id="tfNombre" layoutX="838.0" layoutY="292.0" prefHeight="31.0" prefWidth="300.0" />
       <TextArea fx:id="taDescripcion" layoutX="838.0" layoutY="339.0" prefHeight="163.0" prefWidth="300.0" />
-      <Button layoutX="838.0" layoutY="526.0" mnemonicParsing="false" onAction="#btnSubirArchivos" prefHeight="78.0" prefWidth="300.0" style="-fx-background-radius: 30;" text="Subir archivos" />
-      <Button fx:id="btnSolicitarConstancias" layoutX="184.0" layoutY="678.0" mnemonicParsing="false" prefHeight="38.0" prefWidth="171.0" text="Solicitar constancias" />
-      <Button fx:id="btnGuardar" layoutX="573.0" layoutY="678.0" mnemonicParsing="false" prefHeight="38.0" prefWidth="171.0" text="Guardar" />
-      <Button fx:id="btnCancelar" layoutX="967.0" layoutY="678.0" mnemonicParsing="false" prefHeight="38.0" prefWidth="171.0" text="Cancelar" />
+      <Button fx:id="btnSubirArchivo" layoutX="838.0" layoutY="526.0" mnemonicParsing="false" onAction="#btnSubirArchivos" prefHeight="78.0" prefWidth="300.0" style="-fx-background-radius: 30;" text="Subir archivos" />
+      <Button layoutX="184.0" layoutY="678.0" mnemonicParsing="false" onAction="#btnSolicitarConstancias" prefHeight="38.0" prefWidth="171.0" text="Solicitar constancias" />
+      <Button layoutX="573.0" layoutY="678.0" mnemonicParsing="false" onAction="#btnGuardar" prefHeight="38.0" prefWidth="171.0" text="Guardar" />
+      <Button layoutX="967.0" layoutY="678.0" mnemonicParsing="false" onAction="#btnCancelar" prefHeight="38.0" prefWidth="171.0" text="Cancelar" />
       <ScrollPane fx:id="scPanePrincipal" layoutX="170.0" layoutY="300.0" prefHeight="302.0" prefWidth="483.0">
         <content>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="299.0" prefWidth="481.0" />
