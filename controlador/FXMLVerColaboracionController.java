@@ -9,12 +9,14 @@ import java.util.ResourceBundle;
 
 import coilvic.CoilVic;
 import coilvic.modelo.dao.AsignaturaDAO;
-import coilvic.CoilVic;
 import coilvic.modelo.dao.ColaboracionDAO;
+import coilvic.modelo.dao.DepartamentoDAO;
+import coilvic.modelo.dao.PlanProyectoDAO;
 import coilvic.modelo.dao.DepartamentoDAO;
 import coilvic.modelo.dao.PlanProyectoDAO;
 import coilvic.modelo.pojo.Colaboracion;
 import coilvic.modelo.pojo.OfertaColaboracion;
+import coilvic.modelo.pojo.PlanProyecto;
 import coilvic.modelo.pojo.PlanProyecto;
 import coilvic.modelo.pojo.ProfesorUv;
 import coilvic.utilidades.Constantes;
@@ -86,6 +88,33 @@ public class FXMLVerColaboracionController implements Initializable {
         txtAreaObjetivo.setText(colaboracion.getObjetivoGeneral());
         lblPeriodo.setText(lblPeriodo.getText() + colaboracion.getPeriodo());
         lblTemaInteres.setText(lblTemaInteres.getText() + colaboracion.getTemaInteres());
+        
+        HashMap<String, Object> asignatura = AsignaturaDAO.consultarNombreAsignaturaPorId(colaboracion.getIdAsignatura());
+                if(asignatura.containsKey("nombreAsignatura")){
+                    colaboracion.setNombreAsignatura((String) asignatura.get("nombreAsignatura"));
+                    lblAsignatura.setText(lblAsignatura.getText() + colaboracion.getNombreAsignatura());
+                }
+                HashMap<String, Object> areaAcademica = AsignaturaDAO.consultarAreaAcademicaPorId(colaboracion.getIdAsignatura());
+                if(areaAcademica.containsKey("area")){
+                    colaboracion.setNombreArea((String) areaAcademica.get("area"));
+                    lblArea.setText(lblArea.getText() + colaboracion.getNombreArea());
+                }
+                HashMap<String, Object> departamento = DepartamentoDAO.obtenerNombreDepartamentoPorId(colaboracion.getIdDepartamento());
+                if(departamento.containsKey("nombreDepartamento")){
+                    colaboracion.setNombreDepartamento((String) departamento.get("nombreDepartamento"));
+                    lblDepartamento.setText(lblDepartamento.getText() + colaboracion.getNombreDepartamento());
+                }
+
+                HashMap<String, Object> planProyecto = new HashMap<>();
+                PlanProyectoDAO.obtenerPlanProyectoPorIdColaboracion(colaboracion.getIdColaboracion());
+                if(planProyecto.containsKey("planProyecto")){
+                    PlanProyecto nuevoPlanProyecto = (PlanProyecto) planProyecto.get("planProyecto");
+                    if(planProyecto != null){
+                        System.out.println(nuevoPlanProyecto.getNombre());
+                    }
+                }
+
+        //TODO cargar imagen
         
         HashMap<String, Object> asignatura = AsignaturaDAO.consultarNombreAsignaturaPorId(colaboracion.getIdAsignatura());
                 if(asignatura.containsKey("nombreAsignatura")){
