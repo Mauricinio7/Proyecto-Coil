@@ -171,6 +171,7 @@ public class FXMLSubirEvidenciasExtemporaneasController implements Initializable
                 Utils.mostrarAlertaSimple(null, ""+mapEvidencia.get(Constantes.KEY_MENSAJE), AlertType.ERROR);
             }
         }
+        btnSubirArchivo.setStyle("");
     }
 
     private void limpiarCampos() {
