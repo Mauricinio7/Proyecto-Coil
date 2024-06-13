@@ -155,47 +155,26 @@ public class FXMLRegistrarColaboracionSinOfertaController implements Initializab
     private void cargarDatosProfesor() {
         lbNombreProfesor.setText("Nombre profesor: " + profesorUv.getNombre());
         lbCorreoProfesor.setText("Correo: " + profesorUv.getCorreo());
-        lbRegionProfesor.setText("Region: " + profesorUv.getNombreRegion());
+        lbRegionProfesor.setText("Region: " + obtenerRegionProfesor());
     }
 
-    private void cargarDatosOfertaColaboracionSeleccionada() {
-        tfNombreColaboracion.setText(ofertaColaboracion.getNombre());
-        tfIdioma.setText(ofertaColaboracion.getIdioma());
-        taObjetivo.setText(ofertaColaboracion.getObjetivoGeneral());
-        tfPeriodo.setText(ofertaColaboracion.getPeriodo());
-        taTemaInteres.setText(ofertaColaboracion.getTemaInteres());
-        cbAreaAcademica.setValue(obtenerAreaAcademicaOfertaColaboracion().getAreaAcademical());
-        cbAsignatura.setValue(obtenerAreaAcademicaOfertaColaboracion());
-        cbDepartamento.setValue(obtenerNombreDepartamentoOfertaColaboracion());
-        tfNombreColaboracion.setDisable(true);
-        tfIdioma.setDisable(true);
-        taObjetivo.setDisable(true);
-        tfPeriodo.setDisable(true);
-        taTemaInteres.setDisable(true);
-        cbAreaAcademica.setDisable(true);
-        cbAsignatura.setDisable(true);
-        cbDepartamento.setDisable(true);
-    }
-
-    private Asignatura obtenerAreaAcademicaOfertaColaboracion() {
-        HashMap<String, Object> obtenerAreaAcademica = 
-        AsignaturaDAO.consultarAreaAcademicaPorId(ofertaColaboracion.getIdAsignatura());
-        if (!(Boolean) obtenerAreaAcademica.get(Constantes.KEY_ERROR)) {
-            return (Asignatura) obtenerAreaAcademica.get("area");
+    private String obtenerRegionProfesor() {
+        HashMap<String, Object> obtenerRegion = RegionDAO.consultarRegionPorId(profesorUv.getIdRegion());
+        if (!(Boolean) obtenerRegion.get(Constantes.KEY_ERROR)) {
+            return (String) obtenerRegion.get("region");
         } else {
             Utils.mostrarAlertaSimple("", "No se han podido cargar los datos", AlertType.ERROR);
             return null;
         }
     }
 
-    private Departamento obtenerNombreDepartamentoOfertaColaboracion() {
-        HashMap<String, Object> obtenerDepartamento =
-        DepartamentoDAO.consultarDepartamentoPorId(ofertaColaboracion.getIdDepartamento());
-        if (!(Boolean) obtenerDepartamento.get(Constantes.KEY_ERROR)) {
-            return (Departamento) obtenerDepartamento.get("departamento");
+    private String obtenerAreaAcademicaOfertaColaboracion() {
+        HashMap<String, Object> obtenerAreaAcademica = 
+        AsignaturaDAO.consultarAreaAcademicaPorRegion(ofertaColaboracion.getIdRegion());
+        if (!(Boolean) obtenerAreaAcademica.get(Constantes.KEY_ERROR)) {
+            return (String) obtenerAreaAcademica.get("areaAcademica");
         } else {
-            Utils.mostrarAlertaSimple("", "No se han podido cargar los datos", AlertType.ERROR);
-            return null;
+            return "no disponible por el momento";
         }
     }
     
