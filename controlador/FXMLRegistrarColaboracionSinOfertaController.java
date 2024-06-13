@@ -103,7 +103,6 @@ public class FXMLRegistrarColaboracionSinOfertaController implements Initializab
         ofertaColaboracion.setObjetivoGeneral("Objetivo general de la colaboración");
         ofertaColaboracion.setPeriodo("Enero - Junio 2020");
         ofertaColaboracion.setTemaInteres("Tema de interés");
-        ofertaColaboracion.setIdDepartamento(103);
         inicializarValores(profesorUv, ofertaColaboracion);
         //Eliminar termina
     }    
@@ -120,17 +119,6 @@ public class FXMLRegistrarColaboracionSinOfertaController implements Initializab
         this.ofertaColaboracion = oferta;
         cargarDatosProfesor();
         cargarDatosOfertaColaboracionSeleccionada();
-        cargarEstadoComponentes();
-    }
-
-    private void cargarEstadoComponentes() {
-        limitarCaracteres();
-        cargarAreasAcademicas();
-        cbAsignatura.setDisable(true);
-        configurarSeleccionDepartamento();
-        configurarSeleccionAsignatura();
-        configurarFechaFin();
-        dpFechaFin.setDisable(true);
     }
 
     private void cargarDatosProfesor() {
@@ -145,9 +133,8 @@ public class FXMLRegistrarColaboracionSinOfertaController implements Initializab
         taObjetivo.setText(ofertaColaboracion.getObjetivoGeneral());
         tfPeriodo.setText(ofertaColaboracion.getPeriodo());
         taTemaInteres.setText(ofertaColaboracion.getTemaInteres());
-        cbAreaAcademica.setValue(ofertaColaboracion.getNombreAreaAcademica());
-        cbDepartamento.setValue(ofertaColaboracion.getNombreDepartamento());
-        cbAsignatura.setValue(ofertaColaboracion.getNombreAsignatura());
+        cbAreaAcademica.setValue(obtenerAreaAcademicaOfertaColaboracion().getAreaAcademical());
+        cbAsignatura.setValue(obtenerAreaAcademicaOfertaColaboracion());
     }
 
     private String obtenerRegionProfesor() {
@@ -159,13 +146,14 @@ public class FXMLRegistrarColaboracionSinOfertaController implements Initializab
         }
     }
 
-    private String obtenerAreaAcademicaOfertaColaboracion() {
+    private Asignatura obtenerAreaAcademicaOfertaColaboracion() {
         HashMap<String, Object> obtenerAreaAcademica = 
-        AsignaturaDAO.consultarAreaAcademicaPorRegion(ofertaColaboracion.getIdRegion());
+        AsignaturaDAO.consultarAreaAcademicaPorId(ofertaColaboracion.getIdAsignatura());
         if (!(Boolean) obtenerAreaAcademica.get(Constantes.KEY_ERROR)) {
-            return (String) obtenerAreaAcademica.get("areaAcademica");
+            return (Asignatura) obtenerAreaAcademica.get("area");
         } else {
-            return "no disponible por el momento";
+            Utils.mostrarAlertaSimple("", "No se han podido cargar los datos", AlertType.ERROR);
+            return null;
         }
     }
     
