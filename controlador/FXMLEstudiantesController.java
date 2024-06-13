@@ -20,6 +20,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
@@ -50,20 +51,15 @@ public class FXMLEstudiantesController implements Initializable, ObservadorEstud
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        iniciarColaboracion();
-        //FIX it do exception
-        System.out.println(colaboracion == null);
-        cargarRegistroEstudiantes(colaboracion.getIdColaboracion());
+        
     }    
 
-        //TODO este es un metodo en lo que se pasa a la ventana la colab
-    private void iniciarColaboracion(){
-        HashMap<String, Object> consulta = ColaboracionDAO.obtenerColaboracionPorId(4); //TODO Hardcode
-        if((boolean)consulta.get(Constantes.KEY_ERROR)){
-            Utils.mostrarAlertaSimple("Error", "" + consulta.get(Constantes.KEY_MENSAJE), Alert.AlertType.ERROR);
-        }
-        colaboracion = (Colaboracion)consulta.get("Colaboracion");
+    public void inicializarValores(Colaboracion colaboracion){
+        this.colaboracion = colaboracion;
+
+        cargarRegistroEstudiantes(colaboracion.getIdColaboracion());
     }
+    
 
     @FXML
     private void clicBuscar(ActionEvent event) {
@@ -72,7 +68,7 @@ public class FXMLEstudiantesController implements Initializable, ObservadorEstud
             cargarPanelScroll();
             cargarEstudiantesPorNombre(txtBuscarNombre.getText());
         }else {
-            Utils.mostrarAlertaSimple("Error al filtrar", "No se escrito un nombre, favor de escribirlo", Alert.AlertType.WARNING);
+            Utils.mostrarAlertaSimple("Error al filtrar", "No se ha escrito un nombre, favor de escribirlo", Alert.AlertType.WARNING, (Stage) scPanePrincipal.getScene().getWindow());
         }
     }
 
@@ -91,15 +87,19 @@ public class FXMLEstudiantesController implements Initializable, ObservadorEstud
             Scene escena = new Scene(root);
             escenario.setScene(escena);
             escenario.setTitle("Registrar Estudiantes");
+            escenario.initOwner(((Node) btnAnadir).getScene().getWindow());
             escenario.initModality(Modality.APPLICATION_MODAL);
+            
             escenario.showAndWait();
         } catch (IOException ex) {
             ex.printStackTrace();
         }
     }
+    
 
     @FXML
     private void clicSalir(ActionEvent event) {
+        ((Stage) scPanePrincipal.getScene().getWindow()).close();
     }
 
     private void cargarPanelScroll(){
@@ -128,7 +128,7 @@ public class FXMLEstudiantesController implements Initializable, ObservadorEstud
                 }
             }
         }else{
-            Utils.mostrarAlertaSimple("Error en la conexión", "No se han podido cargar los datos.", Alert.AlertType.ERROR);
+            Utils.mostrarAlertaSimple("Error en la conexión", "No se han podido cargar los datos.", Alert.AlertType.ERROR, (Stage) scPanePrincipal.getScene().getWindow());
         }
     }
 
@@ -144,7 +144,7 @@ public class FXMLEstudiantesController implements Initializable, ObservadorEstud
             for (Estudiante estudiante : estudiantesBD) {
                 crearFichaEstudiante(estudiante);
             }
-            Utils.mostrarAlertaSimple("Sin resultados", "No se han encontrado registros que coincidan con ese nombre", Alert.AlertType.WARNING);
+            Utils.mostrarAlertaSimple("Sin resultados", "No se han encontrado registros que coincidan con ese nombre", Alert.AlertType.WARNING, (Stage) scPanePrincipal.getScene().getWindow());
         }
     }
 

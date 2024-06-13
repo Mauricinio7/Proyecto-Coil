@@ -119,6 +119,17 @@ public class FXMLRegistrarColaboracionSinOfertaController implements Initializab
         this.profesorUv = profesor;
         cargarDatosProfesor();
         cbDepartamento.setDisable(true);
+        limitarCaracteres();
+        cargarAreasAcademicas();
+        cbDepartamento.setDisable(true);
+        cbAsignatura.setDisable(true);
+        configurarSeleccionDepartamento();
+        configurarSeleccionAsignatura();
+        configurarFechaFin();
+        dpFechaFin.setDisable(true);
+
+
+        cbDepartamento.setDisable(true);
         cargarEstadoComponentes();
     }
 

@@ -1,4 +1,4 @@
-
+//TODO el profesor se debe de obtener del login
 package coilvic.controlador;
 
 import java.io.IOException;
@@ -88,16 +88,16 @@ public class FXMLVistaProfesorController implements Initializable {
 
     public void irPantallaOfertasColaboracion(ProfesorUv profesorUv){
         try{
-            Stage stageOferta = new Stage();
-            stageOferta.initStyle(StageStyle.UTILITY);
+            Stage stageInformacion = new Stage();
+            stageInformacion.initStyle(StageStyle.UTILITY);
             FXMLLoader cargarObjeto = new FXMLLoader(CoilVic.class.getResource("/coilvic/vista/FXMLVistaOfertaColaboracion.fxml"));
             Parent root = cargarObjeto.load();
             FXMLVistaOfertaColaboracionController vistaOfertaCol = cargarObjeto.getController();
             vistaOfertaCol.inicializarValores(profesorUv);
             Scene nuevaScena = new Scene(root);
-            stageOferta.setTitle("Registrar ofertas de colaboracion");
-            stageOferta.setScene(nuevaScena);
-            stageOferta.show();
+            stageInformacion.setTitle("Registrar ofertas de colaboracion");
+            stageInformacion.setScene(nuevaScena);
+            stageInformacion.show();
             Stage stagePrincipal = (Stage)ivMisOfertas.getScene().getWindow();
             stagePrincipal.close();
         }catch(IOException error){

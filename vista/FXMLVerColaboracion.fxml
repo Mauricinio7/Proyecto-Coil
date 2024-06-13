@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.image.*?>
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" prefHeight="730.0" prefWidth="807.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="coilvic.controlador.FXMLVerColaboracionController">
+   <children>
+      <Label fx:id="lblColaboracion" layoutX="34.0" layoutY="54.0" text="Colaboración: ">
+         <font>
+            <Font size="23.0" />
+         </font>
+      </Label>
+      <Label fx:id="lblFechaInicio" layoutX="33.0" layoutY="132.0" text="Fecha incio: ">
+         <font>
+            <Font size="17.0" />
+         </font>
+      </Label>
+      <Label fx:id="lblFechaFin" layoutX="33.0" layoutY="170.0" text="Fecha fin: ">
+         <font>
+            <Font size="17.0" />
+         </font>
+      </Label>
+      <Label fx:id="lblIdioma" layoutX="33.0" layoutY="212.0" text="Idioma: ">
+         <font>
+            <Font size="17.0" />
+         </font>
+      </Label>
+      <Label layoutX="33.0" layoutY="251.0" text="Objetivo general:">
+         <font>
+            <Font size="17.0" />
+         </font>
+      </Label>
+      <TextArea fx:id="txtAreaObjetivo" editable="false" layoutX="23.0" layoutY="284.0" prefHeight="155.0" prefWidth="370.0" />
+      <Label fx:id="lblPeriodo" layoutX="37.0" layoutY="465.0" text="Periodo:  ">
+         <font>
+            <Font size="17.0" />
+         </font>
+      </Label>
+      <Label fx:id="lblTemaInteres" layoutX="32.0" layoutY="504.0" text="Tema de interes: ">
+         <font>
+            <Font size="17.0" />
+         </font>
+      </Label>
+      <Label fx:id="lblArea" layoutX="34.0" layoutY="550.0" text="Área académica: ">
+         <font>
+            <Font size="17.0" />
+         </font>
+      </Label>
+      <Label fx:id="lblAsignatura" layoutX="33.0" layoutY="586.0" text="Asignatura:  ">
+         <font>
+            <Font size="17.0" />
+         </font>
+      </Label>
+      <Label fx:id="lblDepartamento" layoutX="32.0" layoutY="632.0" text="Departamento: ">
+         <font>
+            <Font size="17.0" />
+         </font>
+      </Label>
+      <Label layoutX="536.0" layoutY="181.0" text="Plan de proyecto:">
+         <font>
+            <Font size="17.0" />
+         </font>
+      </Label>
+      <ImageView fx:id="imgPlanProyecto" fitHeight="214.0" fitWidth="356.0" layoutX="419.0" layoutY="212.0" pickOnBounds="true" preserveRatio="true" />
+      <Button layoutX="517.0" layoutY="467.0" mnemonicParsing="false" onAction="#btnClicRegistrarAlumnos" prefHeight="40.0" prefWidth="241.0" text="Registrar alumnos">
+         <font>
+            <Font size="19.0" />
+         </font>
+      </Button>
+      <Button layoutX="517.0" layoutY="515.0" mnemonicParsing="false" onAction="#btnClicRegistrarProfesorEx" prefHeight="40.0" prefWidth="241.0" text="Registrar profesor externo">
+         <font>
+            <Font size="19.0" />
+         </font>
+      </Button>
+      <Button layoutX="517.0" layoutY="563.0" mnemonicParsing="false" onAction="#btnClicConcluir" prefHeight="40.0" prefWidth="241.0" text="Concluir colaboración">
+         <font>
+            <Font size="19.0" />
+         </font>
+      </Button>
+      <Button layoutX="517.0" layoutY="612.0" mnemonicParsing="false" onAction="#btnClicCancelar" prefHeight="40.0" prefWidth="241.0" text="Cancelar colaboración">
+         <font>
+            <Font size="19.0" />
+         </font>
+      </Button>
+   </children>
+</AnchorPane>

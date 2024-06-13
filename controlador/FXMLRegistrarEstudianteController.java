@@ -46,30 +46,30 @@ public class FXMLRegistrarEstudianteController implements Initializable {
             if(!datosInvalidos()){
                 HashMap<String, Object> consulta = EstudiantesDAO.comprobarExistenciaEstudiante(txtMatricula.getText());
                 if((boolean)consulta.get(Constantes.KEY_ERROR)){
-                    Utils.mostrarAlertaSimple("Error", "" + consulta.get(Constantes.KEY_MENSAJE), Alert.AlertType.ERROR);
+                    Utils.mostrarAlertaSimple("Error", "" + consulta.get(Constantes.KEY_MENSAJE), Alert.AlertType.ERROR, (Stage) txtNombre.getScene().getWindow());
                 }
             
-            if((boolean)consulta.get("encontrado")){
-                if(!probarExisteEstudianteColaboracion()){
-                    asociarEstudiante((int) consulta.get("idEstudiante"));
-                    observador.operacionExitosa("Asociar", txtNombre.getText());
-                    System.out.println("Si existe, ID: " + consulta.get("id_Estudiante"));
-                }else{
-                    Utils.mostrarAlertaSimple("Error", "El estudiante ya se encuentra registrado en esta colaboración", Alert.AlertType.WARNING);
-                    System.out.println("El estudiante ya esta en la colab");
-                }
+                if((boolean)consulta.get("encontrado")){
+                    if(!probarExisteEstudianteColaboracion()){
+                        asociarEstudiante((int) consulta.get("idEstudiante"));
+                        observador.operacionExitosa("Asociar", txtNombre.getText());
+                        cerrarVentana();
+                    }else{
+                        Utils.mostrarAlertaSimple("Error", "El estudiante ya se encuentra registrado en esta colaboración", Alert.AlertType.WARNING, (Stage) txtNombre.getScene().getWindow());
+                    }
             }else{
                 guardarEstudiante();
                 observador.operacionExitosa("Agregar", txtNombre.getText());
                 System.out.println("No existe");
+                cerrarVentana();
             }
             }else{
-                Utils.mostrarAlertaSimple("Rellenar campos correctamente", "Se han introducido datos inválidos", Alert.AlertType.WARNING);
+                Utils.mostrarAlertaSimple("Rellenar campos correctamente", "Se han introducido datos inválidos", Alert.AlertType.WARNING, (Stage) txtNombre.getScene().getWindow());
             }
         }else {
-            Utils.mostrarAlertaSimple("Rellenar campos obligatorios", "Se han dejado campos obligatorios vacíos", Alert.AlertType.WARNING);
+            Utils.mostrarAlertaSimple("Rellenar campos obligatorios", "Se han dejado campos obligatorios vacíos", Alert.AlertType.WARNING, (Stage) txtNombre.getScene().getWindow());
         }
-        cerrarVentana();
+        
     }
 
     private boolean camposVacios(){
@@ -93,7 +93,7 @@ public class FXMLRegistrarEstudianteController implements Initializable {
 
         HashMap<String, Object> respuesta = EstudiantesDAO.guardarEstudiante(estudiante, colaboracion);
         if(!((boolean) respuesta.get(Constantes.KEY_ERROR))){
-            Utils.mostrarAlertaSimple("Éxito", "Se ha añadido exitosamente", Alert.AlertType.INFORMATION);
+            Utils.mostrarAlertaSimple("Éxito", "Se ha añadido exitosamente", Alert.AlertType.INFORMATION, (Stage) txtNombre.getScene().getWindow());
         }
 
     }
@@ -101,7 +101,7 @@ public class FXMLRegistrarEstudianteController implements Initializable {
     public void asociarEstudiante(int idEstudiante){
         HashMap<String, Object> respuesta = EstudiantesDAO.asociarEstudianteColaboracion(idEstudiante, colaboracion);
         if(!((boolean) respuesta.get(Constantes.KEY_ERROR))){
-            Utils.mostrarAlertaSimple("Éxito", "Se ha añadido exitosamente", Alert.AlertType.INFORMATION);
+            Utils.mostrarAlertaSimple("Éxito", "Se ha añadido exitosamente", Alert.AlertType.INFORMATION, (Stage) txtNombre.getScene().getWindow());
         }
     }
 
