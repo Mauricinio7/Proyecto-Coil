@@ -1,9 +1,13 @@
 package coilvic.controlador;
 
 import coilvic.CoilVic;
+import coilvic.modelo.dao.ColaboracionDAO;
+import coilvic.modelo.dao.EvidenciaDAO;
 import coilvic.modelo.dao.ProfesorUvDAO;
+import coilvic.modelo.pojo.Colaboracion;
 import coilvic.modelo.pojo.Evidencia;
 import coilvic.modelo.pojo.ProfesorUv;
+import coilvic.utilidades.Utils;
 
 import java.io.IOException;
 import java.net.URL;
@@ -21,6 +25,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
@@ -31,7 +36,7 @@ import javafx.util.Duration;
 public class FXMLSubirEvidenciasExtemporaneasController implements Initializable {
 
     private ArrayList<Evidencia> evidencias = new ArrayList<>();
-    private Integer idColaboracion;
+    private Colaboracion colaboracion;
     @FXML
     private Pane panelDeslisante;
     @FXML
@@ -55,7 +60,27 @@ public class FXMLSubirEvidenciasExtemporaneasController implements Initializable
     }    
     
     public void inicializarValores(Integer idColaboracion){
-        this.idColaboracion = idColaboracion;
+        obtenerColaboracion(idColaboracion);
+        obtenerListaEvidencias();
+    }
+
+    private void obtenerColaboracion(Integer idColaboracion) {
+        HashMap<String, Object> mapColaboracion = ColaboracionDAO.obtenerColaboracionPorId(idColaboracion);
+        if (!(boolean)mapColaboracion.get("error")){
+            colaboracion = (Colaboracion) mapColaboracion.get("Colaboracion");
+        }else{
+            Utils.mostrarAlertaSimple(null, "No se han podido cargar los datos", AlertType.ERROR);
+        }
+    }
+
+    private void obtenerListaEvidencias() {
+        HashMap<String, Object> mapEvidencias = 
+        EvidenciaDAO.obtenerEvidenciasPorIdColaboracion(colaboracion.getIdColaboracion());
+        if (!(boolean)mapEvidencias.get("error")){
+            evidencias = (ArrayList<Evidencia>) mapEvidencias.get("evidencias");
+        }else{
+            Utils.mostrarAlertaSimple(null, "No se han podido cargar los datos", AlertType.ERROR);
+        }
     }
     
     @FXML
