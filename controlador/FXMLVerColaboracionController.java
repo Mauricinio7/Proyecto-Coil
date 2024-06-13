@@ -133,7 +133,24 @@ public class FXMLVerColaboracionController implements Initializable {
 
     @FXML
     private void btnClicRegistrarProfesorEx(ActionEvent event) {
-        //TODO llamar asociar profesor externo
+        if(colaboracion.getIdProfesorExterno() != 0){
+            Utils.mostrarAlertaSimple("Error", "Ya se ha registrado un profesor externo", Alert.AlertType.INFORMATION, (Stage) lblColaboracion.getScene().getWindow());
+        }else {
+            try{
+                Stage stageAsociarProfesorExterno = new Stage();
+                stageAsociarProfesorExterno.initStyle(StageStyle.UTILITY);
+                FXMLLoader cargarObjeto = new FXMLLoader(CoilVic.class.getResource("vista/FXMLAsociarProfesorExterno.fxml"));
+                Parent root = cargarObjeto.load();
+                FXMLAsociarProfesorExternoController asociarProfesorExterno = cargarObjeto.getController();
+                asociarProfesorExterno.inicializarValores(colaboracion, (Stage) lblColaboracion.getScene().getWindow());
+                Scene nuevaScena = new Scene(root);
+                stageAsociarProfesorExterno.setTitle("Asociar Profesor Externo");
+                stageAsociarProfesorExterno.setScene(nuevaScena);
+                stageAsociarProfesorExterno.showAndWait();
+            }catch(IOException error){
+                error.printStackTrace();
+            }
+        }
     }
 
     @FXML

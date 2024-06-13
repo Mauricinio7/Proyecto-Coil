@@ -61,6 +61,33 @@ public class ColaboracionDAO {
         return respuesta;
     }
 
+    public static HashMap<String, Object> asociarProfesorExternoColaboracion(int idColaboracion, int idProfesorExterno) {
+        HashMap<String, Object> respuesta = new HashMap<>();
+        respuesta.put(Constantes.KEY_ERROR, true);
+        Connection conexionBD = ConexionBD.obtenerConexion();
+        if (conexionBD != null) {
+            try {
+            String sentencia = "UPDATE colaboracion SET profesor_externo_id_profesor_externo = ? WHERE id_colaboracion = ?";
+            PreparedStatement prepararSentencia = conexionBD.prepareStatement(sentencia);
+            prepararSentencia.setInt(1, idProfesorExterno);
+            prepararSentencia.setInt(2, idColaboracion);
+            int filasAfectadas = prepararSentencia.executeUpdate();
+                if (filasAfectadas > 0) {
+                    respuesta.put(Constantes.KEY_ERROR, false);
+                    respuesta.put(Constantes.KEY_MENSAJE, "Profesor externo asociado con éxito");
+                } else {
+                    respuesta.put(Constantes.KEY_MENSAJE, "No se han podido guardar los datos.");
+                }
+                conexionBD.close();
+            } catch(SQLException ex) {
+                respuesta.put(Constantes.KEY_MENSAJE, ex.getMessage());
+            }
+        } else {
+            respuesta.put(Constantes.KEY_MENSAJE, Constantes.MENSAJE_ERROR_CONEXION);
+        }
+        return respuesta;
+    }
+
     public static HashMap<String, Object> obtenerColaboracionPorId(Integer idColaboracion) {
         HashMap<String, Object> respuesta = new HashMap<>();
         respuesta.put(Constantes.KEY_ERROR, true);
