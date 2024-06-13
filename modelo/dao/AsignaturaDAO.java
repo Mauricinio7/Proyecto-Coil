@@ -121,6 +121,7 @@ public class AsignaturaDAO {
                     Asignatura asignatura = new Asignatura();
                     asignatura.setAreaAcademical(resultado.getString("area_academica"));
                     asignatura.setNombre(resultado.getString("nombre"));
+                    asignatura.setIdAsignatura(idAsignatura);
                     respuesta.put(Constantes.KEY_ERROR, false);
                     respuesta.put("area", asignatura);
                 }
