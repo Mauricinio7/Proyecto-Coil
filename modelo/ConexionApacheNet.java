@@ -25,7 +25,7 @@ public class ConexionApacheNet {
             System.out.println("Fecha obtenida del ntp"); 
             return LocalDateTime.ofInstant(Instant.ofEpochMilli(tiempoNTP), ZoneId.systemDefault());
         } catch (IOException e) {
-            e.printStackTrace();
+            //e.printStackTrace();
         }
         LocalDateTime fecha = LocalDateTime.now();
         return fecha;
