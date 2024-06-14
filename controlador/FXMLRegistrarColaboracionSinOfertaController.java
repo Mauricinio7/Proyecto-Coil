@@ -5,10 +5,12 @@ import java.io.IOException;
 import java.net.URL;
 import java.nio.file.Files;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.ResourceBundle;
 
+import coilvic.modelo.ConexionApacheNet;
 import coilvic.modelo.dao.AsignaturaDAO;
 import coilvic.modelo.dao.ColaboracionDAO;
 import coilvic.modelo.dao.DepartamentoDAO;
@@ -28,6 +30,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DateCell;
@@ -35,7 +38,10 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.Button;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.stage.FileChooser;
@@ -70,8 +76,6 @@ public class FXMLRegistrarColaboracionSinOfertaController implements Initializab
     @FXML
     private TextArea taObjetivo;
     @FXML
-    private TextField tfPeriodo;
-    @FXML
     private TextArea taTemaInteres;
     @FXML
     private TextField tfNoEstudiantes;
@@ -83,6 +87,10 @@ public class FXMLRegistrarColaboracionSinOfertaController implements Initializab
     private ComboBox<Departamento> cbDepartamento;
     @FXML
     private TextArea taDescripcionPlan;
+    @FXML
+    private Button btnPlanProyecto;
+    @FXML
+    private ComboBox<String> cbPeriodo;
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -93,13 +101,14 @@ public class FXMLRegistrarColaboracionSinOfertaController implements Initializab
         profesorUv.setNombre("Carlos Fuentes");
         profesorUv.setCorreo("cfuentes@uv.mx");
         profesorUv.setIdRegion(1);
+        profesorUv.setNombreRegion("Xalapa");
         profesorUv.setIdProfesorUv(1);
         //inicializarValores(profesorUv);
         ofertaColaboracion = new OfertaColaboracion();
         ofertaColaboracion.setIdAsignatura(420);
         ofertaColaboracion.setIdProfesor(1);
         ofertaColaboracion.setIdioma("Español");
-        ofertaColaboracion.setNombre("Colaboración 1");
+        ofertaColaboracion.setNombre("Colaboración ñ");
         ofertaColaboracion.setObjetivoGeneral("Objetivo general de la colaboración");
         ofertaColaboracion.setPeriodo("Enero - Junio 2020");
         ofertaColaboracion.setTemaInteres("Tema de interés");
@@ -137,6 +146,7 @@ public class FXMLRegistrarColaboracionSinOfertaController implements Initializab
     private void cargarEstadoComponentes() {
         limitarCaracteres();
         cargarAreasAcademicas();
+        cargarPeriodos();
         cbAsignatura.setDisable(true);
         configurarSeleccionDepartamento();
         configurarSeleccionAsignatura();
@@ -154,7 +164,7 @@ public class FXMLRegistrarColaboracionSinOfertaController implements Initializab
         tfNombreColaboracion.setText(ofertaColaboracion.getNombre());
         tfIdioma.setText(ofertaColaboracion.getIdioma());
         taObjetivo.setText(ofertaColaboracion.getObjetivoGeneral());
-        tfPeriodo.setText(ofertaColaboracion.getPeriodo());
+        cbPeriodo.setValue(ofertaColaboracion.getPeriodo());
         taTemaInteres.setText(ofertaColaboracion.getTemaInteres());
         cbAreaAcademica.setValue(obtenerAreaAcademicaOfertaColaboracion().getAreaAcademical());
         cbAsignatura.setValue(obtenerAreaAcademicaOfertaColaboracion());
@@ -162,7 +172,7 @@ public class FXMLRegistrarColaboracionSinOfertaController implements Initializab
         tfNombreColaboracion.setDisable(true);
         tfIdioma.setDisable(true);
         taObjetivo.setDisable(true);
-        tfPeriodo.setDisable(true);
+        cbPeriodo.setDisable(true);
         taTemaInteres.setDisable(true);
         cbAreaAcademica.setDisable(true);
         cbAsignatura.setDisable(true);
@@ -174,7 +184,8 @@ public class FXMLRegistrarColaboracionSinOfertaController implements Initializab
         if (!(Boolean) obtenerRegion.get(Constantes.KEY_ERROR)) {
             return (String) obtenerRegion.get("region");
         } else {
-            return "no disponible por el momento";
+            Utils.mostrarAlertaSimple("", "No se han podido cargar los datos", AlertType.ERROR);
+            return null;
         }
     }
 
@@ -206,6 +217,23 @@ public class FXMLRegistrarColaboracionSinOfertaController implements Initializab
         AsignaturaDAO.consultarAreaAcademicaPorRegion(profesorUv.getIdRegion());
         listaAreasAcademicas.addAll((ArrayList<String>) obtenerAreaAcademica.get("listaArea"));
         cbAreaAcademica.setItems(listaAreasAcademicas);
+    }
+
+    private void cargarPeriodos() {
+        LocalDateTime fechaNTP = ConexionApacheNet.obtenerFechaHoraServidorNTP(Constantes.SERVIDOR_NTP);
+        ObservableList<String> observablePeriodo =  FXCollections.observableArrayList();
+        ArrayList<String> listaPeriodos = new ArrayList<>();
+        String []periodos = {"ENER-JUN", "AGOST-DIC"};
+        int mesActual = fechaNTP.getMonthValue();
+            if(mesActual >= 6 && mesActual <= 11){
+                listaPeriodos.add(periodos[1] + " " + fechaNTP.getYear());
+                listaPeriodos.add(periodos[0] + " " + (fechaNTP.getYear() + 1));
+            }else{
+                listaPeriodos.add(periodos[0] + " " + fechaNTP.getYear());
+                listaPeriodos.add(periodos[1] + " " + fechaNTP.getYear());
+            }
+        observablePeriodo.addAll(listaPeriodos);
+        cbPeriodo.setItems(observablePeriodo);
     }
 
     private void configurarSeleccionAsignatura() {
@@ -280,9 +308,14 @@ public class FXMLRegistrarColaboracionSinOfertaController implements Initializab
         });
     }
 
+    private void configurarFechasInicioYFin() {
+        LocalDateTime fechaNTP = ConexionApacheNet.obtenerFechaHoraServidorNTP(Constantes.SERVIDOR_NTP);
+        //TODO
+    }
+
     private boolean camposVacios(){
         return tfNombreColaboracion.getText().isEmpty() || dpFechaInicio.getValue() == null || dpFechaFin.getValue() == null
-                || tfIdioma.getText().isEmpty() || taObjetivo.getText().isEmpty() || tfPeriodo.getText().isEmpty()
+                || tfIdioma.getText().isEmpty() || taObjetivo.getText().isEmpty() || cbPeriodo.getValue() == null
                 || taTemaInteres.getText().isEmpty() || tfNoEstudiantes.getText().isEmpty() || cbAreaAcademica.getValue() == null
                 || cbAsignatura.getValue() == null || cbDepartamento.getValue() == null || archivoPlan == null;
     }
@@ -309,7 +342,7 @@ public class FXMLRegistrarColaboracionSinOfertaController implements Initializab
         colaboracion.setFechaFin(dpFechaFin.getValue().toString());
         colaboracion.setIdioma(tfIdioma.getText());
         colaboracion.setObjetivoGeneral(taObjetivo.getText());
-        colaboracion.setPeriodo(tfPeriodo.getText());
+        colaboracion.setPeriodo(cbPeriodo.getValue());
         colaboracion.setTemaInteres(taTemaInteres.getText());
         colaboracion.setNoEstudiantesExternos(Integer.parseInt(tfNoEstudiantes.getText()));
         colaboracion.setIdAsignatura(cbAsignatura.getValue().getIdAsignatura());
@@ -346,6 +379,7 @@ public class FXMLRegistrarColaboracionSinOfertaController implements Initializab
     private void btnGuardar(ActionEvent event) {
         if(!camposVacios()) {
             if(validarFechas() && validarNoEstudiantes() && validarLongitudNombrePlanProyecto()) {
+                btnPlanProyecto.setStyle("");
                 Colaboracion colaboracion = obtenerDatosColaboracion();
                 PlanProyecto planProyecto = obtenerDatosPlanProyecto();
                 guardarColaboracionConPlanProyecto(colaboracion, planProyecto);
@@ -354,6 +388,9 @@ public class FXMLRegistrarColaboracionSinOfertaController implements Initializab
                 ("", "Se han introducido datos inválidos", AlertType.ERROR);
             }
         } else {
+            if (archivoPlan == null) {
+                btnPlanProyecto.setStyle("-fx-border-width: 3px; -fx-border-color: lightcoral;");
+            }
             Utils.mostrarAlertaSimple
             ("Rellenar campos obligatorios", "Se han dejado campos obligatorios vacíos", AlertType.ERROR);
         }
@@ -363,6 +400,7 @@ public class FXMLRegistrarColaboracionSinOfertaController implements Initializab
         HashMap<String, Object> respuesta = ColaboracionDAO.guardarColaboracionConPlanProyecto(colaboracion, planProyecto);
         if (!(Boolean) respuesta.get(Constantes.KEY_ERROR)) {
             Utils.mostrarAlertaSimple(null, ""+respuesta.get(Constantes.KEY_MENSAJE), AlertType.INFORMATION);
+            cerrarVentana();
         } else {
             Utils.mostrarAlertaSimple("Error", ""+respuesta.get(Constantes.KEY_MENSAJE), AlertType.ERROR);
         }
@@ -370,21 +408,39 @@ public class FXMLRegistrarColaboracionSinOfertaController implements Initializab
 
     @FXML
     private void btnCancelar(ActionEvent event) {
-        //REGRESA A LA VENTANA ANTERIOR
+        cerrarVentana();
     }
 
     @FXML
     private void btnPlanProyecto(ActionEvent event) {
         FileChooser dialogoSeleccion = new FileChooser();
         dialogoSeleccion.setTitle("Seleccionar plan");
-        String etiquetaTipoDato = "Archivos pdf (*.pdf)";
+        String etiquetaTipoDato = "Archivos pdf (*.png, *.jpg, *.jpeg)";
         FileChooser.ExtensionFilter filtro = 
-                new FileChooser.ExtensionFilter(etiquetaTipoDato, "*.pdf");
+                new FileChooser.ExtensionFilter(etiquetaTipoDato, "*.png", "*.jpg", "*.jpeg");
         dialogoSeleccion.getExtensionFilters().add(filtro);
         Stage escenarioActual = (Stage) panelDeslisante.getScene().getWindow();
         archivoPlan = dialogoSeleccion.showOpenDialog(escenarioActual);
+        if (archivoPlan != null) {
+            btnPlanProyecto.setStyle("-fx-border-width: 3px; -fx-border-color: lightgreen;");
+        } else {
+            btnPlanProyecto.setStyle("");
+        }
     }
-    
+
+    private void cerrarVentana() {
+        try {
+            Stage stage = (Stage) panelDeslisante.getScene().getWindow();
+            FXMLLoader loader = Utils.obtenerLoader("/coilvic/vista/FXMLVistaProfesor.fxml");
+            Parent root = loader.load();
+            Scene escenaPrincipal = new Scene(root);
+            stage.setScene(escenaPrincipal);
+            stage.show();
+        } catch (IOException ex) {
+            Utils.mostrarAlertaSimple("Error", "Error al abrir la ventana", AlertType.ERROR);
+        }
+    }
+
     @FXML
     private void salePanel(MouseEvent event) {
         TranslateTransition transicion = new TranslateTransition();
