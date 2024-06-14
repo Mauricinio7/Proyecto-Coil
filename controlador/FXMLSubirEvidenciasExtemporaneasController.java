@@ -46,6 +46,7 @@ import javafx.util.Duration;
 
 public class FXMLSubirEvidenciasExtemporaneasController implements Initializable {
 
+    private LocalDateTime fecha;
     private File archivoEvidencia;
     private Evidencia evidencia = new Evidencia();
     private ObservableList<Evidencia> evidencias;
@@ -66,6 +67,8 @@ public class FXMLSubirEvidenciasExtemporaneasController implements Initializable
     private TableView<Evidencia> tvArchivosEvidencias;
     @FXML
     private TableColumn tcArchivosEvidencias;
+    @FXML
+    private Button btnSolicitarConstancias;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -78,7 +81,16 @@ public class FXMLSubirEvidenciasExtemporaneasController implements Initializable
 
         limitarCaracteres();
         configurarTabla();
+        configurarBtnSolicitarConstancias();
     }    
+
+    private void configurarBtnSolicitarConstancias() {
+        if (colaboracion.getEstado().equals("Finalizada completamente")) {
+            btnSolicitarConstancias.setDisable(true);
+        } else {
+            btnSolicitarConstancias.setDisable(false);
+        }
+    }
     
     public void inicializarValores(Integer idColaboracion){
         obtenerColaboracion(idColaboracion);
@@ -156,6 +168,8 @@ public class FXMLSubirEvidenciasExtemporaneasController implements Initializable
     private void btnGuardar(ActionEvent event) {
         if (validarCamposVacios()) {
             Utils.mostrarAlertaSimple(null, "Se han dejado campos obligatorios vacíos", AlertType.WARNING);
+        } else if (validarRegistroDuplicado()) {
+            Utils.mostrarAlertaSimple(null, "El archivo que desea subir ya existe", AlertType.WARNING);
         } else {
             obtenerDatosEvidencia();
             HashMap<String, Object> mapEvidencia = EvidenciaDAO.insertarEvidencia(evidencia);
@@ -184,7 +198,7 @@ public class FXMLSubirEvidenciasExtemporaneasController implements Initializable
         evidencia.setNombre(tfNombre.getText());
         evidencia.setDescripcion(taDescripcion.getText());
         evidencia.setIdColaboracion(colaboracion.getIdColaboracion());
-        LocalDateTime fecha = ConexionApacheNet.obtenerFechaHoraServidorNTP(Constantes.SERVIDOR_NTP);
+        fecha = ConexionApacheNet.obtenerFechaHoraServidorNTP(Constantes.SERVIDOR_NTP);
         String fechaformato = (fecha.getYear() + "-" + fecha.getMonthValue() + "-" + fecha.getDayOfMonth());
         evidencia.setFechaEntrega(fechaformato);
         try {
@@ -197,6 +211,15 @@ public class FXMLSubirEvidenciasExtemporaneasController implements Initializable
 
     private boolean validarCamposVacios() {
         return tfNombre.getText().isEmpty() || taDescripcion.getText().isEmpty() || archivoEvidencia == null;
+    }
+
+    private boolean validarRegistroDuplicado() {
+        for (Evidencia evidencia : evidencias) {
+            if (evidencia.getNombre().equals(tfNombre.getText())) {
+                return true;
+            }
+        }
+        return false;
     }
 
     private void limitarCaracteres() {
