@@ -43,7 +43,6 @@ import javafx.scene.control.Button;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.stage.FileChooser;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Callback;
 import javafx.util.Duration;
@@ -107,7 +106,7 @@ public class FXMLRegistrarColaboracionSinOfertaController implements Initializab
         ofertaColaboracion.setIdAsignatura(420);
         ofertaColaboracion.setIdProfesor(1);
         ofertaColaboracion.setIdioma("Español");
-        ofertaColaboracion.setNombre("Colaboración 1");
+        ofertaColaboracion.setNombre("Colaboración ñ");
         ofertaColaboracion.setObjetivoGeneral("Objetivo general de la colaboración");
         ofertaColaboracion.setPeriodo("Enero - Junio 2020");
         ofertaColaboracion.setTemaInteres("Tema de interés");
@@ -391,9 +390,9 @@ public class FXMLRegistrarColaboracionSinOfertaController implements Initializab
     private void btnPlanProyecto(ActionEvent event) {
         FileChooser dialogoSeleccion = new FileChooser();
         dialogoSeleccion.setTitle("Seleccionar plan");
-        String etiquetaTipoDato = "Archivos pdf (*.pdf)";
+        String etiquetaTipoDato = "Archivos pdf (*.png, *.jpg, *.jpeg)";
         FileChooser.ExtensionFilter filtro = 
-                new FileChooser.ExtensionFilter(etiquetaTipoDato, "*.pdf");
+                new FileChooser.ExtensionFilter(etiquetaTipoDato, "*.png", "*.jpg", "*.jpeg");
         dialogoSeleccion.getExtensionFilters().add(filtro);
         Stage escenarioActual = (Stage) panelDeslisante.getScene().getWindow();
         archivoPlan = dialogoSeleccion.showOpenDialog(escenarioActual);
