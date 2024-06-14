@@ -94,7 +94,6 @@ public class FXMLConsultarColaboraciones implements Initializable {
         transicion.play();
     }
 
-    //TODO paquete de barra lateral inicio
 
     @FXML
     private void clicMisOfertas(MouseEvent event) {
@@ -167,8 +166,6 @@ public class FXMLConsultarColaboraciones implements Initializable {
             error.printStackTrace();
         }
     }
-
-    //TODO fin paquete de barra lateral
 
     public void cargarCombos(){
         cbFiltro.getItems().addAll(
@@ -284,6 +281,7 @@ public class FXMLConsultarColaboraciones implements Initializable {
         btnSubirReportes.setLayoutX(840);
         btnSubirReportes.setOnAction(e -> {
             //TODO llamar a Subir evidencias extemporaneas
+            
         });
 
         objeto.getChildren().add(btnVerInformacion);
@@ -353,6 +351,21 @@ public class FXMLConsultarColaboraciones implements Initializable {
 
     @FXML
     private void btnClicNuevaColab(ActionEvent event) {
-        // TODO Llamar a registrar sin oferta
+        try{
+            Stage stageInformacion = new Stage();
+            stageInformacion.initStyle(StageStyle.UTILITY);
+            FXMLLoader cargarObjeto = new FXMLLoader(CoilVic.class.getResource("vista/FXMLRegistrarColaboracionSinOferta.fxml"));
+            Parent root = cargarObjeto.load();
+            FXMLRegistrarColaboracionSinOfertaController vistaRegistrarColaboracion = cargarObjeto.getController();
+            vistaRegistrarColaboracion.inicializarValores(profesorUv);
+            Scene nuevaScena = new Scene(root);
+            stageInformacion.setTitle("Registrar colaboración sin oferta");
+            stageInformacion.setScene(nuevaScena);
+            stageInformacion.show();
+            Stage stagePrincipal = (Stage)ivMisOfertas.getScene().getWindow();
+            stagePrincipal.close();
+        }catch(IOException error){
+            error.printStackTrace();
+        }
     }
 }

@@ -78,39 +78,39 @@
             <Font name="Arial Rounded MT Bold" size="24.0" />
          </font>
       </Label>
-      <Pane fx:id="panelDeslisante" layoutX="-213.0" layoutY="-2.0" onMouseEntered="#entraPanel" onMouseExited="#salePanel" prefHeight="752.0" prefWidth="321.0" style="-fx-background-color: linear-gradient(to bottom, #e93367, #cd18ed);">
+       <Pane fx:id="panelDeslisante" layoutX="-213.0" layoutY="-2.0" onMouseEntered="#entraPanel" onMouseExited="#salePanel" prefHeight="752.0" prefWidth="321.0" style="-fx-background-color: linear-gradient(to bottom, #e93367, #cd18ed);">
          <children>
-            <ImageView fitHeight="58.0" fitWidth="61.0" layoutX="236.0" layoutY="145.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fitHeight="58.0" fitWidth="61.0" layoutX="236.0" layoutY="145.0" onMouseClicked="#clicHome" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../recursos/home.png" />
                </image>
             </ImageView>
-            <ImageView fitHeight="67.0" fitWidth="62.0" layoutX="236.0" layoutY="248.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fx:id="ivMisOfertas" fitHeight="67.0" fitWidth="62.0" layoutX="236.0" layoutY="248.0" onMouseClicked="#clicMisOfertas" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../recursos/colaboracion.png" />
                </image>
             </ImageView>
-            <ImageView fitHeight="61.0" fitWidth="60.0" layoutX="237.0" layoutY="359.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fitHeight="61.0" fitWidth="60.0" layoutX="237.0" layoutY="359.0" onMouseClicked="#clicMisColaboraciones" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../recursos/mis-Colab.png" />
                </image>
             </ImageView>
-            <Label layoutX="122.0" layoutY="163.0" text="Inicio" textFill="WHITE">
+            <Label layoutX="122.0" layoutY="163.0" onMouseClicked="#clicHome" text="Inicio" textFill="WHITE">
                <font>
                   <Font name="Arial Black" size="28.0" />
                </font>
             </Label>
-            <Label layoutX="37.0" layoutY="258.0" text="Mis ofertas" textFill="WHITE">
+            <Label fx:id="lbMisOfertas" layoutX="37.0" layoutY="258.0" onMouseClicked="#clicMisOfertas" text="Mis ofertas" textFill="WHITE">
                <font>
                   <Font name="Arial Black" size="28.0" />
                </font>
             </Label>
-            <Label layoutX="20.0" layoutY="364.0" prefHeight="32.0" prefWidth="63.0" text="Mis" textFill="WHITE">
+            <Label layoutX="20.0" layoutY="364.0" onMouseClicked="#clicMisColaboraciones" prefHeight="32.0" prefWidth="63.0" text="Mis" textFill="WHITE">
                <font>
                   <Font name="Arial Black" size="22.0" />
                </font>
             </Label>
-            <Label layoutX="19.0" layoutY="390.0" prefHeight="32.0" prefWidth="219.0" text="colaboraciones" textFill="WHITE">
+            <Label layoutX="19.0" layoutY="390.0" onMouseClicked="#clicMisColaboraciones" prefHeight="32.0" prefWidth="219.0" text="colaboraciones" textFill="WHITE">
                <font>
                   <Font name="Arial Black" size="22.0" />
                </font>

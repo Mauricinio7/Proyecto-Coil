@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.ResourceBundle;
 
+import coilvic.CoilVic;
 import coilvic.modelo.ConexionApacheNet;
 import coilvic.modelo.dao.AsignaturaDAO;
 import coilvic.modelo.dao.ColaboracionDAO;
@@ -46,6 +47,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import javafx.util.Callback;
 import javafx.util.Duration;
 
@@ -95,26 +97,6 @@ public class FXMLRegistrarColaboracionSinOfertaController implements Initializab
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
-
-        //Eliminar inicia
-        profesorUv = new ProfesorUv();
-        profesorUv.setNombre("Carlos Fuentes");
-        profesorUv.setCorreo("cfuentes@uv.mx");
-        profesorUv.setIdRegion(1);
-        profesorUv.setNombreRegion("Xalapa");
-        profesorUv.setIdProfesorUv(1);
-        //inicializarValores(profesorUv);
-        ofertaColaboracion = new OfertaColaboracion();
-        ofertaColaboracion.setIdAsignatura(420);
-        ofertaColaboracion.setIdProfesor(1);
-        ofertaColaboracion.setIdioma("Español");
-        ofertaColaboracion.setNombre("Colaboración ñ");
-        ofertaColaboracion.setObjetivoGeneral("Objetivo general de la colaboración");
-        ofertaColaboracion.setPeriodo("Enero - Junio 2020");
-        ofertaColaboracion.setTemaInteres("Tema de interés");
-        ofertaColaboracion.setIdDepartamento(103);
-        inicializarValores(profesorUv);
-        //Eliminar termina
     }    
     
     public void inicializarValores(ProfesorUv profesor){
@@ -183,7 +165,7 @@ public class FXMLRegistrarColaboracionSinOfertaController implements Initializab
         if (!(Boolean) obtenerRegion.get(Constantes.KEY_ERROR)) {
             return (String) obtenerRegion.get("region");
         } else {
-            Utils.mostrarAlertaSimple("", "No se han podido cargar los datos", AlertType.ERROR);
+            Utils.mostrarAlertaSimple("", "No se han podido cargar los datos", AlertType.ERROR, (Stage) panelDeslisante.getScene().getWindow());
             return null;
         }
     }
@@ -194,7 +176,7 @@ public class FXMLRegistrarColaboracionSinOfertaController implements Initializab
         if (!(Boolean) obtenerAreaAcademica.get(Constantes.KEY_ERROR)) {
             return (Asignatura) obtenerAreaAcademica.get("area");
         } else {
-            Utils.mostrarAlertaSimple("", "No se han podido cargar los datos", AlertType.ERROR);
+            Utils.mostrarAlertaSimple("", "No se han podido cargar los datos", AlertType.ERROR, (Stage) panelDeslisante.getScene().getWindow());
             return null;
         }
     }
@@ -205,7 +187,7 @@ public class FXMLRegistrarColaboracionSinOfertaController implements Initializab
         if (!(Boolean) obtenerDepartamento.get(Constantes.KEY_ERROR)) {
             return (Departamento) obtenerDepartamento.get("departamento");
         } else {
-            Utils.mostrarAlertaSimple("", "No se han podido cargar los datos", AlertType.ERROR);
+            Utils.mostrarAlertaSimple("", "No se han podido cargar los datos", AlertType.ERROR, (Stage) panelDeslisante.getScene().getWindow());
             return null;
         }
     }
@@ -331,7 +313,7 @@ public class FXMLRegistrarColaboracionSinOfertaController implements Initializab
     private Colaboracion obtenerDatosColaboracion() {
         Colaboracion colaboracion = new Colaboracion();
         colaboracion.setNombre(tfNombreColaboracion.getText());
-        colaboracion.setEstado("Activa");
+        colaboracion.setEstado("Activo");
         colaboracion.setFechaInicio(dpFechaInicio.getValue().toString());
         colaboracion.setFechaFin(dpFechaFin.getValue().toString());
         colaboracion.setIdioma(tfIdioma.getText());
@@ -354,7 +336,7 @@ public class FXMLRegistrarColaboracionSinOfertaController implements Initializab
             byte[] archivo = Files.readAllBytes(archivoPlan.toPath());
             planProyecto.setArchivoAdjunto(archivo);
         } catch (IOException ex) {
-            //TODO
+            ex.printStackTrace();
         }
         return planProyecto;
     }
@@ -379,24 +361,24 @@ public class FXMLRegistrarColaboracionSinOfertaController implements Initializab
                 guardarColaboracionConPlanProyecto(colaboracion, planProyecto);
             } else {
                 Utils.mostrarAlertaSimple
-                ("", "Se han introducido datos inválidos", AlertType.ERROR);
+                ("", "Se han introducido datos inválidos", AlertType.ERROR, (Stage) panelDeslisante.getScene().getWindow());
             }
         } else {
             if (archivoPlan == null) {
                 btnPlanProyecto.setStyle("-fx-border-width: 3px; -fx-border-color: lightcoral;");
             }
             Utils.mostrarAlertaSimple
-            ("Rellenar campos obligatorios", "Se han dejado campos obligatorios vacíos", AlertType.ERROR);
+            ("Rellenar campos obligatorios", "Se han dejado campos obligatorios vacíos", AlertType.ERROR, (Stage) panelDeslisante.getScene().getWindow());
         }
     }
 
     private void guardarColaboracionConPlanProyecto(Colaboracion colaboracion, PlanProyecto planProyecto) {
         HashMap<String, Object> respuesta = ColaboracionDAO.guardarColaboracionConPlanProyecto(colaboracion, planProyecto);
         if (!(Boolean) respuesta.get(Constantes.KEY_ERROR)) {
-            Utils.mostrarAlertaSimple(null, ""+respuesta.get(Constantes.KEY_MENSAJE), AlertType.INFORMATION);
+            Utils.mostrarAlertaSimple(null, ""+respuesta.get(Constantes.KEY_MENSAJE), AlertType.INFORMATION, (Stage) panelDeslisante.getScene().getWindow());
             cerrarVentana();
         } else {
-            Utils.mostrarAlertaSimple("Error", ""+respuesta.get(Constantes.KEY_MENSAJE), AlertType.ERROR);
+            Utils.mostrarAlertaSimple("Error", ""+respuesta.get(Constantes.KEY_MENSAJE), AlertType.ERROR, (Stage) panelDeslisante.getScene().getWindow());
         }
     }
 
@@ -423,16 +405,7 @@ public class FXMLRegistrarColaboracionSinOfertaController implements Initializab
     }
 
     private void cerrarVentana() {
-        try {
-            Stage stage = (Stage) panelDeslisante.getScene().getWindow();
-            FXMLLoader loader = Utils.obtenerLoader("/coilvic/vista/FXMLVistaProfesor.fxml");
-            Parent root = loader.load();
-            Scene escenaPrincipal = new Scene(root);
-            stage.setScene(escenaPrincipal);
-            stage.show();
-        } catch (IOException ex) {
-            Utils.mostrarAlertaSimple("Error", "Error al abrir la ventana", AlertType.ERROR);
-        }
+        irPantallaHome(profesorUv);
     }
 
     @FXML
@@ -452,6 +425,82 @@ public class FXMLRegistrarColaboracionSinOfertaController implements Initializab
         transicion.setToX(210);
         transicion.play();
     }
+
+    //TODO paquete de barra lateral inicio
+
+    @FXML
+    private void clicMisOfertas(MouseEvent event) {
+            irPantallaOfertasColaboracion(profesorUv);
+    }
+
+    @FXML
+    private void clicMisColaboraciones(MouseEvent event) {
+        irPantallaColaboraciones(profesorUv);
+    }
+
+    @FXML
+    private void clicHome(MouseEvent event) {
+        irPantallaHome(profesorUv);
+    }
+
+    public void irPantallaColaboraciones(ProfesorUv profesorUv){
+        try{
+            Stage stageInformacion = new Stage();
+            stageInformacion.initStyle(StageStyle.UTILITY);
+            FXMLLoader cargarObjeto = new FXMLLoader(CoilVic.class.getResource("vista/FXMLConsultarColaboraciones.fxml"));
+            Parent root = cargarObjeto.load();
+            FXMLConsultarColaboraciones consultarColaboraciones = cargarObjeto.getController();
+            consultarColaboraciones.inicializarValores(profesorUv);
+            Scene nuevaScena = new Scene(root);
+            stageInformacion.setTitle("Consultar colaboraciones");
+            stageInformacion.setScene(nuevaScena);
+            stageInformacion.show();
+            Stage stagePrincipal = (Stage)lbCorreoProfesor.getScene().getWindow();
+            stagePrincipal.close();
+        }catch(IOException error){
+            error.printStackTrace();
+        }
+    }
+
+    public void irPantallaOfertasColaboracion(ProfesorUv profesorUv){
+        try{
+            Stage stageInformacion = new Stage();
+            stageInformacion.initStyle(StageStyle.UTILITY);
+            FXMLLoader cargarObjeto = new FXMLLoader(CoilVic.class.getResource("/coilvic/vista/FXMLVistaOfertaColaboracion.fxml"));
+            Parent root = cargarObjeto.load();
+            FXMLVistaOfertaColaboracionController vistaOfertaCol = cargarObjeto.getController();
+            vistaOfertaCol.inicializarValores(profesorUv);
+            Scene nuevaScena = new Scene(root);
+            stageInformacion.setTitle("Registrar ofertas de colaboracion");
+            stageInformacion.setScene(nuevaScena);
+            stageInformacion.show();
+            Stage stagePrincipal = (Stage)lbCorreoProfesor.getScene().getWindow();
+            stagePrincipal.close();
+        }catch(IOException error){
+            error.printStackTrace();
+        }
+    }
+
+    public void irPantallaHome(ProfesorUv profesorUv){
+        try{
+            Stage stageInformacion = new Stage();
+            stageInformacion.initStyle(StageStyle.UTILITY);
+            FXMLLoader cargarObjeto = new FXMLLoader(CoilVic.class.getResource("vista/FXMLVistaProfesor.fxml"));
+            Parent root = cargarObjeto.load();
+            FXMLVistaProfesorController vistaHome = cargarObjeto.getController();
+            vistaHome.inicializarValores(profesorUv.getIdProfesorUv());
+            Scene nuevaScena = new Scene(root);
+            stageInformacion.setTitle("Registrar ofertas de colaboracion");
+            stageInformacion.setScene(nuevaScena);
+            stageInformacion.show();
+            Stage stagePrincipal = (Stage)lbCorreoProfesor.getScene().getWindow();
+            stagePrincipal.close();
+        }catch(IOException error){
+            error.printStackTrace();
+        }
+    }
+
+    //TODO fin paquete de barra lateral
 
     private void limitarCaracteres() {
         tfNombreColaboracion.textProperty().addListener
