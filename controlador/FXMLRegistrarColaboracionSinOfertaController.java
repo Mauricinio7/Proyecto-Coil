@@ -466,12 +466,12 @@ public class FXMLRegistrarColaboracionSinOfertaController implements Initializab
         try{
             Stage stageInformacion = new Stage();
             stageInformacion.initStyle(StageStyle.UTILITY);
-            FXMLLoader cargarObjeto = new FXMLLoader(CoilVic.class.getResource("/coilvic/vista/FXMLVistaOfertaColaboracion.fxml"));
+            FXMLLoader cargarObjeto = new FXMLLoader(CoilVic.class.getResource("vista/FXMLConsultarOfertaColaboraciones.fxml"));
             Parent root = cargarObjeto.load();
-            FXMLVistaOfertaColaboracionController vistaOfertaCol = cargarObjeto.getController();
+            FXMLConsultaOfertaColaboracionesController vistaOfertaCol = cargarObjeto.getController();
             vistaOfertaCol.inicializarValores(profesorUv);
             Scene nuevaScena = new Scene(root);
-            stageInformacion.setTitle("Registrar ofertas de colaboracion");
+            stageInformacion.setTitle("Mis ofertas");
             stageInformacion.setScene(nuevaScena);
             stageInformacion.show();
             Stage stagePrincipal = (Stage)lbCorreoProfesor.getScene().getWindow();
