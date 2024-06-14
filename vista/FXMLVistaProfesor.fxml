@@ -28,6 +28,16 @@
             </Label>
          </children>
       </Pane>
+      <Button layoutX="1010.0" layoutY="668.0" mnemonicParsing="false" onAction="#clicBtnCerrarSesion" text="Cerrar sesión">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Button>
+      <TextArea disable="true" layoutX="216.0" layoutY="257.0" prefHeight="297.0" prefWidth="857.0" text="Bienvenido a COIL-VIC!!!&#10;&#10;Estamos encantados de recibirte en nuestra plataforma. &#10;Aquí encontrarás colaboraciones internacionales, recursos educativos y&#10;oportunidades únicas para ampliar tus horizontes académicos. &#10;¡Explora, aprende y crece con COIL-VIC!">
+         <font>
+            <Font name="System Bold" size="24.0" />
+         </font>
+      </TextArea>
       <Pane fx:id="panelDeslisante" layoutX="-213.0" layoutY="-2.0" onMouseEntered="#entraPanel" onMouseExited="#salePanel" prefHeight="752.0" prefWidth="321.0" style="-fx-background-color: linear-gradient(to bottom, #e93367, #cd18ed);">
          <children>
             <ImageView fitHeight="58.0" fitWidth="61.0" layoutX="236.0" layoutY="145.0" onMouseClicked="#clicHome" pickOnBounds="true" preserveRatio="true">
@@ -81,15 +91,5 @@
                </font>
             </Label>
          </children></Pane>
-      <Button layoutX="1010.0" layoutY="668.0" mnemonicParsing="false" onAction="#clicBtnCerrarSesion" text="Cerrar sesión">
-         <font>
-            <Font size="20.0" />
-         </font>
-      </Button>
-      <TextArea disable="true" layoutX="216.0" layoutY="257.0" prefHeight="297.0" prefWidth="857.0" text="Bienvenido a COIL-VIC!!!&#10;&#10;Estamos encantados de recibirte en nuestra plataforma. &#10;Aquí encontrarás colaboraciones internacionales, recursos educativos y&#10;oportunidades únicas para ampliar tus horizontes académicos. &#10;¡Explora, aprende y crece con COIL-VIC!">
-         <font>
-            <Font name="System Bold" size="24.0" />
-         </font>
-      </TextArea>
    </children>
 </AnchorPane>

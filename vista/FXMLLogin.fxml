@@ -1,13 +1,40 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.image.*?>
+<?import javafx.scene.text.*?>
 <?import javafx.scene.control.*?>
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="coilvic.controlador.FXMLLoginController">
    <children>
-      <TextField fx:id="tfUsuario" layoutX="207.0" layoutY="163.0" promptText="usuario" />
-      <PasswordField fx:id="pfUsuario" layoutX="207.0" layoutY="216.0" promptText="contraseña" />
-      <Button layoutX="244.0" layoutY="282.0" mnemonicParsing="false" onAction="#btnContinuar" prefHeight="46.0" prefWidth="113.0" text="Continuar" />
+      <TextField fx:id="tfUsuario" layoutX="169.0" layoutY="200.0" prefHeight="35.0" prefWidth="262.0" promptText="Usuario">
+         <font>
+            <Font size="16.0" />
+         </font></TextField>
+      <PasswordField fx:id="pfUsuario" layoutX="170.0" layoutY="263.0" prefHeight="35.0" prefWidth="262.0" promptText="Contraseña">
+         <font>
+            <Font size="16.0" />
+         </font></PasswordField>
+      <Button layoutX="244.0" layoutY="325.0" mnemonicParsing="false" onAction="#btnContinuar" prefHeight="46.0" prefWidth="113.0" text="Continuar" />
+      <Pane layoutX="-3.0" layoutY="-7.0" prefHeight="185.0" prefWidth="606.0" style="-fx-background-color: linear-gradient(to bottom left, #e93367, #de8444);">
+         <children>
+            <ImageView fitHeight="92.0" fitWidth="100.0" layoutX="45.0" layoutY="18.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../recursos/LogoCOIL.png" />
+               </image>
+            </ImageView>
+            <Label layoutX="163.0" layoutY="14.0" text="COIL - VIC" textFill="WHITE">
+               <font>
+                  <Font name="Arial Unicode MS" size="70.0" />
+               </font>
+            </Label>
+            <Label layoutX="180.0" layoutY="114.0" text="Iniciar sesión" textFill="WHITE">
+               <font>
+                  <Font name="Arial Unicode MS" size="42.0" />
+               </font>
+            </Label>
+         </children>
+      </Pane>
    </children>
 </AnchorPane>
