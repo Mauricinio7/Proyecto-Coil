@@ -76,9 +76,7 @@ public class FXMLConsultaOfertaColaboracionesController implements Initializable
     @FXML
     private TableColumn clContador;
 
-    /**
-     * Initializes the controller class.
-     */
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         configurarTabla();
@@ -194,9 +192,7 @@ public class FXMLConsultaOfertaColaboracionesController implements Initializable
             tvColaboraciones.setVisible(true);
         }
     }
-
-    //TODO paquete de barra lateral inicio
-
+    
     @FXML
     private void clicMisOfertas(MouseEvent event) {
             irPantallaOfertasColaboracion(profesorSesion);
@@ -268,8 +264,6 @@ public class FXMLConsultaOfertaColaboracionesController implements Initializable
             error.printStackTrace();
         }
     }
-
-    //TODO fin paquete de barra lateral
 
     @FXML
     private void clicAgregarNuevaOferta(ActionEvent event) {

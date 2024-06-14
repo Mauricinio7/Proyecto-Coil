@@ -47,20 +47,7 @@ public class PlanProyectoDAO {
         }
         return respuesta;
     }
-    /* 
-     * MariaDB [COIL]> describe plan_proyecto
-    -> ;
-        +------------------------------+--------------+------+-----+---------+----------------+
-        | Field                        | Type         | Null | Key | Default | Extra          |
-        +------------------------------+--------------+------+-----+---------+----------------+
-        | id_plan_proyecto             | int(11)      | NO   | PRI | NULL    | auto_increment |
-        | archivo_adjunto              | longblob     | NO   |     | NULL    |                |
-        | descripcion                  | varchar(100) | YES  |     | NULL    |                |
-        | nombre                       | varchar(45)  | NO   |     | NULL    |                |
-        | colaboracion_id_colaboracion | int(11)      | NO   | MUL | NULL    |                |
-        +------------------------------+--------------+------+-----+---------+----------------+
-
-     */
+   
     public static HashMap<String, Object> obtenerPlanProyectoPorIdColaboracion(int idColaboracion){
         HashMap<String, Object> respuesta = new HashMap<>();
         try(Connection conexionDB = ConexionBD.obtenerConexion()){

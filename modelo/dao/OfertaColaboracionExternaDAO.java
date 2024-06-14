@@ -11,23 +11,7 @@ import coilvic.modelo.pojo.OfertaColaboracionExterna;
 import coilvic.utilidades.Constantes;
 
 public class OfertaColaboracionExternaDAO {
-    /* 
-     * atabase changed
-MariaDB [COIL]> describe oferta_colaboracion_externa;
-+--------------------------------------+--------------+------+-----+---------+----------------+
-| Field                                | Type         | Null | Key | Default | Extra          |
-+--------------------------------------+--------------+------+-----+---------+----------------+
-| id_oferta_externa                    | int(11)      | NO   | PRI | NULL    | auto_increment |
-| nombre                               | varchar(100) | NO   | UNI | NULL    |                |
-| objetivo_general                     | varchar(350) | YES  |     | NULL    |                |
-| idioma                               | varchar(20)  | NO   |     | NULL    |                |
-| periodo                              | varchar(20)  | NO   |     | NULL    |                |
-| tema_interes                         | varchar(50)  | NO   |     | NULL    |                |
-| asignatura                           | varchar(50)  | YES  |     | NULL    |                |
-| profesor_externo_id_profesor_externo | int(11)      | NO   | MUL | NULL    |                |
-+--------------------------------------+--------------+------+-----+---------+----------------+
-
-     */
+   
     public static HashMap<String, Boolean> guardarOferta(OfertaColaboracionExterna nuevaOferta){
         HashMap<String, Boolean> respuesta = new HashMap<>();
         try(Connection conexionDB = ConexionBD.obtenerConexion()){

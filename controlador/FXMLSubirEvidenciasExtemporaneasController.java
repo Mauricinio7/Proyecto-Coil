@@ -266,8 +266,6 @@ public class FXMLSubirEvidenciasExtemporaneasController implements Initializable
         }
     }
 
-    //TODO paquete de barra lateral inicio
-
     @FXML
     private void clicMisOfertas(MouseEvent event) {
             irPantallaOfertasColaboracion(profesorUv);
@@ -339,7 +337,5 @@ public class FXMLSubirEvidenciasExtemporaneasController implements Initializable
             error.printStackTrace();
         }
     }
-
-    //TODO fin paquete de barra lateral
 
 }

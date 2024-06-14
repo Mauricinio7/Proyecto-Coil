@@ -46,11 +46,7 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.util.Duration;
 
-/**
- * FXML Controller class
- *
- * @author outis
- */
+
 public class FXMLConsultaOfertaColaboracionController implements Initializable {
 
     ProfesorUv profesorSesion;
@@ -80,9 +76,7 @@ public class FXMLConsultaOfertaColaboracionController implements Initializable {
     @FXML
     private TableColumn clContador;
 
-    /**
-     * Initializes the controller class.
-     */
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         configurarTabla();
@@ -91,12 +85,10 @@ public class FXMLConsultaOfertaColaboracionController implements Initializable {
         });
         verifyNonValideTfName();
         tvColaboraciones.setVisible(false);
-        //TODO quitar despues
         this.profesorSesion = new ProfesorUv();
         profesorSesion.setIdProfesorUv(3);
     }    
     public void inicializarValores(ProfesorUv profesorSesion){
-        //TODO agregue un profesor de prueba
         this.profesorSesion = profesorSesion;
     }
       @FXML
@@ -203,8 +195,6 @@ public class FXMLConsultaOfertaColaboracionController implements Initializable {
         }
     }
 
-    //TODO paquete de barra lateral inicio
-
     @FXML
     private void clicMisOfertas(MouseEvent event) {
             irPantallaOfertasColaboracion(profesorSesion);
@@ -276,8 +266,6 @@ public class FXMLConsultaOfertaColaboracionController implements Initializable {
             error.printStackTrace();
         }
     }
-
-    //TODO fin paquete de barra lateral
 
     @FXML
     private void clicAgregarNuevaOferta(ActionEvent event) {

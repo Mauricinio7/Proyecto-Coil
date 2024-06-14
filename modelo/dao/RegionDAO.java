@@ -67,18 +67,6 @@ public class RegionDAO {
         return respuesta;
     }
 
-    /* 
-    MariaDB [COIL]> describe region;
-    +-----------+-------------+------+-----+---------+----------------+
-    | Field     | Type        | Null | Key | Default | Extra          |
-    +-----------+-------------+------+-----+---------+----------------+
-    | id_region | int(11)     | NO   | PRI | NULL    | auto_increment |
-    | nombre    | varchar(45) | NO   |     | NULL    |                |
-    +-----------+-------------+------+-----+---------+----------------+
-    2 rows in set (0.001 sec)
-
-
-     */
     public static HashMap<String, Object> obtenerNombreRegionPorId(Integer idRegion) {
         HashMap<String, Object> respuesta = new HashMap<>();
         try(Connection conexionDB = ConexionBD.obtenerConexion()){

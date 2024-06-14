@@ -55,11 +55,7 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
-/**
- * FXML Controller class
- *
- * @author outis
- */
+
 public class FXMLConsultarHistorialController implements Initializable {
 
     String expresionValidaNombreColaboracion = "[a-zA-Z0-9íáéóúüñÁÉÍÓÚÑÜ.\\- ]+";
@@ -107,9 +103,6 @@ public class FXMLConsultarHistorialController implements Initializable {
     @FXML
     private ImageView ivProfesorExterno;
 
-    /**
-     * Initializes the controller class.
-     */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         fillEstado();

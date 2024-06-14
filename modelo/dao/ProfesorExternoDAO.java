@@ -208,25 +208,6 @@ public class ProfesorExternoDAO {
         return respuesta;
     }
 
-
-
-    /* 
-     * MariaDB [COIL]> describe profesor_externo;
-+---------------------+--------------+------+-----+---------+----------------+
-| Field               | Type         | Null | Key | Default | Extra          |
-+---------------------+--------------+------+-----+---------+----------------+
-| nombre              | varchar(100) | NO   |     | NULL    |                |
-| id_profesor_externo | int(11)      | NO   | PRI | NULL    | auto_increment |
-| correo              | varchar(50)  | YES  |     | NULL    |                |
-| idioma              | varchar(20)  | YES  |     | NULL    |                |
-| institucion         | varchar(100) | NO   |     | NULL    |                |
-| pais                | varchar(30)  | NO   |     | NULL    |                |
-| telefono            | varchar(10)  | NO   |     | NULL    |                |
-+---------------------+--------------+------+-----+---------+----------------+
-7 rows in set (0.001 sec)
-
-     */
-
      public static HashMap<String, Object> obtenerCorreoProfesorExternoPorId(int idProfesorExterno){
         HashMap<String, Object> respuesta = new HashMap<>();
         try(Connection conexionDB = ConexionBD.obtenerConexion()){

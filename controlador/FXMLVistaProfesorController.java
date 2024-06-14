@@ -1,4 +1,3 @@
-//TODO el profesor se debe de obtener del login
 package coilvic.controlador;
 
 import java.io.IOException;
@@ -71,8 +70,6 @@ public class FXMLVistaProfesorController implements Initializable {
         transicion.play();
     }
 
-    //TODO paquete de barra lateral inicio
-
     @FXML
     private void clicMisOfertas(MouseEvent event) {
             irPantallaOfertasColaboracion(profesorUvSesion);
@@ -144,8 +141,6 @@ public class FXMLVistaProfesorController implements Initializable {
             error.printStackTrace();
         }
     }
-
-    //TODO fin paquete de barra lateral
 
     @FXML
     private void clicBtnCerrarSesion(ActionEvent event) {
