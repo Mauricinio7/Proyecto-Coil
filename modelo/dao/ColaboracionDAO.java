@@ -88,6 +88,59 @@ public class ColaboracionDAO {
         return respuesta;
     }
 
+    public static HashMap<String, Object> guardarConcluirColaboracion(int idColaboracion, String fechaFin, byte[] archivoAdjunto, String estado) {
+        HashMap<String, Object> respuesta = new HashMap<>();
+        respuesta.put(Constantes.KEY_ERROR, true);
+        Connection conexionBD = ConexionBD.obtenerConexion();
+    
+        if (conexionBD != null) {
+            try {
+                conexionBD.setAutoCommit(false);
+    
+                String actualizarFechaFin = "UPDATE colaboracion SET fecha_fin = ? WHERE id_colaboracion = ?";
+                PreparedStatement stmtFechaFin = conexionBD.prepareStatement(actualizarFechaFin);
+                stmtFechaFin.setString(1, fechaFin);
+                stmtFechaFin.setInt(2, idColaboracion);
+                int filasAfectadasFecha = stmtFechaFin.executeUpdate();
+    
+                String actualizarArchivoAdjunto = "UPDATE plan_proyecto SET archivo_adjunto = ? WHERE colaboracion_id_colaboracion = ?";
+                PreparedStatement stmtArchivoAdjunto = conexionBD.prepareStatement(actualizarArchivoAdjunto);
+                stmtArchivoAdjunto.setBytes(1, archivoAdjunto);
+                stmtArchivoAdjunto.setInt(2, idColaboracion);
+                int filasAfectadasArchivo = stmtArchivoAdjunto.executeUpdate();
+    
+                String actualizarEstado = "UPDATE colaboracion SET estado = ? WHERE id_colaboracion = ?";
+                PreparedStatement stmtEstado = conexionBD.prepareStatement(actualizarEstado);
+                stmtEstado.setString(1, estado);
+                stmtEstado.setInt(2, idColaboracion);
+                int filasAfectadasEstado = stmtEstado.executeUpdate();
+    
+                if (filasAfectadasFecha > 0 && filasAfectadasArchivo > 0 && filasAfectadasEstado > 0) {
+                    conexionBD.commit();
+                    respuesta.put(Constantes.KEY_ERROR, false);
+                    respuesta.put(Constantes.KEY_MENSAJE, "Colaboración concluida con éxito");
+                } else {
+                    conexionBD.rollback(); 
+                    respuesta.put(Constantes.KEY_MENSAJE, "No se han podido guardar todos los datos.");
+                }
+    
+                conexionBD.setAutoCommit(true);
+                conexionBD.close();
+            } catch (SQLException ex) {
+                try {
+                    conexionBD.rollback();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+                respuesta.put(Constantes.KEY_MENSAJE, ex.getMessage());
+            }
+        } else {
+            respuesta.put(Constantes.KEY_MENSAJE, Constantes.MENSAJE_ERROR_CONEXION);
+        }
+    
+        return respuesta;
+    }
+
     public static HashMap<String, Object> obtenerColaboracionPorId(Integer idColaboracion) {
         HashMap<String, Object> respuesta = new HashMap<>();
         respuesta.put(Constantes.KEY_ERROR, true);
@@ -330,60 +383,36 @@ public class ColaboracionDAO {
                 }
                 conexionBD.close();
             } catch (SQLException e) {
-                if (e.getErrorCode() == 1062) {
-                    respuesta.put(Constantes.KEY_MENSAJE, "Registro duplicado");
-                } else {
-                    respuesta.put(Constantes.KEY_MENSAJE, "No se han podido cargar los datos");
-                }
+                respuesta.put(Constantes.KEY_MENSAJE, e.getMessage());
             }
         } else {
             respuesta.put(Constantes.KEY_MENSAJE, "No se han podido cargar los datos");
         }
         return respuesta;
     }
-    public static HashMap<String, Object> consultarColaboracionPorSimilitudDeNombreYEstado(String nombreColaboracion, String posibleEstado, String posibleEstado2){
-        HashMap <String, Object> respuesta = new HashMap<>();
-        ArrayList<Colaboracion> listaColaboracion = new ArrayList<>();
-        try(Connection conexionBD = ConexionBD.obtenerConexion()){
-            StringBuilder consulta = new StringBuilder();
-            consulta.append("SELECT estado, fecha_inicio, fecha_fin, idioma, nombre, objetivo_general, tema_interes, periodo, no_estudiante_externo, ");
-;           consulta.append("profesoruv_id_profesoruv, profesor_externo_id_profesor_externo, asignatura_id_asignatura, region_id_region, departamento_id_departamento, id_colaboracion ");
-            consulta.append("FROM colaboracion ");
-            consulta.append("WHERE nombre LIKE ? AND (estado = ? OR estado = ?)");
-            PreparedStatement consultaPreparada = conexionBD.prepareStatement(consulta.toString());
-            consultaPreparada.setString(1, "%" + nombreColaboracion + "%");
-            consultaPreparada.setString(2, posibleEstado);
-            consultaPreparada.setString(3, posibleEstado2);
-            ResultSet resultado = consultaPreparada.executeQuery();
-            while(resultado.next()){
-                Colaboracion colaboracion = new Colaboracion();
-                colaboracion.setEstado(resultado.getString("estado"));
-                colaboracion.setFechaInicio(resultado.getString("fecha_inicio"));
-                colaboracion.setFechaFin(resultado.getString("fecha_fin"));
-                colaboracion.setIdioma(resultado.getString("idioma"));
-                colaboracion.setNombre(resultado.getString("nombre"));
-                colaboracion.setObjetivoGeneral(resultado.getString("objetivo_general"));
-                colaboracion.setTemaInteres(resultado.getString("tema_interes"));
-                colaboracion.setPeriodo(resultado.getString("periodo"));
-                colaboracion.setNoEstudiantesExternos(resultado.getInt("no_estudiante_externo"));
-                colaboracion.setIdProfesorUV(resultado.getInt("profesoruv_id_profesoruv"));
-                colaboracion.setIdProfesorExterno(resultado.getInt("profesor_externo_id_profesor_externo"));
-                colaboracion.setIdAsignatura(resultado.getInt("asignatura_id_asignatura"));
-                colaboracion.setIdRegion(resultado.getInt("region_id_region"));
-                colaboracion.setIdDepartamento(resultado.getInt("departamento_id_departamento"));
-                colaboracion.setIdColaboracion(resultado.getInt("id_colaboracion"));
-                listaColaboracion.add(colaboracion);
-            }   
-            respuesta.put("listaColaboracion", listaColaboracion);
-            if(listaColaboracion.isEmpty()){
-                respuesta.put(Constantes.KEY_ERROR, true);
-            }
-        }catch(SQLException errorSql){
-            errorSql.printStackTrace();
-            respuesta.put(Constantes.KEY_ERROR, true);
-        }
-        return respuesta;
-    }
+    /* 
+     * MariaDB [COIL]> describe colaboracion;
++--------------------------------------+--------------+------+-----+---------+----------------+
+| Field                                | Type         | Null | Key | Default | Extra          |
++--------------------------------------+--------------+------+-----+---------+----------------+
+| id_colaboracion                      | int(11)      | NO   | PRI | NULL    | auto_increment |
+| estado                               | varchar(50)  | YES  |     | NULL    |                |
+| fecha_inicio                         | date         | NO   |     | NULL    |                |
+| fecha_fin                            | date         | NO   |     | NULL    |                |
+| idioma                               | varchar(20)  | NO   |     | NULL    |                |
+| nombre                               | varchar(100) | NO   | UNI | NULL    |                |
+| objetivo_general                     | varchar(350) | YES  |     | NULL    |                |
+| tema_interes                         | varchar(50)  | NO   |     | NULL    |                |
+| periodo                              | varchar(20)  | NO   |     | NULL    |                |
+| no_estudiante_externo                | int(11)      | NO   |     | NULL    |                |
+| profesoruv_id_profesoruv             | int(11)      | NO   | MUL | NULL    |                |
+| departamento_id_departamento         | int(11)      | NO   | MUL | NULL    |                |
+| region_id_region                     | int(11)      | NO   | MUL | NULL    |                |
+| asignatura_id_asignatura             | int(11)      | NO   | MUL | NULL    |                |
+| profesor_externo_id_profesor_externo | int(11)      | NO   | MUL | NULL    |                |
++--------------------------------------+--------------+------+-----+---------+----------------+
+
+     */
     public static HashMap<String, Object> consultarColaboracionPorEstado(String estadoPosible, String estadoPosible2){
         HashMap <String, Object> respuesta = new HashMap<>();
         ArrayList<Colaboracion> listaColaboracion = new ArrayList<>();
@@ -422,51 +451,6 @@ public class ColaboracionDAO {
             }
         }catch(SQLException errorSql){
             errorSql.printStackTrace();
-            respuesta.put(Constantes.KEY_ERROR, true);
-        }
-        return respuesta;
-    }
-    /* 
-     *     /* 
-     * MariaDB [COIL]> describe colaboracion;
-+--------------------------------------+--------------+------+-----+---------+----------------+
-| Field                                | Type         | Null | Key | Default | Extra          |
-+--------------------------------------+--------------+------+-----+---------+----------------+
-| id_colaboracion                      | int(11)      | NO   | PRI | NULL    | auto_increment |
-| estado                               | varchar(50)  | YES  |     | NULL    |                |
-| fecha_inicio                         | date         | NO   |     | NULL    |                |
-| fecha_fin                            | date         | NO   |     | NULL    |                |
-| idioma                               | varchar(20)  | NO   |     | NULL    |                |
-| nombre                               | varchar(100) | NO   | UNI | NULL    |                |
-| objetivo_general                     | varchar(350) | YES  |     | NULL    |                |
-| tema_interes                         | varchar(50)  | NO   |     | NULL    |                |
-| periodo                              | varchar(20)  | NO   |     | NULL    |                |
-| no_estudiante_externo                | int(11)      | NO   |     | NULL    |                |
-| profesoruv_id_profesoruv             | int(11)      | NO   | MUL | NULL    |                |
-| departamento_id_departamento         | int(11)      | NO   | MUL | NULL    |                |
-| region_id_region                     | int(11)      | NO   | MUL | NULL    |                |
-| asignatura_id_asignatura             | int(11)      | NO   | MUL | NULL    |                |
-| profesor_externo_id_profesor_externo | int(11)      | NO   | MUL | NULL    |                |
-+--------------------------------------+--------------+------+-----+---------+----------------+
-
-     */
-     //modificar l estado de la colaboracion por id
-    public static HashMap<String, Object> modificarEstadoColaboracionPorId(String estado, int idColaboracion){
-        HashMap<String, Object> respuesta = new HashMap<>();
-        try(Connection conexionBD = ConexionBD.obtenerConexion()){
-            StringBuilder consulta = new StringBuilder();
-            consulta.append("UPDATE colaboracion ");
-            consulta.append("SET estado = ? ");
-            consulta.append("WHERE id_colaboracion = ?");
-            PreparedStatement consultaPreparada = conexionBD.prepareStatement(consulta.toString());
-            consultaPreparada.setString(1, estado);
-            consultaPreparada.setInt(2, idColaboracion);
-            consultaPreparada.executeUpdate();
-            respuesta.put(Constantes.KEY_ERROR, false);
-        }catch(SQLException errorSql){
-            errorSql.printStackTrace();
-        }
-        if(respuesta.isEmpty()){
             respuesta.put(Constantes.KEY_ERROR, true);
         }
         return respuesta;

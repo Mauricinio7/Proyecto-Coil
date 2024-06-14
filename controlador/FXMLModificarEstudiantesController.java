@@ -53,15 +53,13 @@ public class FXMLModificarEstudiantesController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        iniciarColaboracion();
-        cargarRegistroEstudiantes(colaboracion.getIdColaboracion());
     }    
 
-        //TODO este es un metodo en lo que se pasa a la ventana la colab
-    private void iniciarColaboracion(){
-        HashMap<String, Object> consulta = ColaboracionDAO.obtenerColaboracionPorId(4); //TODO Hardcode
-        colaboracion = (Colaboracion)consulta.get("Colaboracion");
+    public void inicializarValores(Colaboracion colaboracion){
+        this.colaboracion = colaboracion;
+        cargarRegistroEstudiantes(colaboracion.getIdColaboracion());
     }
+    
 
     @FXML
     private void clicBuscar(ActionEvent event) {
@@ -70,16 +68,16 @@ public class FXMLModificarEstudiantesController implements Initializable {
             cargarPanelScroll();
             cargarEstudiantesPorNombre(txtBuscarNombre.getText());
         }else {
-            Utils.mostrarAlertaSimple("Error al filtrar", "No se escrito un nombre, favor de escribirlo", Alert.AlertType.WARNING);
+            Utils.mostrarAlertaSimple("Error al filtrar", "No se escrito un nombre, favor de escribirlo", Alert.AlertType.WARNING, (Stage) scPanePrincipal.getScene().getWindow());
         }
     }
 
     @FXML
     private void clicGuardar(ActionEvent event) {
-        estudiantesBDEliminados.forEach(est -> System.out.println(est.getNombre() + ": " + est.getMatricula()));
         if(Utils.mostrarAlertaConfirmacion("Confirmacion", "¿Desea conservar los cambios realizados?", Alert.AlertType.INFORMATION, (Stage) scPanePrincipal.getScene().getWindow())){
             if(eliminarEstudiantes()){
                 Utils.mostrarAlertaSimple("Éxito", "Se han eliminado los estudiantes correctamente", Alert.AlertType.INFORMATION, (Stage) scPanePrincipal.getScene().getWindow());
+                cerrarVentana();
             }else{
                 Utils.mostrarAlertaSimple("Error", "No se han podido guardar los datos", Alert.AlertType.ERROR, (Stage) scPanePrincipal.getScene().getWindow());
             }
@@ -90,13 +88,11 @@ public class FXMLModificarEstudiantesController implements Initializable {
         for (Estudiante estudiante : estudiantesBDEliminados) {
             HashMap<String, Object> cuenta = EstudiantesDAO.contarEstudianteColaboracion(estudiante.getIdEstudiante());
                 if((boolean) cuenta.get("encontrado")){
-                    System.out.println("Elimina la relacion");
                     HashMap<String, Object> respuesta = EstudiantesDAO.eliminarEstudianteRelacion(estudiante.getIdEstudiante(), colaboracion.getIdColaboracion());
                     if((boolean)respuesta.get(Constantes.KEY_ERROR)){ 
                         return false;
                     }
                 }else{
-                    System.out.println("Eliminar todo");
                     HashMap<String, Object> respuesta = EstudiantesDAO.eliminarEstudiante(estudiante.getIdEstudiante(), colaboracion.getIdColaboracion());
                     if((boolean)respuesta.get(Constantes.KEY_ERROR)){ 
                         return false;
@@ -109,6 +105,7 @@ public class FXMLModificarEstudiantesController implements Initializable {
     
     @FXML
     private void clicSalir(ActionEvent event) {
+        cerrarVentana();
     }
 
     private void cargarPanelScroll(){
@@ -141,7 +138,7 @@ public class FXMLModificarEstudiantesController implements Initializable {
                 }
             }
         }else{
-            Utils.mostrarAlertaSimple("Error en la conexión", "No se han podido cargar los datos.", Alert.AlertType.ERROR);
+            Utils.mostrarAlertaSimple("Error en la conexión", "No se han podido cargar los datos.", Alert.AlertType.ERROR, (Stage) scPanePrincipal.getScene().getWindow());
         }
     }
 
@@ -157,7 +154,7 @@ public class FXMLModificarEstudiantesController implements Initializable {
             for (Estudiante estudiante : estudiantesBD) {
                 crearFichaEstudiante(estudiante);
             }
-            Utils.mostrarAlertaSimple("Sin resultados", "No se han encontrado registros que coincidan con ese nombre", Alert.AlertType.WARNING);
+            Utils.mostrarAlertaSimple("Sin resultados", "No se han encontrado registros que coincidan con ese nombre", Alert.AlertType.WARNING, (Stage) scPanePrincipal.getScene().getWindow());
         }
     }
 
@@ -190,8 +187,7 @@ public class FXMLModificarEstudiantesController implements Initializable {
         btnEliminar.setLayoutY(40);
         btnEliminar.setLayoutX(370);
         btnEliminar.setOnAction(e -> {
-            if(Utils.mostrarAlertaConfirmacion("Confirmación", "¿Seguro que deseas eliminar este estudiante?", Alert.AlertType.INFORMATION)){
-                System.out.println("Se ha eliminado el estudiante: " + estudiante.getNombre());
+            if(Utils.mostrarAlertaConfirmacion("Confirmación", "¿Seguro que deseas eliminar este estudiante?", Alert.AlertType.INFORMATION, (Stage) scPanePrincipal.getScene().getWindow())){
                 eliminarDeLista(estudiante.getMatricula());
             }
         });
@@ -222,6 +218,11 @@ public class FXMLModificarEstudiantesController implements Initializable {
         for (Estudiante estudiante : estudiantesBD) {
             crearFichaEstudiante(estudiante);
         }
+    }
+
+    private void cerrarVentana(){
+        Stage stage = (Stage) scPanePrincipal.getScene().getWindow();
+        stage.close();
     }
     
 }

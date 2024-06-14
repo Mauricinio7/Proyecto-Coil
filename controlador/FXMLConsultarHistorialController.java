@@ -4,23 +4,23 @@
  */
 package coilvic.controlador;
 
-import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.ResourceBundle;
 import java.util.regex.Pattern;
 
-import com.mysql.jdbc.Util;
-
 import coilvic.modelo.dao.AsignaturaDAO;
 import coilvic.modelo.dao.ColaboracionDAO;
 import coilvic.modelo.dao.DepartamentoDAO;
+import coilvic.modelo.dao.PlanProyectoDAO;
 import coilvic.modelo.dao.ProfesorExternoDAO;
 import coilvic.modelo.dao.ProfesorUvDAO;
 import coilvic.modelo.dao.RegionDAO;
 import coilvic.modelo.pojo.Colaboracion;
-import coilvic.modelo.pojo.ProfesorExterno;
+import coilvic.modelo.pojo.Departamento;
+import coilvic.modelo.pojo.OfertaColaboracion;
+import coilvic.modelo.pojo.PlanProyecto;
 import coilvic.utilidades.Constantes;
 import coilvic.utilidades.ThreadVerifyRepetitiveChars;
 import coilvic.utilidades.Utils;
@@ -33,22 +33,17 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
-import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextInputControl;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
@@ -61,7 +56,7 @@ public class FXMLConsultarHistorialController implements Initializable {
 
     String expresionValidaNombreColaboracion = "[a-zA-Z0-9íáéóúüñÁÉÍÓÚÑÜ.\\- ]+";
     Pattern patronNombreColaboracion = Pattern.compile(expresionValidaNombreColaboracion);
-    ObservableList<Colaboracion> listaColaboracionObservable;
+    ObservableList<Colaboracion> listaColaboracionObservable = FXCollections.observableArrayList();
     private ObservableList<String> listaEstado;
     @FXML
     private Pane panelDeslisante;
@@ -125,51 +120,18 @@ public class FXMLConsultarHistorialController implements Initializable {
     public void fillEstado(){
         listaEstado = FXCollections.observableArrayList();
         listaEstado.add("Colaboraciones Activas");
-        listaEstado.add("Colaboraciones Finalizadas");
+        listaEstado.add("Colaboraciones Pendientes");
         cbEstado.setItems(listaEstado);
         cbEstado.setValue(listaEstado.get(0));
     }
     public void configurarTabla(){
         clAsignatura.setCellValueFactory(new PropertyValueFactory<>("nombreAsignatura"));
-        clDepartamento.setCellValueFactory(new PropertyValueFactory<>("nombreDepartamento"));
-        clName.setCellValueFactory(new PropertyValueFactory<>("nombre"));
-        clPeriodo.setCellValueFactory(new PropertyValueFactory<>("periodo"));
-        clProfesor.setCellValueFactory(new PropertyValueFactory<>("nombreProfesorUV"));
-        clRegion.setCellValueFactory(new PropertyValueFactory<>("nombreRegion"));
-        clInformacion.setCellFactory(column -> { return new TableCell<Colaboracion, String>() {
-                Button botonInformacion = new Button("Información");
-
-                {
-                    botonInformacion.setOnAction(event -> {
-                        Colaboracion colaboracion = getTableView().getItems().get(getIndex());
-                        try{
-                            Stage stagePrincipal = (Stage)tfName.getScene().getWindow();
-                            FXMLLoader loader = new FXMLLoader(getClass().getResource("/coilvic/vista/FXMLConsultaColaboracion.fxml"));
-                            Parent root = loader.load();
-                            FXMLConsultaColaboracionController controlador = loader.getController();
-                            String estado = cbEstado.getSelectionModel().getSelectedItem();
-                            controlador.inicializarValores(colaboracion, "Historial");
-                            Scene nuevaEscena = new Scene(root);
-                            stagePrincipal.setScene(nuevaEscena);
-                            stagePrincipal.setTitle("Consulta Colaboración");
-                            stagePrincipal.show();
-                        }catch(IOException error){
-
-                        }
-                    });
-                }
-
-                @Override
-                protected void updateItem(String item, boolean empty) {
-                    super.updateItem(item, empty);
-                    if (empty) {
-                        setGraphic(null);
-                    } else {
-                        setGraphic(botonInformacion);
-                    }
-                }
-            };
-        });
+        clDepartamento.setCellFactory(new PropertyValueFactory<>("nombreDepartamento"));
+        clName.setCellFactory(new PropertyValueFactory<>("nombre"));
+        clPeriodo.setCellFactory(new PropertyValueFactory<>("periodo"));
+        clProfesor.setCellFactory(new PropertyValueFactory<>("nombreProfesorUV"));
+        clRegion.setCellFactory(new PropertyValueFactory<>("nombreRegion"));
+        clInformacion.setCellFactory(new PropertyValueFactory<>("idColaboracion"));
     }
     public void verifyNonValideTfName(){
         tfName.textProperty().addListener(new ChangeListener<String>() {
@@ -194,10 +156,10 @@ public class FXMLConsultarHistorialController implements Initializable {
         });
     }
     public void obtenerColaboracion(){
-        HashMap<String, Object> respuesta = new HashMap<>();
         String posibleEstado;
         String posibleEstado2;
         String seleccionCombobox = cbEstado.getSelectionModel().getSelectedItem();
+        Stage stage = (Stage)tfName.getScene().getWindow();
         if(seleccionCombobox.equals("Colaboraciones Activas")){
             posibleEstado = "Activo";
             posibleEstado2 = "";
@@ -205,25 +167,53 @@ public class FXMLConsultarHistorialController implements Initializable {
             posibleEstado = "Finalizada en periodo";
             posibleEstado2 = "Finalizada completamente";
         }
-        if(tfName.getText().isEmpty()){
-            respuesta = ColaboracionDAO.consultarColaboracionPorEstado(posibleEstado, posibleEstado2);
-        }else{
-            respuesta = ColaboracionDAO.consultarColaboracionPorSimilitudDeNombreYEstado(tfName.getText(), posibleEstado, posibleEstado2);
-        }
+        HashMap<String, Object> respuesta = ColaboracionDAO.consultarColaboracionPorEstado(posibleEstado, posibleEstado2);
         if(respuesta.containsKey("listaColaboracion")){
             ArrayList<Colaboracion> listaColaboracion = (ArrayList) respuesta.get("listaColaboracion");
-            if(listaColaboracion.isEmpty()){
-                Utils.mostrarAlertaSimple(Constantes.KEY_ERROR, "No se han encontrado colaboraciones", AlertType.WARNING);
-                tvColaboraciones.getItems().clear();
-                return;
-            }
             for(Colaboracion colaboracion : listaColaboracion){
                 System.out.println(colaboracion.getNombre());
                 colaboracion.getIdAsignatura();
-                fillElementosFaltantesColaboracion(colaboracion);
+                HashMap<String, Object> asignatura = AsignaturaDAO.consultarNombreAsignaturaPorId(colaboracion.getIdAsignatura());
+                if(asignatura.containsKey("nombreAsignatura")){
+                    colaboracion.setNombreAsignatura((String) asignatura.get("nombreAsignatura"));
+                    System.out.println(colaboracion.getNombreAsignatura());
+                }
+                HashMap<String, Object> profesor = ProfesorUvDAO.obtenerNombreProfesorPorId(colaboracion.getIdProfesorUV());
+                if(profesor.containsKey("nombreProfesor")){
+                    colaboracion.setNombreProfesorUV((String) profesor.get("nombreProfesor"));
+                    System.out.println(colaboracion.getNombreProfesorUV());
+                }
+                HashMap<String, Object> departamento = DepartamentoDAO.obtenerNombreDepartamentoPorId(colaboracion.getIdDepartamento());
+                if(departamento.containsKey("nombreDepartamento")){
+                    colaboracion.setNombreDepartamento((String) departamento.get("nombreDepartamento"));
+                    System.out.println(colaboracion.getNombreDepartamento());
+                }
+                HashMap<String, Object> region = RegionDAO.obtenerNombreRegionPorId(colaboracion.getIdRegion());
+                if(region.containsKey("nombreRegion")){
+                    colaboracion.setNombreRegion((String) region.get("nombreRegion"));
+                    System.out.println(colaboracion.getNombreRegion());
+                }
+                HashMap<String, Object> profesorExternoUv = ProfesorExternoDAO.obtenerNombreProfesorExternoPorId(colaboracion.getIdProfesorExterno());
+                if(profesorExternoUv.containsKey("nombreProfesorExterno")){
+                    colaboracion.setNombreProfesorExterno((String) profesorExternoUv.get("nombreProfesorExterno"));
+                    System.out.println(colaboracion.getNombreProfesorExterno());
+                }
+                
+                HashMap<String, Object> planProyecto = new HashMap<>();
+                if(colaboracion.getIdColaboracion() != null){
+                    System.out.println(colaboracion.getIdColaboracion());
+                }else{
+                    System.out.println("No hay id");
+                }
+                PlanProyectoDAO.obtenerPlanProyectoPorIdColaboracion(colaboracion.getIdColaboracion());
+                if(planProyecto.containsKey("planProyecto")){
+                    PlanProyecto nuevoPlanProyecto = (PlanProyecto) planProyecto.get("planProyecto");
+                    if(planProyecto != null){
+                        System.out.println(nuevoPlanProyecto.getNombre());
+                    }
+                }
             }
-            listaColaboracionObservable = FXCollections.observableArrayList(listaColaboracion);
-            tvColaboraciones.setItems(listaColaboracionObservable);
+            // tvColaboraciones.setItems(listaColaboracionObservable);
         }else{
             Utils.mostrarAlertaSimple(Constantes.KEY_ERROR, Constantes.ERROR_CARGAR_DATOS, AlertType.ERROR, (Stage)tfName.getScene().getWindow());
         }
@@ -232,43 +222,5 @@ public class FXMLConsultarHistorialController implements Initializable {
     @FXML
     private void clicBtnBuscar(ActionEvent event) {
         obtenerColaboracion();
-    }
-    public void fillElementosFaltantesColaboracion(Colaboracion colaboracion){
-        HashMap<String, Object> asignatura = AsignaturaDAO.consultarNombreAsignaturaPorId(colaboracion.getIdAsignatura());
-                if(asignatura.containsKey("nombreAsignatura")){
-                    colaboracion.setNombreAsignatura((String) asignatura.get("nombreAsignatura"));
-                }
-                HashMap<String, Object> profesor = ProfesorUvDAO.obtenerNombreProfesorPorId(colaboracion.getIdProfesorUV());
-                if(profesor.containsKey("nombreProfesor")){
-                    colaboracion.setNombreProfesorUV((String) profesor.get("nombreProfesor"));
-                }
-                HashMap<String, Object> departamento = DepartamentoDAO.obtenerNombreDepartamentoPorId(colaboracion.getIdDepartamento());
-                if(departamento.containsKey("nombreDepartamento")){
-                    colaboracion.setNombreDepartamento((String) departamento.get("nombreDepartamento"));
-                }
-                HashMap<String, Object> region = RegionDAO.obtenerNombreRegionPorId(colaboracion.getIdRegion());
-                if(region.containsKey("nombreRegion")){
-                    colaboracion.setNombreRegion((String) region.get("nombreRegion"));
-                }
-                HashMap<String, Object> profesorExternoUv = ProfesorExternoDAO.obtenerNombreProfesorExternoPorId(colaboracion.getIdProfesorExterno());
-                if(profesorExternoUv.containsKey("nombreProfesorExterno")){
-                    colaboracion.setNombreProfesorExterno((String) profesorExternoUv.get("nombreProfesorExterno"));
-                }
-                HashMap<String, Object> areaAcademica = AsignaturaDAO.consultarAreaAcademicaPorId(colaboracion.getIdAsignatura());
-                if(areaAcademica.containsKey("area")){
-                    colaboracion.setNombreArea((String) areaAcademica.get("area"));
-                }
-                HashMap<String, Object> correoProfesorUv = ProfesorUvDAO.obtenerCorreoPorIdProfesor(colaboracion.getIdProfesorUV());
-                if(correoProfesorUv.containsKey("correo")){
-                    colaboracion.setCorreoProfesorUv((String) correoProfesorUv.get("correo"));
-                }
-                HashMap<String, Object> correoProfesorExterno = ProfesorExternoDAO.obtenerCorreoProfesorExternoPorId(colaboracion.getIdProfesorExterno());
-                if(correoProfesorExterno.containsKey("correo")){
-                    colaboracion.setCorreoProfesorExterno((String) correoProfesorExterno.get("correo"));
-                }
-                HashMap<String, Object> institucionProfesorExterno = ProfesorExternoDAO.obtenerInstitucionPorIdProfesorExterno(colaboracion.getIdProfesorExterno());
-                if(institucionProfesorExterno.containsKey("institucion")){
-                    colaboracion.setInstitucionProfesorExterno((String) institucionProfesorExterno.get("institucion"));
-                }
     }
 }

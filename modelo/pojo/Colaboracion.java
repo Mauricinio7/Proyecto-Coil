@@ -16,9 +16,6 @@ public class Colaboracion {
     private String nombreRegion;
     private String nombreDepartamento;
     private String nombreArea;
-    private String correoProfesorUv;
-    private String correoProfesorExterno;
-    private String institucionProfesorExterno;
     private Integer noEstudiantesExternos;
     private Integer idColaboracion;
     private Integer idProfesorUV;
@@ -50,30 +47,6 @@ public class Colaboracion {
 
     public String getEstado() {
         return estado;
-    }
-
-    public String getCorreoProfesorUv() {
-        return correoProfesorUv;
-    }
-
-    public void setCorreoProfesorUv(String correoProfesorUv) {
-        this.correoProfesorUv = correoProfesorUv;
-    }
-
-    public String getCorreoProfesorExterno() {
-        return correoProfesorExterno;
-    }
-
-    public void setCorreoProfesorExterno(String correoProfesorExterno) {
-        this.correoProfesorExterno = correoProfesorExterno;
-    }
-
-    public String getInstitucionProfesorExterno() {
-        return institucionProfesorExterno;
-    }
-
-    public void setInstitucionProfesorExterno(String institucionProfesorExterno) {
-        this.institucionProfesorExterno = institucionProfesorExterno;
     }
 
     public void setEstado(String estado) {

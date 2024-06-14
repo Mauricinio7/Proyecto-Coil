@@ -39,6 +39,7 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.util.Duration;
@@ -135,8 +136,6 @@ public class FXMLConsultarColaboraciones implements Initializable {
         }
     }
 
-    //Inicia el consultar colaboraciones
-
     public void cargarCombos(){
         cbFiltro.getItems().addAll(
             "Todos",
@@ -208,8 +207,6 @@ public class FXMLConsultarColaboraciones implements Initializable {
     }
 
     private void crearFichaColaboracion(Colaboracion colaboracion){
-        contenedor.setPrefHeight(nextYPosition);
-    
         Pane objeto = new Pane();
         objeto.setPrefSize(1010, 100);
         objeto.setLayoutX(0);
@@ -274,6 +271,8 @@ public class FXMLConsultarColaboraciones implements Initializable {
         objeto.getChildren().add(lblEstadoColaboracion);    
         contenedor.getChildren().add(objeto);
         nextYPosition += 103;
+
+        contenedor.setPrefHeight(nextYPosition);
     
     }
 
@@ -281,6 +280,9 @@ public class FXMLConsultarColaboraciones implements Initializable {
         try{
             Stage stageInformacion = new Stage();
             stageInformacion.initStyle(StageStyle.UTILITY);
+            Stage primaryStage = (Stage) lbMisOfertas.getScene().getWindow();
+            stageInformacion.initOwner(primaryStage);
+            stageInformacion.initModality(Modality.APPLICATION_MODAL);
             FXMLLoader cargarObjeto = new FXMLLoader(CoilVic.class.getResource("vista/FXMLVerInformacionColaboracion.fxml"));
             Parent root = cargarObjeto.load();
             FXMLVerInformacionColaboracionController verInformacion = cargarObjeto.getController();
@@ -294,22 +296,26 @@ public class FXMLConsultarColaboraciones implements Initializable {
         }
     }
 
-    private void llamarVer(int idColaboracion){
-        try{
-            Stage stageVer = new Stage();
-            stageVer.initStyle(StageStyle.UTILITY);
-            FXMLLoader cargarObjeto = new FXMLLoader(CoilVic.class.getResource("vista/FXMLVerColaboracion.fxml"));
-            Parent root = cargarObjeto.load();
-            FXMLVerColaboracionController verColaboracion = cargarObjeto.getController();
-            verColaboracion.inicializarValores(idColaboracion);
-            Scene nuevaScena = new Scene(root);
-            stageVer.setTitle("Colaboracion");
-            stageVer.setScene(nuevaScena);
-            stageVer.showAndWait();
-        }catch(IOException error){
-            error.printStackTrace();
-        }
+    private void llamarVer(int idColaboracion) {
+    try {
+        Stage stageVer = new Stage();
+        stageVer.initStyle(StageStyle.UTILITY);
+        Stage primaryStage = (Stage) lbMisOfertas.getScene().getWindow();
+        stageVer.initOwner(primaryStage);
+        stageVer.initModality(Modality.APPLICATION_MODAL);
+        FXMLLoader cargarObjeto = new FXMLLoader(CoilVic.class.getResource("vista/FXMLVerColaboracion.fxml"));
+        Parent root = cargarObjeto.load();
+        FXMLVerColaboracionController verColaboracion = cargarObjeto.getController();
+        verColaboracion.inicializarValores(idColaboracion);
+        Scene nuevaScena = new Scene(root);
+        stageVer.setTitle("Colaboracion");
+        stageVer.setScene(nuevaScena);
+        stageVer.showAndWait();
+    } catch (IOException error) {
+        error.printStackTrace();
     }
+}
+
 
     @FXML
     private void btnClicNuevaColab(ActionEvent event) {

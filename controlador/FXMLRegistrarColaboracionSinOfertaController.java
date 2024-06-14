@@ -28,7 +28,6 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DateCell;
@@ -36,14 +35,10 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Alert.AlertType;
-import javafx.scene.control.Button;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.stage.FileChooser;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Callback;
 import javafx.util.Duration;
@@ -88,8 +83,6 @@ public class FXMLRegistrarColaboracionSinOfertaController implements Initializab
     private ComboBox<Departamento> cbDepartamento;
     @FXML
     private TextArea taDescripcionPlan;
-    @FXML
-    private Button btnPlanProyecto;
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -100,7 +93,6 @@ public class FXMLRegistrarColaboracionSinOfertaController implements Initializab
         profesorUv.setNombre("Carlos Fuentes");
         profesorUv.setCorreo("cfuentes@uv.mx");
         profesorUv.setIdRegion(1);
-        profesorUv.setNombreRegion("Xalapa");
         profesorUv.setIdProfesorUv(1);
         //inicializarValores(profesorUv);
         ofertaColaboracion = new OfertaColaboracion();
@@ -182,8 +174,7 @@ public class FXMLRegistrarColaboracionSinOfertaController implements Initializab
         if (!(Boolean) obtenerRegion.get(Constantes.KEY_ERROR)) {
             return (String) obtenerRegion.get("region");
         } else {
-            Utils.mostrarAlertaSimple("", "No se han podido cargar los datos", AlertType.ERROR);
-            return null;
+            return "no disponible por el momento";
         }
     }
 
@@ -355,7 +346,6 @@ public class FXMLRegistrarColaboracionSinOfertaController implements Initializab
     private void btnGuardar(ActionEvent event) {
         if(!camposVacios()) {
             if(validarFechas() && validarNoEstudiantes() && validarLongitudNombrePlanProyecto()) {
-                btnPlanProyecto.setStyle("");
                 Colaboracion colaboracion = obtenerDatosColaboracion();
                 PlanProyecto planProyecto = obtenerDatosPlanProyecto();
                 guardarColaboracionConPlanProyecto(colaboracion, planProyecto);
@@ -364,9 +354,6 @@ public class FXMLRegistrarColaboracionSinOfertaController implements Initializab
                 ("", "Se han introducido datos inválidos", AlertType.ERROR);
             }
         } else {
-            if (archivoPlan == null) {
-                btnPlanProyecto.setStyle("-fx-border-width: 3px; -fx-border-color: lightcoral;");
-            }
             Utils.mostrarAlertaSimple
             ("Rellenar campos obligatorios", "Se han dejado campos obligatorios vacíos", AlertType.ERROR);
         }
@@ -376,7 +363,6 @@ public class FXMLRegistrarColaboracionSinOfertaController implements Initializab
         HashMap<String, Object> respuesta = ColaboracionDAO.guardarColaboracionConPlanProyecto(colaboracion, planProyecto);
         if (!(Boolean) respuesta.get(Constantes.KEY_ERROR)) {
             Utils.mostrarAlertaSimple(null, ""+respuesta.get(Constantes.KEY_MENSAJE), AlertType.INFORMATION);
-            cerrarVentana();
         } else {
             Utils.mostrarAlertaSimple("Error", ""+respuesta.get(Constantes.KEY_MENSAJE), AlertType.ERROR);
         }
@@ -384,7 +370,7 @@ public class FXMLRegistrarColaboracionSinOfertaController implements Initializab
 
     @FXML
     private void btnCancelar(ActionEvent event) {
-        cerrarVentana();
+        //REGRESA A LA VENTANA ANTERIOR
     }
 
     @FXML
@@ -397,26 +383,8 @@ public class FXMLRegistrarColaboracionSinOfertaController implements Initializab
         dialogoSeleccion.getExtensionFilters().add(filtro);
         Stage escenarioActual = (Stage) panelDeslisante.getScene().getWindow();
         archivoPlan = dialogoSeleccion.showOpenDialog(escenarioActual);
-        if (archivoPlan != null) {
-            btnPlanProyecto.setStyle("-fx-border-width: 3px; -fx-border-color: lightgreen;");
-        } else {
-            btnPlanProyecto.setStyle("");
-        }
     }
-
-    private void cerrarVentana() {
-        try {
-            Stage stage = (Stage) panelDeslisante.getScene().getWindow();
-            FXMLLoader loader = Utils.obtenerLoader("/coilvic/vista/FXMLVistaProfesor.fxml");
-            Parent root = loader.load();
-            Scene escenaPrincipal = new Scene(root);
-            stage.setScene(escenaPrincipal);
-            stage.show();
-        } catch (IOException ex) {
-            Utils.mostrarAlertaSimple("Error", "Error al abrir la ventana", AlertType.ERROR);
-        }
-    }
-
+    
     @FXML
     private void salePanel(MouseEvent event) {
         TranslateTransition transicion = new TranslateTransition();

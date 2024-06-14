@@ -107,7 +107,7 @@
             <TableColumn fx:id="clAsignatura" prefWidth="161.0" text="Asignatura " />
             <TableColumn fx:id="clDepartamento" prefWidth="152.0" text="Departamento" />
             <TableColumn fx:id="clRegion" prefWidth="172.0" text="Región" />
-            <TableColumn fx:id="clInformacion" prefWidth="104.0" text="Informacion" />
+            <TableColumn fx:id="clInformacion" prefWidth="104.0" text="Información" />
         </columns>
       </TableView>
    </children>

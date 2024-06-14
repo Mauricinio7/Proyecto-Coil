@@ -7,18 +7,16 @@ public class ProfesorUv {
     private String noPersonal;
     private Integer idProfesorUv;
     private Integer idRegion;
-    private String nombreRegion;
 
     public ProfesorUv() {
     }
 
-    public ProfesorUv(String nombre, String correo, String noPersonal, Integer idProfesorUv, Integer idRegion, String nombreRegion) {
+    public ProfesorUv(String nombre, String correo, String noPersonal, Integer idProfesorUv, Integer idRegion) {
         this.nombre = nombre;
         this.correo = correo;
         this.noPersonal = noPersonal;
         this.idProfesorUv = idProfesorUv;
         this.idRegion = idRegion;
-        this.nombreRegion = nombreRegion;
     }
 
     public String getNombre() {
@@ -59,14 +57,6 @@ public class ProfesorUv {
 
     public void setIdRegion(Integer idRegion) {
         this.idRegion = idRegion;
-    }
-
-    public String getNombreRegion() {
-        return nombreRegion;
-    }
-
-    public void setNombreRegion(String nombreRegion) {
-        this.nombreRegion = nombreRegion;
     }
 
 }

@@ -67,38 +67,5 @@ public class OfertaColaboracionDAO {
             respuesta.put(Constantes.KEY_ERROR, null);
         }
         return respuesta;
-    }
-    
-    public static HashMap<String, Object> consultarOfertaColaboracionPorNombreEIdProfesor(String text, Integer idProfesorUv) {
-        HashMap<String, Object> respuesta = new HashMap<>();
-        ArrayList<OfertaColaboracion> listaOfertaColaboracion = new ArrayList<>();
-        try(Connection conexionDB = ConexionBD.obtenerConexion()){
-            StringBuilder consulta = new StringBuilder();
-            consulta.append("SELECT idioma, nombre, objetivo_general, periodo, tema_interes, ");
-            consulta.append("profesoruv_id_profesoruv, asignatura_id_asignatura ");
-            consulta.append("FROM oferta_colaboracion ");
-            consulta.append("WHERE nombre LIKE ? AND profesoruv_id_profesoruv = ?");
-            PreparedStatement sentenciaPreparada = conexionDB.prepareStatement(consulta.toString());
-            sentenciaPreparada.setString(1, "%" + text + "%");
-            sentenciaPreparada.setInt(2, idProfesorUv);
-            ResultSet resultado = sentenciaPreparada.executeQuery();
-            while(resultado.next()){
-                OfertaColaboracion nuevaOferta = new OfertaColaboracion();
-                nuevaOferta.setIdioma(resultado.getString("idioma"));
-                nuevaOferta.setNombre(resultado.getString("nombre"));
-                nuevaOferta.setObjetivoGeneral(resultado.getString("objetivo_general"));
-                nuevaOferta.setPeriodo(resultado.getString("periodo"));
-                nuevaOferta.setTemaInteres(resultado.getString("tema_interes"));
-                nuevaOferta.setIdProfesor(resultado.getInt("profesoruv_id_profesoruv"));
-                nuevaOferta.setIdAsignatura(resultado.getInt("asignatura_id_asignatura"));
-                listaOfertaColaboracion.add(nuevaOferta);
-            }
-            respuesta.put("listaOfertaColaboracion", listaOfertaColaboracion);
-        }catch(SQLException errorSql){
-            errorSql.printStackTrace();
-            respuesta.put(Constantes.KEY_ERROR, null);
-        }
-        return respuesta;
     }  
-    
  }   

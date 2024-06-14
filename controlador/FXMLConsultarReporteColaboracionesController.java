@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.ResourceBundle;
 import java.awt.Desktop;
 import coilvic.modelo.dao.PeriodoDAO;
-import coilvic.modelo.pojo.Reporte;
+import coilvic.modelo.pojo.ReporteColaboraciones;
 import coilvic.utilidades.Utils;
 import javafx.animation.PauseTransition;
 import javafx.animation.TranslateTransition;
@@ -15,11 +15,8 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ComboBox;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
@@ -45,16 +42,7 @@ public class FXMLConsultarReporteColaboracionesController implements Initializab
 
     @FXML
     private void btnSalir(ActionEvent event) {
-        try {
-            Stage stage = (Stage) panelDeslisante.getScene().getWindow();
-            FXMLLoader loader = Utils.obtenerLoader("/coilvic/vista/FXMLVistaAdmin.fxml");
-            Parent root = loader.load();
-            Scene escenaPrincipal = new Scene(root);
-            stage.setScene(escenaPrincipal);
-            stage.show();
-        } catch (IOException ex) {
-            Utils.mostrarAlertaSimple("Error", "Error al abrir la ventana", AlertType.ERROR);
-        }
+        //REGRESA A LA VENTANA ANTERIOR
     }
 
 
@@ -113,9 +101,9 @@ public class FXMLConsultarReporteColaboracionesController implements Initializab
 
     private void generarReporte(String ruta) {
         if (cbPeriodo.getValue() != null) {
-            new Reporte(ruta, cbPeriodo.getValue(), "colaboraciones");
+            new ReporteColaboraciones(ruta, cbPeriodo.getValue());
         } else {
-            new Reporte(ruta, "No existen periodos concluidos", "colaboraciones");
+            new ReporteColaboraciones(ruta, "No existen periodos concluidos");
         }
         try {
             abrirArchivo(ruta + "/ReporteColaboraciones.pdf");

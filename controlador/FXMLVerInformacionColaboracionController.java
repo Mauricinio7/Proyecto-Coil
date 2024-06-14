@@ -1,5 +1,6 @@
 package coilvic.controlador;
 
+import java.io.ByteArrayInputStream;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -24,6 +25,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 
@@ -94,17 +96,23 @@ public class FXMLVerInformacionColaboracionController implements Initializable {
                     lblDepartamento.setText(lblDepartamento.getText() + colaboracion.getNombreDepartamento());
                 }
 
-                HashMap<String, Object> planProyecto = new HashMap<>();
-                PlanProyectoDAO.obtenerPlanProyectoPorIdColaboracion(colaboracion.getIdColaboracion());
+                HashMap<String, Object> planProyecto = PlanProyectoDAO.obtenerPlanProyectoPorIdColaboracion(colaboracion.getIdColaboracion());
                 if(planProyecto.containsKey("planProyecto")){
                     PlanProyecto nuevoPlanProyecto = (PlanProyecto) planProyecto.get("planProyecto");
                     if(planProyecto != null){
-                        System.out.println(nuevoPlanProyecto.getNombre());
+                        try {
+                            ByteArrayInputStream inputPlan = new ByteArrayInputStream(nuevoPlanProyecto.getArchivoAdjunto());
+                            Image image = new Image(inputPlan);
+                            imgPlanProyecto.setImage(image);
+                        } catch (NullPointerException ex) {
+                            Utils.mostrarAlertaSimple("Error en la conexión", "No se han podido cargar los datos.", Alert.AlertType.ERROR);
+                        }
                     }
+                }else{
+                    System.out.println("No se ha encontrado el plan del proyecto");
                 }
 
-            //TODO Mostrar Plan del proyecto
-            //imgPlanProyecto.setImage(Utils.convertirImagen()); 
+
     }
 
     @FXML
