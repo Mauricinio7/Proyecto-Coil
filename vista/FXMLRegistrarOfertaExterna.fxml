@@ -27,6 +27,50 @@
             </Label>
          </children>
       </Pane>
+         <Label layoutX="265.0" layoutY="202.0" text="Registrar Oferta Externa de Colaboración" textAlignment="JUSTIFY">
+         <font>
+            <Font name="Open Sans Extrabold" size="37.0" />
+         </font>
+      </Label>
+      <Label fx:id="lbName" layoutX="230.0" layoutY="289.0" text="Nombre de la Colaboración" textAlignment="JUSTIFY">
+         <font>
+            <Font name="Open Sans" size="14.0" />
+         </font>
+      </Label>
+      <Label fx:id="lbPeriodo" layoutX="230.0" layoutY="363.0" text="Periodo">
+         <font>
+            <Font name="Open Sans" size="14.0" />
+         </font>
+      </Label>
+      <Label layoutX="723.0" layoutY="363.0" text="Idioma">
+         <font>
+            <Font name="Open Sans" size="14.0" />
+         </font>
+      </Label>
+      <Label layoutX="230.0" layoutY="434.0" prefHeight="20.0" prefWidth="71.0" text="Asignatura">
+         <font>
+            <Font name="Open Sans" size="14.0" />
+         </font>
+      </Label>
+      <Label fx:id="lbObjetivoGeneral" layoutX="230.0" layoutY="492.0" text="Objetivo general del curso">
+         <font>
+            <Font name="Open Sans" size="14.0" />
+         </font>
+      </Label>
+      <Label layoutX="718.0" layoutY="491.0" text="Tema de interés">
+         <font>
+            <Font name="Open Sans" size="14.0" />
+         </font>
+      </Label>
+      <ComboBox fx:id="cbPeriodo" layoutX="413.0" layoutY="360.0" prefWidth="150.0" promptText="Periodo" />
+      <TextArea fx:id="taObjetivo" layoutX="231.0" layoutY="522.0" maxWidth="333.0" minWidth="333.0" prefHeight="82.0" prefWidth="333.0" promptText="Objetivo general del curso" />
+      <TextArea fx:id="taTemaInteres" layoutX="719.0" layoutY="521.0" maxWidth="333.0" minWidth="333.0" prefHeight="82.0" prefWidth="333.0" promptText="Tema de interés" />
+      <TextField fx:id="tfIdioma" layoutX="821.0" layoutY="359.0" prefHeight="26.0" prefWidth="239.0" promptText="Idioma" />
+      <TextField fx:id="tfNameCol" layoutX="486.0" layoutY="286.0" prefHeight="26.0" prefWidth="402.0" promptText="Nombre de la Colaboración" />
+      <Button fx:id="btSave" layoutX="796.0" layoutY="685.0" mnemonicParsing="false" onMouseClicked="#clicSave" onMouseEntered="#btSaveAnimationEntered" onMouseExited="#btSaveAnimationExited" style="-fx-background-color: #24A0ed;" text="Guardar" textFill="WHITE" />
+      <Button fx:id="btCancel" layoutX="965.0" layoutY="685.0" mnemonicParsing="false" onMouseClicked="#clicCancel" onMouseEntered="#btCancelAnimationEntered" onMouseExited="#btCancelAnimationExited" text="Cancelar" />
+      <Button layoutX="241.0" layoutY="672.0" mnemonicParsing="false" text="Registrar Profesor Externo" />
+      <TextField fx:id="tfAsignatura" layoutX="413.0" layoutY="431.0" prefHeight="26.0" prefWidth="254.0" promptText="Asignatura" />
       <Pane fx:id="panelDeslisante" layoutX="-252.0" layoutY="-2.0" onMouseEntered="#entraPanel" onMouseExited="#salePanel" prefHeight="752.0" prefWidth="349.0" style="-fx-background-color: linear-gradient(to bottom, #e93367, #cd18ed);">
          <children>
             <ImageView fitHeight="58.0" fitWidth="61.0" layoutX="272.0" layoutY="159.0" pickOnBounds="true" preserveRatio="true">
@@ -90,49 +134,5 @@
                </font>
             </Label>
          </children></Pane>
-         <Label layoutX="265.0" layoutY="202.0" text="Registrar Oferta Externa de Colaboración" textAlignment="JUSTIFY">
-         <font>
-            <Font name="Open Sans Extrabold" size="37.0" />
-         </font>
-      </Label>
-      <Label fx:id="lbName" layoutX="230.0" layoutY="289.0" text="Nombre de la Colaboración" textAlignment="JUSTIFY">
-         <font>
-            <Font name="Open Sans" size="14.0" />
-         </font>
-      </Label>
-      <Label fx:id="lbPeriodo" layoutX="230.0" layoutY="363.0" text="Periodo">
-         <font>
-            <Font name="Open Sans" size="14.0" />
-         </font>
-      </Label>
-      <Label layoutX="723.0" layoutY="363.0" text="Idioma">
-         <font>
-            <Font name="Open Sans" size="14.0" />
-         </font>
-      </Label>
-      <Label layoutX="230.0" layoutY="434.0" prefHeight="20.0" prefWidth="71.0" text="Asignatura">
-         <font>
-            <Font name="Open Sans" size="14.0" />
-         </font>
-      </Label>
-      <Label fx:id="lbObjetivoGeneral" layoutX="230.0" layoutY="492.0" text="Objetivo general del curso">
-         <font>
-            <Font name="Open Sans" size="14.0" />
-         </font>
-      </Label>
-      <Label layoutX="718.0" layoutY="491.0" text="Tema de interés">
-         <font>
-            <Font name="Open Sans" size="14.0" />
-         </font>
-      </Label>
-      <ComboBox fx:id="cbPeriodo" layoutX="413.0" layoutY="360.0" prefWidth="150.0" promptText="Periodo" />
-      <TextArea fx:id="taObjetivo" layoutX="231.0" layoutY="522.0" maxWidth="333.0" minWidth="333.0" prefHeight="82.0" prefWidth="333.0" promptText="Objetivo general del curso" />
-      <TextArea fx:id="taTemaInteres" layoutX="719.0" layoutY="521.0" maxWidth="333.0" minWidth="333.0" prefHeight="82.0" prefWidth="333.0" promptText="Tema de interés" />
-      <TextField fx:id="tfIdioma" layoutX="821.0" layoutY="359.0" prefHeight="26.0" prefWidth="239.0" promptText="Idioma" />
-      <TextField fx:id="tfNameCol" layoutX="486.0" layoutY="286.0" prefHeight="26.0" prefWidth="402.0" promptText="Nombre de la Colaboración" />
-      <Button fx:id="btSave" layoutX="796.0" layoutY="685.0" mnemonicParsing="false" onMouseClicked="#clicSave" onMouseEntered="#btSaveAnimationEntered" onMouseExited="#btSaveAnimationExited" style="-fx-background-color: #24A0ed;" text="Guardar" textFill="WHITE" />
-      <Button fx:id="btCancel" layoutX="965.0" layoutY="685.0" mnemonicParsing="false" onMouseClicked="#clicCancel" onMouseEntered="#btCancelAnimationEntered" onMouseExited="#btCancelAnimationExited" text="Cancelar" />
-      <Button layoutX="241.0" layoutY="672.0" mnemonicParsing="false" text="Registrar Profesor Externo" />
-      <TextField layoutX="413.0" layoutY="431.0" prefHeight="26.0" prefWidth="254.0" promptText="Asignatura" />
    </children>
 </AnchorPane>

@@ -5,18 +5,44 @@
 package coilvic.controlador;
 
 import java.net.URL;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.ResourceBundle;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
+import coilvic.modelo.ConexionApacheNet;
+import coilvic.modelo.dao.AsignaturaDAO;
+import coilvic.modelo.dao.DepartamentoDAO;
+import coilvic.modelo.dao.OfertaColaboracionDAO;
+import coilvic.modelo.dao.RegionDAO;
+import coilvic.modelo.pojo.Asignatura;
+import coilvic.modelo.pojo.Departamento;
+import coilvic.modelo.pojo.OfertaColaboracion;
+import coilvic.modelo.pojo.ProfesorUv;
+import coilvic.modelo.pojo.Region;
+import coilvic.utilidades.Constantes;
+import coilvic.utilidades.ThreadVerifyRepetitiveChars;
+import coilvic.utilidades.Utils;
+import coilvic.utilidades.VerifyValidCharsThread;
 import javafx.animation.TranslateTransition;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.control.TextInputControl;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
+import javafx.stage.Stage;
 import javafx.util.Duration;
 
 /**
@@ -26,6 +52,13 @@ import javafx.util.Duration;
  */
 public class FXMLRegistrarOfertaExternaController implements Initializable {
 
+    private String expresionValidaNombreColaboracion = "[a-zA-Z0-9íáéóúüñÁÉÍÓÚÑÜ.\\- ]+";
+    private Pattern patronNombreColaboracion = Pattern.compile(expresionValidaNombreColaboracion);
+    private String expresionValidaNombreIdioma = "[a-zA-ZíáéóúñÁÉÍÓÚÑÜ. ]+";
+    private Pattern patronNombreIdioma = Pattern.compile(expresionValidaNombreIdioma);
+    private String expresionValidaTopic = "[a-zA-Z0-9()íáéóúñÁÉÍÓÚÑÜ¿?.\\[\\]\\- ]+";
+    private Pattern patronTopic= Pattern.compile(expresionValidaTopic);
+    private LocalDateTime fechaNTP;
     @FXML
     private Pane panelDeslisante;
     @FXML
@@ -35,7 +68,7 @@ public class FXMLRegistrarOfertaExternaController implements Initializable {
     @FXML
     private Label lbObjetivoGeneral;
     @FXML
-    private ComboBox<?> cbPeriodo;
+    private ComboBox<String> cbPeriodo;
     @FXML
     private TextArea taObjetivo;
     @FXML
@@ -48,6 +81,8 @@ public class FXMLRegistrarOfertaExternaController implements Initializable {
     private Button btSave;
     @FXML
     private Button btCancel;
+    @FXML
+    private TextField tfAsignatura;
 
     /**
      * Initializes the controller class.
@@ -55,6 +90,13 @@ public class FXMLRegistrarOfertaExternaController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
+        asignarFechaActualNTP();
+        verifyNonValideCharsNameColaboracion();
+        verifyNonValideCharsLenguage();
+        verifyNonValideCharsObjetivo();
+        verifyNonValidTopic();
+        verifyNonValidAsignatura();
+        fillPeriodo();
     }    
 
        @FXML
@@ -76,27 +118,144 @@ public class FXMLRegistrarOfertaExternaController implements Initializable {
     }
 
     @FXML
-    private void btSaveAnimationExited(MouseEvent event) {
-    }
-
-    @FXML
-    private void btSaveAnimationEntered(MouseEvent event) {
-    }
-
-    @FXML
     private void clicSave(MouseEvent event) {
-    }
-
-    @FXML
-    private void btCancelAnimationExited(MouseEvent event) {
-    }
-
-    @FXML
-    private void btCancelAnimationEntered(MouseEvent event) {
     }
 
     @FXML
     private void clicCancel(MouseEvent event) {
     }
-    
+
+    public void asignarFechaActualNTP(){
+        try{
+            LocalDateTime fechaActual = ConexionApacheNet.obtenerFechaHoraServidorNTP(Constantes.SERVIDOR_NTP);
+            if(fechaActual != null){
+                fechaNTP = fechaActual;
+                System.out.println("fecha NTP");
+            }else{
+
+            }
+        }catch(Exception error){
+            error.printStackTrace();
+        }
+    }
+    public void verifyNonValideCharsNameColaboracion(){
+        tfNameCol.textProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+                if(newValue.length() == 0){
+                    tfNameCol.setText("");
+                }else{
+                    threadValidationInputText(oldValue, tfNameCol);              
+                }
+            }
+        });
+    }
+    public void verifyNonValideCharsLenguage(){
+        tfIdioma.textProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+                if(newValue.length() == 0){
+                    tfIdioma.setText("");
+                }else{
+                    threadValidationInputText(oldValue, tfIdioma);
+                }
+            }
+            
+        });
+    }
+    public void verifyNonValideCharsObjetivo(){
+        taObjetivo.textProperty().addListener(new ChangeListener<String>() {
+
+            @Override
+            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+                if(newValue.length() == 0){
+                    taObjetivo.setText("");
+                }else{
+                    threadValidationInputText(oldValue, taObjetivo);
+                }
+            }
+            
+        });
+    }
+    public void verifyNonValidTopic(){
+        taTemaInteres.textProperty().addListener(new ChangeListener<String>() {
+
+            @Override
+            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+                if(newValue.length() == 0){
+                    taTemaInteres.setText("");
+                }else{
+                    threadValidationInputText(oldValue, taTemaInteres);
+                }
+            }
+            
+        });
+    }
+    public void verifyNonValidAsignatura(){
+        tfAsignatura.textProperty().addListener(new ChangeListener<String>() {
+
+            @Override
+            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+                if(newValue.length() == 0){
+                    tfAsignatura.setText("");
+                }else{
+                    threadValidationInputText(oldValue, tfAsignatura);
+                }
+            }
+            
+        });
+    }
+    public void fillPeriodo(){
+        ObservableList<String> observablePeriodo =  FXCollections.observableArrayList();
+        ArrayList<String> listaPeriodos = new ArrayList<>();
+        String []periodos = {"ENER-JUN", "AGOST-DIC"};
+        int mesActual = fechaNTP.getMonthValue();
+            if(mesActual >= 6 && mesActual <= 11){
+                listaPeriodos.add(periodos[1] + " " + fechaNTP.getYear());
+                listaPeriodos.add(periodos[0] + " " + (fechaNTP.getYear() + 1));
+            }else{
+                listaPeriodos.add(periodos[0] + " " + fechaNTP.getYear());
+                listaPeriodos.add(periodos[1] + " " + fechaNTP.getYear());
+            }
+            observablePeriodo.addAll(listaPeriodos);
+            cbPeriodo.setItems(observablePeriodo);
+    }
+    public void threadValidationInputText(String oldValue, TextInputControl component){
+        Thread threadVerifyValidCharsName = new Thread(new VerifyValidCharsThread(component, patronNombreColaboracion, oldValue));
+        Thread threadVerifyRepetitiveChars = new Thread(new ThreadVerifyRepetitiveChars(component, oldValue));
+        threadVerifyValidCharsName.start(); 
+        threadVerifyRepetitiveChars.start(); 
+    }
+
+     @FXML
+     private void btSaveAnimationEntered(MouseEvent event) {
+         mouseEnteredButton(btSave);
+     }
+ 
+     @FXML
+     private void btCancelAnimationEntered(MouseEvent event) {
+         mouseEnteredButton(btCancel);
+     }
+ 
+     @FXML
+     private void btSaveAnimationExited(MouseEvent event) {
+         mouseExitedButton(btSave);
+     } 
+     @FXML
+     private void btCancelAnimationExited(MouseEvent event) {
+         mouseExitedButton(btCancel);
+     }
+     public void mouseEnteredButton(Button btScale){
+        btScale.setScaleX(1.1);
+        btScale.setScaleY(1.1);
+    }
+    public void mouseExitedButton(Button btScale){
+        btScale.setScaleX(1);
+        btScale.setScaleY(1);
+    }
+
+    public boolean isValidText(String text, Pattern patron){
+        Matcher coincidencia = patron.matcher(text);
+        return coincidencia.matches();
+    }
 }
