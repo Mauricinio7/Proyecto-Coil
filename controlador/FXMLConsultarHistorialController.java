@@ -148,11 +148,7 @@ public class FXMLConsultarHistorialController implements Initializable {
                             Parent root = loader.load();
                             FXMLConsultaColaboracionController controlador = loader.getController();
                             String estado = cbEstado.getSelectionModel().getSelectedItem();
-                            if(estado.equals("Colaboraciones Activas")){
-                                controlador.inicializarValores(colaboracion, "Historial", "Activa");
-                            }else{
-                                controlador.inicializarValores(colaboracion, "Historial", "Finalizada");
-                            }
+                            controlador.inicializarValores(colaboracion, "Historial");
                             Scene nuevaEscena = new Scene(root);
                             stagePrincipal.setScene(nuevaEscena);
                             stagePrincipal.setTitle("Consulta Colaboración");

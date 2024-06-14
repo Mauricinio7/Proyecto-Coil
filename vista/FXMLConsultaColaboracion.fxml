@@ -6,8 +6,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-
-<AnchorPane id="AnchorPane" prefHeight="700.0" prefWidth="1000.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/21" fx:controller="coilvic.controlador.FXMLConsultaColaboracionController">
+<AnchorPane id="AnchorPane" fx:id="clicBtnGuardar" prefHeight="700.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="coilvic.controlador.FXMLConsultaColaboracionController">
    <children>
       <Label layoutX="34.0" layoutY="21.0" text="Datos Colaboración">
          <font>
@@ -19,7 +18,7 @@
             <Font name="Droid Arabic Kufi Bold" size="20.0" />
          </font>
       </Label>
-      <Button layoutX="35.0" layoutY="632.0" mnemonicParsing="false" onAction="#clicRegresar" text="Regresar" />
+      <Button fx:id="btnBuscar" layoutX="35.0" layoutY="632.0" mnemonicParsing="false" onAction="#clicRegresar" text="Guardar" />
       <Label layoutX="34.0" layoutY="102.0" text="Nombre de la Colaboración" />
       <Label fx:id="lbNameColaboracion" layoutX="253.0" layoutY="102.0" text="Label" />
       <Label layoutX="34.0" layoutY="156.0" text="Profesor" />
@@ -45,6 +44,7 @@
       <Label fx:id="lbInstitucion" layoutX="742.0" layoutY="215.0" text="Label" />
       <Label layoutX="639.0" layoutY="165.0" text="Correo" />
       <Label layoutX="639.0" layoutY="215.0" text="Institución" />
-      <ComboBox fx:id="cbEstado" layoutX="253.0" layoutY="577.0" prefHeight="26.0" prefWidth="144.0" />
+      <ComboBox fx:id="cbEstado" layoutX="253.0" layoutY="577.0" onAction="#seleccionComboEstado" prefHeight="26.0" prefWidth="144.0" />
+      <Button fx:id="btnCancelar" layoutX="184.0" layoutY="632.0" mnemonicParsing="false" onAction="#clicBtnCancelar" text="Cancelar" />
    </children>
 </AnchorPane>

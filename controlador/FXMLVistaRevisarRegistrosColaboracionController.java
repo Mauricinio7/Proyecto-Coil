@@ -144,11 +144,7 @@ public class FXMLVistaRevisarRegistrosColaboracionController implements Initiali
                             Parent root = loader.load();
                             FXMLConsultaColaboracionController controlador = loader.getController();
                             String estado = cbEstado.getSelectionModel().getSelectedItem();
-                            if(estado.equals("Colaboraciones Activas")){
-                                controlador.inicializarValores(colaboracion, "Registro", colaboracion.getEstado());
-                            }else{
-                                controlador.inicializarValores(colaboracion, "Registro", colaboracion.getEstado());
-                            }
+                            controlador.inicializarValores(colaboracion, "Registro");
                             Scene nuevaEscena = new Scene(root);
                             stagePrincipal.setScene(nuevaEscena);
                             stagePrincipal.setTitle("Consulta Colaboración");

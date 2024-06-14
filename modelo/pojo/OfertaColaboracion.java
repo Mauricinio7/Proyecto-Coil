@@ -6,6 +6,7 @@ public class OfertaColaboracion {
     String objetivoGeneral;
     String periodo;
     String temaInteres;
+    int contador;
     int idAsignatura;
     int idProfesor;
     int idDepartamento;
@@ -26,6 +27,12 @@ public class OfertaColaboracion {
     
     public int getIdAsignatura() {
         return idAsignatura;
+    }
+    public int getContador() {
+        return contador;
+    }
+    public void setContador(int contador) {
+        this.contador = contador;
     }
     public String getIdioma() {
         return idioma;
