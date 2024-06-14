@@ -123,7 +123,7 @@ public class AsignaturaDAO {
                     asignatura.setNombre(resultado.getString("nombre"));
                     asignatura.setIdAsignatura(idAsignatura);
                     respuesta.put(Constantes.KEY_ERROR, false);
-                    respuesta.put("area", asignatura);
+                    respuesta.put("area", asignatura.getAreaAcademical());
                 }
                 conexionBD.close();
             } catch (SQLException e) {

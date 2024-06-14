@@ -5,12 +5,10 @@ import java.io.IOException;
 import java.net.URL;
 import java.nio.file.Files;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.ResourceBundle;
 
-import coilvic.modelo.ConexionApacheNet;
 import coilvic.modelo.dao.AsignaturaDAO;
 import coilvic.modelo.dao.ColaboracionDAO;
 import coilvic.modelo.dao.DepartamentoDAO;
@@ -45,6 +43,7 @@ import javafx.scene.control.Button;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.stage.FileChooser;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Callback;
 import javafx.util.Duration;
@@ -76,6 +75,8 @@ public class FXMLRegistrarColaboracionSinOfertaController implements Initializab
     @FXML
     private TextArea taObjetivo;
     @FXML
+    private TextField tfPeriodo;
+    @FXML
     private TextArea taTemaInteres;
     @FXML
     private TextField tfNoEstudiantes;
@@ -89,8 +90,6 @@ public class FXMLRegistrarColaboracionSinOfertaController implements Initializab
     private TextArea taDescripcionPlan;
     @FXML
     private Button btnPlanProyecto;
-    @FXML
-    private ComboBox<String> cbPeriodo;
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -108,7 +107,7 @@ public class FXMLRegistrarColaboracionSinOfertaController implements Initializab
         ofertaColaboracion.setIdAsignatura(420);
         ofertaColaboracion.setIdProfesor(1);
         ofertaColaboracion.setIdioma("Español");
-        ofertaColaboracion.setNombre("Colaboración ñ");
+        ofertaColaboracion.setNombre("Colaboración 1");
         ofertaColaboracion.setObjetivoGeneral("Objetivo general de la colaboración");
         ofertaColaboracion.setPeriodo("Enero - Junio 2020");
         ofertaColaboracion.setTemaInteres("Tema de interés");
@@ -146,7 +145,6 @@ public class FXMLRegistrarColaboracionSinOfertaController implements Initializab
     private void cargarEstadoComponentes() {
         limitarCaracteres();
         cargarAreasAcademicas();
-        cargarPeriodos();
         cbAsignatura.setDisable(true);
         configurarSeleccionDepartamento();
         configurarSeleccionAsignatura();
@@ -164,7 +162,7 @@ public class FXMLRegistrarColaboracionSinOfertaController implements Initializab
         tfNombreColaboracion.setText(ofertaColaboracion.getNombre());
         tfIdioma.setText(ofertaColaboracion.getIdioma());
         taObjetivo.setText(ofertaColaboracion.getObjetivoGeneral());
-        cbPeriodo.setValue(ofertaColaboracion.getPeriodo());
+        tfPeriodo.setText(ofertaColaboracion.getPeriodo());
         taTemaInteres.setText(ofertaColaboracion.getTemaInteres());
         cbAreaAcademica.setValue(obtenerAreaAcademicaOfertaColaboracion().getAreaAcademical());
         cbAsignatura.setValue(obtenerAreaAcademicaOfertaColaboracion());
@@ -172,7 +170,7 @@ public class FXMLRegistrarColaboracionSinOfertaController implements Initializab
         tfNombreColaboracion.setDisable(true);
         tfIdioma.setDisable(true);
         taObjetivo.setDisable(true);
-        cbPeriodo.setDisable(true);
+        tfPeriodo.setDisable(true);
         taTemaInteres.setDisable(true);
         cbAreaAcademica.setDisable(true);
         cbAsignatura.setDisable(true);
@@ -217,23 +215,6 @@ public class FXMLRegistrarColaboracionSinOfertaController implements Initializab
         AsignaturaDAO.consultarAreaAcademicaPorRegion(profesorUv.getIdRegion());
         listaAreasAcademicas.addAll((ArrayList<String>) obtenerAreaAcademica.get("listaArea"));
         cbAreaAcademica.setItems(listaAreasAcademicas);
-    }
-
-    private void cargarPeriodos() {
-        LocalDateTime fechaNTP = ConexionApacheNet.obtenerFechaHoraServidorNTP(Constantes.SERVIDOR_NTP);
-        ObservableList<String> observablePeriodo =  FXCollections.observableArrayList();
-        ArrayList<String> listaPeriodos = new ArrayList<>();
-        String []periodos = {"ENER-JUN", "AGOST-DIC"};
-        int mesActual = fechaNTP.getMonthValue();
-            if(mesActual >= 6 && mesActual <= 11){
-                listaPeriodos.add(periodos[1] + " " + fechaNTP.getYear());
-                listaPeriodos.add(periodos[0] + " " + (fechaNTP.getYear() + 1));
-            }else{
-                listaPeriodos.add(periodos[0] + " " + fechaNTP.getYear());
-                listaPeriodos.add(periodos[1] + " " + fechaNTP.getYear());
-            }
-        observablePeriodo.addAll(listaPeriodos);
-        cbPeriodo.setItems(observablePeriodo);
     }
 
     private void configurarSeleccionAsignatura() {
@@ -308,14 +289,9 @@ public class FXMLRegistrarColaboracionSinOfertaController implements Initializab
         });
     }
 
-    private void configurarFechasInicioYFin() {
-        LocalDateTime fechaNTP = ConexionApacheNet.obtenerFechaHoraServidorNTP(Constantes.SERVIDOR_NTP);
-        //TODO
-    }
-
     private boolean camposVacios(){
         return tfNombreColaboracion.getText().isEmpty() || dpFechaInicio.getValue() == null || dpFechaFin.getValue() == null
-                || tfIdioma.getText().isEmpty() || taObjetivo.getText().isEmpty() || cbPeriodo.getValue() == null
+                || tfIdioma.getText().isEmpty() || taObjetivo.getText().isEmpty() || tfPeriodo.getText().isEmpty()
                 || taTemaInteres.getText().isEmpty() || tfNoEstudiantes.getText().isEmpty() || cbAreaAcademica.getValue() == null
                 || cbAsignatura.getValue() == null || cbDepartamento.getValue() == null || archivoPlan == null;
     }
@@ -342,7 +318,7 @@ public class FXMLRegistrarColaboracionSinOfertaController implements Initializab
         colaboracion.setFechaFin(dpFechaFin.getValue().toString());
         colaboracion.setIdioma(tfIdioma.getText());
         colaboracion.setObjetivoGeneral(taObjetivo.getText());
-        colaboracion.setPeriodo(cbPeriodo.getValue());
+        colaboracion.setPeriodo(tfPeriodo.getText());
         colaboracion.setTemaInteres(taTemaInteres.getText());
         colaboracion.setNoEstudiantesExternos(Integer.parseInt(tfNoEstudiantes.getText()));
         colaboracion.setIdAsignatura(cbAsignatura.getValue().getIdAsignatura());
@@ -415,9 +391,9 @@ public class FXMLRegistrarColaboracionSinOfertaController implements Initializab
     private void btnPlanProyecto(ActionEvent event) {
         FileChooser dialogoSeleccion = new FileChooser();
         dialogoSeleccion.setTitle("Seleccionar plan");
-        String etiquetaTipoDato = "Archivos pdf (*.png, *.jpg, *.jpeg)";
+        String etiquetaTipoDato = "Archivos pdf (*.pdf)";
         FileChooser.ExtensionFilter filtro = 
-                new FileChooser.ExtensionFilter(etiquetaTipoDato, "*.png", "*.jpg", "*.jpeg");
+                new FileChooser.ExtensionFilter(etiquetaTipoDato, "*.pdf");
         dialogoSeleccion.getExtensionFilters().add(filtro);
         Stage escenarioActual = (Stage) panelDeslisante.getScene().getWindow();
         archivoPlan = dialogoSeleccion.showOpenDialog(escenarioActual);
