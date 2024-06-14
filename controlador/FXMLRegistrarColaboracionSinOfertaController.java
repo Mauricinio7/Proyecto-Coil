@@ -130,7 +130,6 @@ public class FXMLRegistrarColaboracionSinOfertaController implements Initializab
         configurarFechaFin();
         dpFechaFin.setDisable(true);
 
-
         cbDepartamento.setDisable(true);
         cargarEstadoComponentes();
     }
