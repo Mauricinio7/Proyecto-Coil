@@ -70,21 +70,40 @@ public class FXMLVistaProfesorController implements Initializable {
         transicion.play();
     }
 
+    //TODO paquete de barra lateral inicio
+
     @FXML
-    private void clicMisOfertasIV(MouseEvent event) {
-        HashMap<String, Object> mapProfesorUV = ProfesorUvDAO.obtenerProfesorUvPorId(1);
-        if(mapProfesorUV.containsKey("Profesor")){
-            ProfesorUv profesorUvSesion = (ProfesorUv) mapProfesorUV.get("Profesor");
+    private void clicMisOfertas(MouseEvent event) {
             irPantallaOfertasColaboracion(profesorUvSesion);
-        }else{
-            System.out.println("Error al conectar con la bd");
-        }
-        
     }
 
     @FXML
-    private void clicMisOfertasLB(MouseEvent event) {
-            irPantallaOfertasColaboracion(profesorUvSesion);
+    private void clicMisColaboraciones(MouseEvent event) {
+        irPantallaColaboraciones(profesorUvSesion);
+    }
+
+    @FXML
+    private void clicHome(MouseEvent event) {
+        irPantallaHome(profesorUvSesion);
+    }
+
+    public void irPantallaColaboraciones(ProfesorUv profesorUv){
+        try{
+            Stage stageInformacion = new Stage();
+            stageInformacion.initStyle(StageStyle.UTILITY);
+            FXMLLoader cargarObjeto = new FXMLLoader(CoilVic.class.getResource("vista/FXMLConsultarColaboraciones.fxml"));
+            Parent root = cargarObjeto.load();
+            FXMLConsultarColaboraciones consultarColaboraciones = cargarObjeto.getController();
+            consultarColaboraciones.inicializarValores(profesorUv);
+            Scene nuevaScena = new Scene(root);
+            stageInformacion.setTitle("Consultar colaboraciones");
+            stageInformacion.setScene(nuevaScena);
+            stageInformacion.show();
+            Stage stagePrincipal = (Stage)ivMisOfertas.getScene().getWindow();
+            stagePrincipal.close();
+        }catch(IOException error){
+            error.printStackTrace();
+        }
     }
 
     public void irPantallaOfertasColaboracion(ProfesorUv profesorUv){
@@ -105,4 +124,27 @@ public class FXMLVistaProfesorController implements Initializable {
             error.printStackTrace();
         }
     }
+
+    public void irPantallaHome(ProfesorUv profesorUv){
+        try{
+            Stage stageInformacion = new Stage();
+            stageInformacion.initStyle(StageStyle.UTILITY);
+            FXMLLoader cargarObjeto = new FXMLLoader(CoilVic.class.getResource("vista/FXMLVistaProfesor.fxml"));
+            Parent root = cargarObjeto.load();
+            FXMLVistaProfesorController vistaHome = cargarObjeto.getController();
+            vistaHome.inicializarValores(profesorUv.getIdProfesorUv());
+            Scene nuevaScena = new Scene(root);
+            stageInformacion.setTitle("Registrar ofertas de colaboracion");
+            stageInformacion.setScene(nuevaScena);
+            stageInformacion.show();
+            Stage stagePrincipal = (Stage)ivMisOfertas.getScene().getWindow();
+            stagePrincipal.close();
+        }catch(IOException error){
+            error.printStackTrace();
+        }
+    }
+
+    //TODO fin paquete de barra lateral
+
+    
 }
