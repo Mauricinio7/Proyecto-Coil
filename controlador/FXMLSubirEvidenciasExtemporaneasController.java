@@ -51,6 +51,7 @@ public class FXMLSubirEvidenciasExtemporaneasController implements Initializable
     private Evidencia evidencia = new Evidencia();
     private ObservableList<Evidencia> evidencias;
     private Colaboracion colaboracion;
+    private ProfesorUv profesorUv;
     @FXML
     private Pane panelDeslisante;
     @FXML
@@ -72,11 +73,6 @@ public class FXMLSubirEvidenciasExtemporaneasController implements Initializable
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
-
-        limitarCaracteres();
-        configurarTabla();
-        configurarBtnSolicitarConstancias();
     }    
 
     private void configurarBtnSolicitarConstancias() {
@@ -87,9 +83,14 @@ public class FXMLSubirEvidenciasExtemporaneasController implements Initializable
         }
     }
     
-    public void inicializarValores(Integer idColaboracion){
+    public void inicializarValores(Integer idColaboracion, ProfesorUv profesorUv){
+        this.profesorUv = profesorUv;
         obtenerColaboracion(idColaboracion);
         obtenerListaEvidencias();
+
+        limitarCaracteres();
+        configurarTabla();
+        configurarBtnSolicitarConstancias();
     }
 
     private void configurarTabla() {
@@ -101,7 +102,7 @@ public class FXMLSubirEvidenciasExtemporaneasController implements Initializable
         if (!(boolean)mapColaboracion.get("error")){
             colaboracion = (Colaboracion) mapColaboracion.get("Colaboracion");
         }else{
-            Utils.mostrarAlertaSimple(null, "No se han podido cargar los datos", AlertType.ERROR);
+            Utils.mostrarAlertaSimple(null, "No se han podido cargar los datos", AlertType.ERROR, (Stage) panelDeslisante.getScene().getWindow());
         }
     }
 
@@ -114,28 +115,10 @@ public class FXMLSubirEvidenciasExtemporaneasController implements Initializable
             evidencias.addAll(listaEvidencias);
             tvArchivosEvidencias.setItems(evidencias);
         }else{
-            Utils.mostrarAlertaSimple(null, ""+mapEvidencias.get(Constantes.KEY_MENSAJE), AlertType.ERROR);
+            Utils.mostrarAlertaSimple(null, ""+mapEvidencias.get(Constantes.KEY_MENSAJE), AlertType.ERROR, (Stage) panelDeslisante.getScene().getWindow());
         }
     }
     
-    public void irPantallaOfertasColaboracion(ProfesorUv profesorUv){
-        try{
-            Stage stageInformacion = new Stage();
-            stageInformacion.initStyle(StageStyle.UTILITY);
-            FXMLLoader cargarObjeto = new FXMLLoader(CoilVic.class.getResource("/coilvic/vista/FXMLVistaOfertaColaboracion.fxml"));
-            Parent root = cargarObjeto.load();
-            FXMLVistaOfertaColaboracionController vistaOfertaCol = cargarObjeto.getController();
-            vistaOfertaCol.inicializarValores(profesorUv);
-            Scene nuevaScena = new Scene(root);
-            stageInformacion.setTitle("Registrar ofertas de colaboracion");
-            stageInformacion.setScene(nuevaScena);
-            stageInformacion.show();
-            Stage stagePrincipal = (Stage)ivMisOfertas.getScene().getWindow();
-            stagePrincipal.close();
-        }catch(IOException error){
-            error.printStackTrace();
-        }
-    }
 
     @FXML
     private void btnSubirArchivos(ActionEvent event) {
@@ -156,28 +139,28 @@ public class FXMLSubirEvidenciasExtemporaneasController implements Initializable
 
     @FXML
     private void btnSolicitarConstancias(ActionEvent event) {
-        Utils.mostrarAlertaSimple(null, "Se han solicitado las constancias", AlertType.INFORMATION);
+        Utils.mostrarAlertaSimple(null, "Se han solicitado las constancias", AlertType.INFORMATION, (Stage) panelDeslisante.getScene().getWindow());
     }
 
     @FXML
     private void btnGuardar(ActionEvent event) {
         if (validarCamposVacios()) {
-            Utils.mostrarAlertaSimple(null, "Se han dejado campos obligatorios vacíos", AlertType.WARNING);
+            Utils.mostrarAlertaSimple(null, "Se han dejado campos obligatorios vacíos", AlertType.WARNING, (Stage) panelDeslisante.getScene().getWindow());
         } else if (validarRegistroDuplicado()) {
-            Utils.mostrarAlertaSimple(null, "El archivo que desea subir ya existe", AlertType.WARNING);
+            Utils.mostrarAlertaSimple(null, "El archivo que desea subir ya existe", AlertType.WARNING, (Stage) panelDeslisante.getScene().getWindow());
         } else {
             obtenerDatosEvidencia();
             HashMap<String, Object> mapEvidencia = EvidenciaDAO.insertarEvidencia(evidencia);
             if (!(boolean)mapEvidencia.get("error")){
                 if (evidencias.size() < 6) {
-                    Utils.mostrarAlertaSimple(null, ""+mapEvidencia.get(Constantes.KEY_MENSAJE), AlertType.INFORMATION);
+                    Utils.mostrarAlertaSimple(null, ""+mapEvidencia.get(Constantes.KEY_MENSAJE), AlertType.INFORMATION, (Stage) panelDeslisante.getScene().getWindow());
                     evidencias.add(evidencia);
                     limpiarCampos();
                 } else {
-                    Utils.mostrarAlertaSimple(null, "No se pueden subir más de 6 archivos", AlertType.WARNING);
+                    Utils.mostrarAlertaSimple(null, "No se pueden subir más de 6 archivos", AlertType.WARNING, (Stage) panelDeslisante.getScene().getWindow());
                 }
             }else{
-                Utils.mostrarAlertaSimple(null, ""+mapEvidencia.get(Constantes.KEY_MENSAJE), AlertType.ERROR);
+                Utils.mostrarAlertaSimple(null, ""+mapEvidencia.get(Constantes.KEY_MENSAJE), AlertType.ERROR, (Stage) panelDeslisante.getScene().getWindow());
             }
         }
         btnSubirArchivo.setStyle("");
@@ -200,7 +183,7 @@ public class FXMLSubirEvidenciasExtemporaneasController implements Initializable
             byte[] archivo = Files.readAllBytes(archivoEvidencia.toPath());
             evidencia.setArchivo(archivo);
         } catch (IOException ex) {
-            Utils.mostrarAlertaSimple(null, "Error al cargar el archivo", AlertType.ERROR);
+            Utils.mostrarAlertaSimple(null, "Error al cargar el archivo", AlertType.ERROR, (Stage) panelDeslisante.getScene().getWindow());
         }
     }
 
@@ -232,21 +215,9 @@ public class FXMLSubirEvidenciasExtemporaneasController implements Initializable
 
     @FXML
     private void btnCancelar(ActionEvent event) {
-        cerrarVentana();
+        irPantallaHome(profesorUv);
     }
 
-    private void cerrarVentana() {
-        try {
-            Stage stage = (Stage) panelDeslisante.getScene().getWindow();
-            FXMLLoader loader = Utils.obtenerLoader("/coilvic/vista/FXMLVistaProfesor.fxml");
-            Parent root = loader.load();
-            Scene escenaPrincipal = new Scene(root);
-            stage.setScene(escenaPrincipal);
-            stage.show();
-        } catch (IOException ex) {
-            Utils.mostrarAlertaSimple("Error", "Error al abrir la ventana", AlertType.ERROR);
-        }
-    }
 
     private void actualizarTabla() {
         tvArchivosEvidencias.refresh();
@@ -294,5 +265,81 @@ public class FXMLSubirEvidenciasExtemporaneasController implements Initializable
             System.out.println("Error al conectar con la bd");
         }
     }
+
+    //TODO paquete de barra lateral inicio
+
+    @FXML
+    private void clicMisOfertas(MouseEvent event) {
+            irPantallaOfertasColaboracion(profesorUv);
+    }
+
+    @FXML
+    private void clicMisColaboraciones(MouseEvent event) {
+        irPantallaColaboraciones(profesorUv);
+    }
+
+    @FXML
+    private void clicHome(MouseEvent event) {
+        irPantallaHome(profesorUv);
+    }
+
+    public void irPantallaColaboraciones(ProfesorUv profesorUv){
+        try{
+            Stage stageInformacion = new Stage();
+            stageInformacion.initStyle(StageStyle.UTILITY);
+            FXMLLoader cargarObjeto = new FXMLLoader(CoilVic.class.getResource("vista/FXMLConsultarColaboraciones.fxml"));
+            Parent root = cargarObjeto.load();
+            FXMLConsultarColaboraciones consultarColaboraciones = cargarObjeto.getController();
+            consultarColaboraciones.inicializarValores(profesorUv);
+            Scene nuevaScena = new Scene(root);
+            stageInformacion.setTitle("Consultar colaboraciones");
+            stageInformacion.setScene(nuevaScena);
+            stageInformacion.show();
+            Stage stagePrincipal = (Stage)ivMisOfertas.getScene().getWindow();
+            stagePrincipal.close();
+        }catch(IOException error){
+            error.printStackTrace();
+        }
+    }
+
+    public void irPantallaOfertasColaboracion(ProfesorUv profesorUv){
+        try{
+            Stage stageInformacion = new Stage();
+            stageInformacion.initStyle(StageStyle.UTILITY);
+            FXMLLoader cargarObjeto = new FXMLLoader(CoilVic.class.getResource("vista/FXMLConsultarOfertaColaboraciones.fxml"));
+            Parent root = cargarObjeto.load();
+            FXMLConsultaOfertaColaboracionesController vistaOfertaCol = cargarObjeto.getController();
+            vistaOfertaCol.inicializarValores(profesorUv);
+            Scene nuevaScena = new Scene(root);
+            stageInformacion.setTitle("Mis ofertas");
+            stageInformacion.setScene(nuevaScena);
+            stageInformacion.show();
+            Stage stagePrincipal = (Stage)ivMisOfertas.getScene().getWindow();
+            stagePrincipal.close();
+        }catch(IOException error){
+            error.printStackTrace();
+        }
+    }
+
+    public void irPantallaHome(ProfesorUv profesorUv){
+        try{
+            Stage stageInformacion = new Stage();
+            stageInformacion.initStyle(StageStyle.UTILITY);
+            FXMLLoader cargarObjeto = new FXMLLoader(CoilVic.class.getResource("vista/FXMLVistaProfesor.fxml"));
+            Parent root = cargarObjeto.load();
+            FXMLVistaProfesorController vistaHome = cargarObjeto.getController();
+            vistaHome.inicializarValores(profesorUv.getIdProfesorUv());
+            Scene nuevaScena = new Scene(root);
+            stageInformacion.setTitle("Registrar ofertas de colaboracion");
+            stageInformacion.setScene(nuevaScena);
+            stageInformacion.show();
+            Stage stagePrincipal = (Stage)ivMisOfertas.getScene().getWindow();
+            stagePrincipal.close();
+        }catch(IOException error){
+            error.printStackTrace();
+        }
+    }
+
+    //TODO fin paquete de barra lateral
 
 }

@@ -72,8 +72,7 @@
             <Font size="17.0" />
          </font>
       </Label>
-      <ScrollPane fx:id="scPaneEvidencias" layoutX="23.0" layoutY="437.0" prefHeight="224.0" prefWidth="356.0" />
-      <Label layoutX="28.0" layoutY="406.0" text="Evidencias:">
+      <Label layoutX="49.0" layoutY="508.0" text="Evidencias:">
          <font>
             <Font size="17.0" />
          </font>
@@ -83,7 +82,7 @@
             <Font size="19.0" />
          </font>
       </Button>
-      <Button layoutX="129.0" layoutY="675.0" mnemonicParsing="false" onAction="#btnClicSubirEvidencias" prefHeight="32.0" prefWidth="145.0" text="Subir evidencias">
+      <Button layoutX="150.0" layoutY="503.0" mnemonicParsing="false" onAction="#btnClicSubirEvidencias" prefHeight="32.0" prefWidth="145.0" text="Subir evidencias">
          <font>
             <Font size="16.0" />
          </font>

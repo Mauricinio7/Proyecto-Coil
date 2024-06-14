@@ -149,7 +149,6 @@ public class FXMLRegistrarColaboracionSinOfertaController implements Initializab
         taTemaInteres.setText(ofertaColaboracion.getTemaInteres());
         cbAreaAcademica.setValue(obtenerAreaAcademicaOfertaColaboracion().getAreaAcademical());
         cbAsignatura.setValue(obtenerAreaAcademicaOfertaColaboracion());
-        cbDepartamento.setValue(obtenerNombreDepartamentoOfertaColaboracion());
         tfNombreColaboracion.setDisable(true);
         tfIdioma.setDisable(true);
         taObjetivo.setDisable(true);
@@ -157,7 +156,7 @@ public class FXMLRegistrarColaboracionSinOfertaController implements Initializab
         taTemaInteres.setDisable(true);
         cbAreaAcademica.setDisable(true);
         cbAsignatura.setDisable(true);
-        cbDepartamento.setDisable(true);
+        cargarDepartamentosPorArea();;
     }
 
     private String obtenerRegionProfesor() {
@@ -181,16 +180,6 @@ public class FXMLRegistrarColaboracionSinOfertaController implements Initializab
         }
     }
 
-    private Departamento obtenerNombreDepartamentoOfertaColaboracion() {
-        HashMap<String, Object> obtenerDepartamento =
-        DepartamentoDAO.consultarDepartamentoPorId(ofertaColaboracion.getIdDepartamento());
-        if (!(Boolean) obtenerDepartamento.get(Constantes.KEY_ERROR)) {
-            return (Departamento) obtenerDepartamento.get("departamento");
-        } else {
-            Utils.mostrarAlertaSimple("", "No se han podido cargar los datos", AlertType.ERROR, (Stage) panelDeslisante.getScene().getWindow());
-            return null;
-        }
-    }
     
     private void cargarAreasAcademicas() {
         listaAreasAcademicas = FXCollections.observableArrayList();
@@ -259,6 +248,14 @@ public class FXMLRegistrarColaboracionSinOfertaController implements Initializab
         HashMap<String, Object> obtenerDepartamento = DepartamentoDAO.consultarDepartamentoPorAreaAcad(areaAcademica);
         listaDepartamentos.addAll((ArrayList<Departamento>) obtenerDepartamento.get("listaDepartamento"));
         cbDepartamento.setItems(listaDepartamentos);
+    }
+
+    private void cargarDepartamentosPorArea(){
+        listaDepartamentos = FXCollections.observableArrayList();
+        HashMap<String, Object> obtenerDepartamento = DepartamentoDAO.consultarDepartamentoPorAreaAcad(cbAreaAcademica.getValue());
+        listaDepartamentos.addAll((ArrayList<Departamento>) obtenerDepartamento.get("listaDepartamento"));
+        cbDepartamento.setItems(listaDepartamentos);
+        cbDepartamento.setValue(listaDepartamentos.get(0));
     }
 
     private void configurarFechaFin() {
@@ -466,12 +463,12 @@ public class FXMLRegistrarColaboracionSinOfertaController implements Initializab
         try{
             Stage stageInformacion = new Stage();
             stageInformacion.initStyle(StageStyle.UTILITY);
-            FXMLLoader cargarObjeto = new FXMLLoader(CoilVic.class.getResource("/coilvic/vista/FXMLVistaOfertaColaboracion.fxml"));
+            FXMLLoader cargarObjeto = new FXMLLoader(CoilVic.class.getResource("vista/FXMLConsultarOfertaColaboraciones.fxml"));
             Parent root = cargarObjeto.load();
-            FXMLVistaOfertaColaboracionController vistaOfertaCol = cargarObjeto.getController();
+            FXMLConsultaOfertaColaboracionesController vistaOfertaCol = cargarObjeto.getController();
             vistaOfertaCol.inicializarValores(profesorUv);
             Scene nuevaScena = new Scene(root);
-            stageInformacion.setTitle("Registrar ofertas de colaboracion");
+            stageInformacion.setTitle("Mis ofertas");
             stageInformacion.setScene(nuevaScena);
             stageInformacion.show();
             Stage stagePrincipal = (Stage)lbCorreoProfesor.getScene().getWindow();

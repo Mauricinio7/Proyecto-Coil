@@ -4,6 +4,7 @@
  */
 package coilvic.controlador;
 
+import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -12,6 +13,7 @@ import java.util.ResourceBundle;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import coilvic.CoilVic;
 import coilvic.modelo.ConexionApacheNet;
 import coilvic.modelo.dao.AsignaturaDAO;
 import coilvic.modelo.dao.DepartamentoDAO;
@@ -32,6 +34,7 @@ import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
@@ -39,10 +42,13 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextInputControl;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import javafx.util.Duration;
 
 
@@ -285,12 +291,6 @@ public class FXMLVistaOfertaColaboracionController implements Initializable {
      //metodos de animacion 
      @FXML
      private void salePanel(MouseEvent event) {
-         lbName.setVisible(true);
-         lbDepartamento.setVisible(true);
-         lbObjetivoGeneral.setVisible(true);
-         lbPeriodo.setVisible(true);
-         lbRegion.setVisible(true);
-         taObjetivo.setVisible(true);
          TranslateTransition transicion = new TranslateTransition();
          transicion.setDuration(Duration.millis(500));
          transicion.setNode(panelDeslisante);
@@ -301,12 +301,6 @@ public class FXMLVistaOfertaColaboracionController implements Initializable {
  
      @FXML
      private void entraPanel(MouseEvent event) {
-         lbName.setVisible(false);
-         lbDepartamento.setVisible(false);
-         lbObjetivoGeneral.setVisible(false);
-         lbPeriodo.setVisible(false);
-         lbRegion.setVisible(false);
-         taObjetivo.setVisible(false);
          TranslateTransition transicion = new TranslateTransition();
          transicion.setDuration(Duration.millis(500));
          transicion.setNode(panelDeslisante);
@@ -368,7 +362,7 @@ public class FXMLVistaOfertaColaboracionController implements Initializable {
         Stage stagePrincipal = (Stage) tfIdioma.getScene().getWindow();
         boolean confirmarSalida = Utils.mostrarAlertaConfirmacion("Salir", "¿Seguro que desea salir sin registrar la oferta?", AlertType.CONFIRMATION, stagePrincipal);
         if(confirmarSalida){
-            System.out.println("Clic Aceptar");
+            irPantallaHome(profesorSesion);
         }
     }
     //validacions
@@ -382,5 +376,78 @@ public class FXMLVistaOfertaColaboracionController implements Initializable {
     public boolean isValidText(String text, Pattern patron){
         Matcher coincidencia = patron.matcher(text);
         return coincidencia.matches();
+    }
+
+    @FXML
+    private void clicMisOfertas(MouseEvent event) {
+            irPantallaOfertasColaboracion(profesorSesion);
+    }
+
+    @FXML
+    private void clicMisColaboraciones(MouseEvent event) {
+        irPantallaColaboraciones(profesorSesion);
+    }
+
+    @FXML
+    private void clicHome(MouseEvent event) {
+        irPantallaHome(profesorSesion);
+    }
+
+    public void irPantallaColaboraciones(ProfesorUv profesorUv){
+        try{
+            Stage stageInformacion = new Stage();
+            stageInformacion.initStyle(StageStyle.UTILITY);
+            FXMLLoader cargarObjeto = new FXMLLoader(CoilVic.class.getResource("vista/FXMLConsultarColaboraciones.fxml"));
+            Parent root = cargarObjeto.load();
+            FXMLConsultarColaboraciones consultarColaboraciones = cargarObjeto.getController();
+            consultarColaboraciones.inicializarValores(profesorUv);
+            Scene nuevaScena = new Scene(root);
+            stageInformacion.setTitle("Consultar colaboraciones");
+            stageInformacion.setScene(nuevaScena);
+            stageInformacion.show();
+            Stage stagePrincipal = (Stage)lbDepartamento.getScene().getWindow();
+            stagePrincipal.close();
+        }catch(IOException error){
+            error.printStackTrace();
+        }
+    }
+
+    public void irPantallaOfertasColaboracion(ProfesorUv profesorUv){
+         try{
+            Stage stageInformacion = new Stage();
+            stageInformacion.initStyle(StageStyle.UTILITY);
+            FXMLLoader cargarObjeto = new FXMLLoader(CoilVic.class.getResource("vista/FXMLConsultarOfertaColaboraciones.fxml"));
+            Parent root = cargarObjeto.load();
+            FXMLConsultaOfertaColaboracionesController vistaOfertaCol = cargarObjeto.getController();
+            vistaOfertaCol.inicializarValores(profesorUv);
+            Scene nuevaScena = new Scene(root);
+            stageInformacion.setTitle("Mis ofertas");
+            stageInformacion.setScene(nuevaScena);
+            stageInformacion.show();
+            Stage stagePrincipal = (Stage)lbDepartamento.getScene().getWindow();
+            stagePrincipal.close();
+        }catch(IOException error){
+            error.printStackTrace();
+        }
+
+    }
+
+    public void irPantallaHome(ProfesorUv profesorUv){
+        try{
+            Stage stageInformacion = new Stage();
+            stageInformacion.initStyle(StageStyle.UTILITY);
+            FXMLLoader cargarObjeto = new FXMLLoader(CoilVic.class.getResource("vista/FXMLVistaProfesor.fxml"));
+            Parent root = cargarObjeto.load();
+            FXMLVistaProfesorController vistaHome = cargarObjeto.getController();
+            vistaHome.inicializarValores(profesorUv.getIdProfesorUv());
+            Scene nuevaScena = new Scene(root);
+            stageInformacion.setTitle("Registrar ofertas de colaboracion");
+            stageInformacion.setScene(nuevaScena);
+            stageInformacion.show();
+            Stage stagePrincipal = (Stage)lbDepartamento.getScene().getWindow();
+            stagePrincipal.close();
+        }catch(IOException error){
+            error.printStackTrace();
+        }
     }
 }

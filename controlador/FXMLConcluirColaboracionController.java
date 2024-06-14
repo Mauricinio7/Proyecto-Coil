@@ -206,7 +206,24 @@ public class FXMLConcluirColaboracionController implements Initializable {
 
     @FXML
     private void btnClicSubirEvidencias(ActionEvent event) {
-        //TODO llamar ventana subir evidencias
+        try{
+            ProfesorUv profesorUv = new ProfesorUv();
+            profesorUv.setIdProfesorUv(colaboracion.getIdProfesorUV());
+            Stage stageInformacion = new Stage();
+            stageInformacion.initStyle(StageStyle.UTILITY);
+            FXMLLoader cargarObjeto = new FXMLLoader(CoilVic.class.getResource("vista/FXMLSubirEvidenciasExtemporaneas.fxml"));
+            Parent root = cargarObjeto.load();
+            FXMLSubirEvidenciasExtemporaneasController vistaSubirEvidencias = cargarObjeto.getController();
+            vistaSubirEvidencias.inicializarValores(colaboracion.getIdColaboracion(), profesorUv);
+            Scene nuevaScena = new Scene(root);
+            stageInformacion.setTitle("Subir evidencias");
+            stageInformacion.setScene(nuevaScena);
+            stageInformacion.show();
+            Stage stagePrincipal = (Stage)lblColaboracion.getScene().getWindow();
+            stagePrincipal.close();
+        }catch(IOException error){
+            error.printStackTrace();
+        }
     }
 
     @FXML

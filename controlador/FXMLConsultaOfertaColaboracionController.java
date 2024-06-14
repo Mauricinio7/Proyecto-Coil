@@ -11,6 +11,7 @@ import java.util.HashMap;
 import java.util.ResourceBundle;
 import java.util.regex.Pattern;
 
+import coilvic.CoilVic;
 import coilvic.modelo.dao.OfertaColaboracionDAO;
 import coilvic.modelo.pojo.OfertaColaboracion;
 import coilvic.modelo.pojo.ProfesorUv;
@@ -42,6 +43,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import javafx.util.Duration;
 
 /**
@@ -201,11 +203,103 @@ public class FXMLConsultaOfertaColaboracionController implements Initializable {
         }
     }
 
+    //TODO paquete de barra lateral inicio
+
     @FXML
-    private void clicMisOfertasIV(MouseEvent event) {
+    private void clicMisOfertas(MouseEvent event) {
+            irPantallaOfertasColaboracion(profesorSesion);
     }
 
     @FXML
-    private void clicMisOfertasLB(MouseEvent event) {
+    private void clicMisColaboraciones(MouseEvent event) {
+        irPantallaColaboraciones(profesorSesion);
+    }
+
+    @FXML
+    private void clicHome(MouseEvent event) {
+        irPantallaHome(profesorSesion);
+    }
+
+    public void irPantallaColaboraciones(ProfesorUv profesorUv){
+        try{
+            Stage stageInformacion = new Stage();
+            stageInformacion.initStyle(StageStyle.UTILITY);
+            FXMLLoader cargarObjeto = new FXMLLoader(CoilVic.class.getResource("vista/FXMLConsultarColaboraciones.fxml"));
+            Parent root = cargarObjeto.load();
+            FXMLConsultarColaboraciones consultarColaboraciones = cargarObjeto.getController();
+            consultarColaboraciones.inicializarValores(profesorUv);
+            Scene nuevaScena = new Scene(root);
+            stageInformacion.setTitle("Consultar colaboraciones");
+            stageInformacion.setScene(nuevaScena);
+            stageInformacion.show();
+            Stage stagePrincipal = (Stage)ivMisOfertas.getScene().getWindow();
+            stagePrincipal.close();
+        }catch(IOException error){
+            error.printStackTrace();
+        }
+    }
+
+    public void irPantallaOfertasColaboracion(ProfesorUv profesorUv){
+        try{
+            Stage stageInformacion = new Stage();
+            stageInformacion.initStyle(StageStyle.UTILITY);
+            FXMLLoader cargarObjeto = new FXMLLoader(CoilVic.class.getResource("vista/FXMLConsultarOfertaColaboraciones.fxml"));
+            Parent root = cargarObjeto.load();
+            FXMLConsultaOfertaColaboracionesController vistaOfertaCol = cargarObjeto.getController();
+            vistaOfertaCol.inicializarValores(profesorUv);
+            Scene nuevaScena = new Scene(root);
+            stageInformacion.setTitle("Mis ofertas");
+            stageInformacion.setScene(nuevaScena);
+            stageInformacion.show();
+            Stage stagePrincipal = (Stage)ivMisOfertas.getScene().getWindow();
+            stagePrincipal.close();
+        }catch(IOException error){
+            error.printStackTrace();
+        }
+    }
+
+    public void irPantallaHome(ProfesorUv profesorUv){
+        try{
+            Stage stageInformacion = new Stage();
+            stageInformacion.initStyle(StageStyle.UTILITY);
+            FXMLLoader cargarObjeto = new FXMLLoader(CoilVic.class.getResource("vista/FXMLVistaProfesor.fxml"));
+            Parent root = cargarObjeto.load();
+            FXMLVistaProfesorController vistaHome = cargarObjeto.getController();
+            vistaHome.inicializarValores(profesorUv.getIdProfesorUv());
+            Scene nuevaScena = new Scene(root);
+            stageInformacion.setTitle("Registrar ofertas de colaboracion");
+            stageInformacion.setScene(nuevaScena);
+            stageInformacion.show();
+            Stage stagePrincipal = (Stage)ivMisOfertas.getScene().getWindow();
+            stagePrincipal.close();
+        }catch(IOException error){
+            error.printStackTrace();
+        }
+    }
+
+    //TODO fin paquete de barra lateral
+
+    @FXML
+    private void clicAgregarNuevaOferta(ActionEvent event) {
+        irNuevaOfertasColaboracion(profesorSesion);
+    }
+
+    public void irNuevaOfertasColaboracion(ProfesorUv profesorUv){
+        try{
+            Stage stageInformacion = new Stage();
+            stageInformacion.initStyle(StageStyle.UTILITY);
+            FXMLLoader cargarObjeto = new FXMLLoader(CoilVic.class.getResource("/coilvic/vista/FXMLVistaOfertaColaboracion.fxml"));
+            Parent root = cargarObjeto.load();
+            FXMLVistaOfertaColaboracionController vistaOfertaCol = cargarObjeto.getController();
+            vistaOfertaCol.inicializarValores(profesorUv);
+            Scene nuevaScena = new Scene(root);
+            stageInformacion.setTitle("Registrar ofertas de colaboracion");
+            stageInformacion.setScene(nuevaScena);
+            stageInformacion.show();
+            Stage stagePrincipal = (Stage)ivMisOfertas.getScene().getWindow();
+            stagePrincipal.close();
+        }catch(IOException error){
+            error.printStackTrace();
+        }
     }
 }

@@ -9,6 +9,7 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.ResourceBundle;
 
+import coilvic.CoilVic;
 import coilvic.modelo.dao.AsignaturaDAO;
 import coilvic.modelo.dao.DepartamentoDAO;
 import coilvic.modelo.dao.OfertaColaboracionDAO;
@@ -23,10 +24,12 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 /**
  * FXML Controller class
@@ -45,10 +48,7 @@ public class FXMLVistaInformacionOfertaColaboracionController implements Initial
     @FXML
     private Label lbProfesor;
     @FXML
-    private Label lbDepartamento;
-    @FXML
     private Label lbAsignatura;
-    @FXML
     private Label lbCorreo;
     @FXML
     private TextArea taObjetico;
@@ -58,6 +58,8 @@ public class FXMLVistaInformacionOfertaColaboracionController implements Initial
     private Button btnIniciar;
     @FXML
     private Button btnAceptar;
+    @FXML
+    private Label lbPeriodo;
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
@@ -72,18 +74,33 @@ public class FXMLVistaInformacionOfertaColaboracionController implements Initial
         lbNameColaboracion.setText(ofertaColaboracionSesion.getNombre());
         HashMap<String, Object> profesor = ProfesorUvDAO.obtenerNombreProfesorPorId(ofertaColaboracionSesion.getIdProfesor());
         lbProfesor.setText((String) profesor.get("nombreProfesor"));
-        HashMap <String, Object> departamento = DepartamentoDAO.obtenerNombreDepartamentoPorId(ofertaColaboracionSesion.getIdDepartamento());
-        lbDepartamento.setText((String) departamento.get("nombreDepartamento"));
         HashMap <String, Object> asignatura = AsignaturaDAO.consultarNombreAsignaturaPorId(ofertaColaboracionSesion.getIdAsignatura());
         lbAsignatura.setText((String) asignatura.get("nombreAsignatura"));
         taObjetico.setText(ofertaColaboracionSesion.getObjetivoGeneral());
         taTema.setText(ofertaColaboracionSesion.getTemaInteres());
         taObjetico.setDisable(true);
         taTema.setDisable(true);
+        lbPeriodo.setText(ofertaColaboracionSesion.getPeriodo());
     }
 
     @FXML
     private void clicIniciar(ActionEvent event) {
+        try{
+            Stage stageInformacion = new Stage();
+            stageInformacion.initStyle(StageStyle.UTILITY);
+            FXMLLoader cargarObjeto = new FXMLLoader(CoilVic.class.getResource("vista/FXMLRegistrarColaboracionSinOferta.fxml"));
+            Parent root = cargarObjeto.load();
+            FXMLRegistrarColaboracionSinOfertaController vistaRegistrarColaboracion = cargarObjeto.getController();
+            vistaRegistrarColaboracion.inicializarValores(profesorSesion, ofertaColaboracionSesion);
+            Scene nuevaScena = new Scene(root);
+            stageInformacion.setTitle("Registrar colaboración con oferta");
+            stageInformacion.setScene(nuevaScena);
+            stageInformacion.show();
+            Stage stagePrincipal = (Stage)lbAsignatura.getScene().getWindow();
+            stagePrincipal.close();
+        }catch(IOException error){
+            error.printStackTrace();
+        }
     }
 
     @FXML
