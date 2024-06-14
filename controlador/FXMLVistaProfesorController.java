@@ -14,6 +14,7 @@ import coilvic.modelo.dao.ProfesorUvDAO;
 import coilvic.modelo.pojo.ProfesorUv;
 import coilvic.utilidades.Utils;
 import javafx.animation.TranslateTransition;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -145,6 +146,21 @@ public class FXMLVistaProfesorController implements Initializable {
     }
 
     //TODO fin paquete de barra lateral
+
+    @FXML
+    private void clicBtnCerrarSesion(ActionEvent event) {
+        try{
+            Stage stage = (Stage) panelDeslisante.getScene().getWindow();
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/coilvic/vista/FXMLLogin.fxml"));
+            Parent root = loader.load();
+            Scene scene = new Scene(root);
+            stage.setScene(scene);
+            stage.setTitle("Inicio de sesion");
+            stage.show();
+        }catch(IOException error){
+            error.printStackTrace();
+        }
+    }
 
     
 }

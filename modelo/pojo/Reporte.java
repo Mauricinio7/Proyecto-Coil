@@ -35,7 +35,7 @@ public class Reporte {
     public Reporte(String ruta, String periodo, String tipo) {
         if (tipo.equals("Profesores")) {
             generarPdfProfesores(ruta, periodo);
-        } else if (tipo.equals("colaboraciones")) {
+        } else if (tipo.equals("Colaboraciones")) {
             generarPdfColaboraciones(ruta, periodo);
         }
     }
