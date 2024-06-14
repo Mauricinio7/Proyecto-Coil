@@ -28,17 +28,11 @@ public class CoilVic extends Application {
         //Parent root = FXMLLoader.load(getClass().getResource("vista/FXMLRegistrarColaboracionSinOferta.fxml"));
         //Parent root = FXMLLoader.load(getClass().getResource("vista/FXMLConsultarHistorial.fxml")); 
         //Parent root = FXMLLoader.load(getClass().getResource("vista/FXMLVistaRevisarRegistrosColaboracion.fxml")); 
-<<<<<<< HEAD
-        //Parent root = FXMLLoader.load(getClass().getResource("vista/FXMLConsultaOfertaColaboracion.fxml"));
-        //Parent root = FXMLLoader.load(getClass().getResource("vista/FXMLRegistrarColaboracionSinOferta.fxml"));
-        Parent root = FXMLLoader.load(getClass().getResource("vista/FXMLRegistrarOfertaExterna.fxml"));
-=======
-        //Parent root = FXMLLoader.load(getClass().getResource("vista/FXMLConsultarOfertaColaboraciones.fxml"));
-        //Parent root = FXMLLoader.load(getClass().getResource("vista/FXMLRegistrarColaboracionSinOferta.fxml"));
         //Parent root = FXMLLoader.load(getClass().getResource("vista/FXMLConsultaOfertaColaboracion.fxml"));
         //Parent root = FXMLLoader.load(getClass().getResource("vista/FXMLRegistrarColaboracionSinOferta.fxml"));
         //Parent root = FXMLLoader.load(getClass().getResource("vista/FXMLRegistrarOfertaExterna.fxml"));
->>>>>>> 227a5eea17f619b26fcdac539a4db5b3dc14e258
+        Parent root = FXMLLoader.load(getClass().getResource("vista/FXMLVistaParaConsultasAdmin.fxml"));
+
         Scene scene = new Scene(root);
         
         stage.setScene(scene);

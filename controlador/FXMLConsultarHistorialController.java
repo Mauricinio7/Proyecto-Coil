@@ -45,7 +45,9 @@ import javafx.scene.control.TextInputControl;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.Label;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.stage.Modality;
@@ -87,6 +89,22 @@ public class FXMLConsultarHistorialController implements Initializable {
     private TableColumn clRegion;
     @FXML
     private TableColumn clInformacion;
+    @FXML
+    private ImageView ivConsulta;
+    @FXML
+    private Label lbConsulta;
+    @FXML
+    private ImageView ivInicio;
+    @FXML
+    private ImageView ivOfertas;
+    @FXML
+    private Label lbInicio;
+    @FXML
+    private Label lbOfertas;
+    @FXML
+    private Label lbProfesorExterno;
+    @FXML
+    private ImageView ivProfesorExterno;
 
     /**
      * Initializes the controller class.
@@ -270,5 +288,55 @@ public class FXMLConsultarHistorialController implements Initializable {
                 if(institucionProfesorExterno.containsKey("institucion")){
                     colaboracion.setInstitucionProfesorExterno((String) institucionProfesorExterno.get("institucion"));
                 }
+    }
+
+    @FXML
+    private void irInicioIv(MouseEvent event) {
+        irPantallaInicio();
+    }
+
+    @FXML
+    private void irOfertaIv(MouseEvent event) {
+        Utils.mostrarAlertaSimple("", expresionValidaNombreColaboracion, null);
+    }
+
+    @FXML
+    private void irInicioLb(MouseEvent event) {
+        irPantallaInicio();
+    }
+
+    @FXML
+    private void irProfesorExternoLb(MouseEvent event) {
+    }
+
+    @FXML
+    private void irProfesorExternolb(MouseEvent event) {
+    }
+
+    @FXML
+    private void irConsultaIv(MouseEvent event) {
+    }
+
+    @FXML
+    private void irProfesorExternoIv(MouseEvent event) {
+    }
+
+    @FXML
+    private void irConsultaLb(MouseEvent event) {
+    }
+    public void irPantallaInicio(){
+        try{
+            Stage stagePrincipal = (Stage)tfName.getScene().getWindow();
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/coilvic/vista/FXMLVistaAdmin.fxml"));
+            Parent root = loader.load();
+            FXMLVistaProfesorController controlador = loader.getController();
+            controlador.inicializarValores(1);
+            Scene nuevaEscena = new Scene(root);
+            stagePrincipal.setScene(nuevaEscena);
+            stagePrincipal.setTitle("Inicio");
+            stagePrincipal.show();
+        }catch(IOException error){
+
+        }
     }
 }
