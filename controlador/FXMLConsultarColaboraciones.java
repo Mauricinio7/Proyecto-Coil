@@ -280,8 +280,23 @@ public class FXMLConsultarColaboraciones implements Initializable {
         btnSubirReportes.setLayoutY(55);
         btnSubirReportes.setLayoutX(840);
         btnSubirReportes.setOnAction(e -> {
-            //TODO llamar a Subir evidencias extemporaneas
-            
+            try{
+                Stage stageInformacion = new Stage();
+                stageInformacion.initStyle(StageStyle.UTILITY);
+                FXMLLoader cargarObjeto = new FXMLLoader(CoilVic.class.getResource("vista/FXMLSubirEvidenciasExtemporaneas.fxml"));
+                Parent root = cargarObjeto.load();
+                FXMLSubirEvidenciasExtemporaneasController vistaSubirEvidencias = cargarObjeto.getController();
+                vistaSubirEvidencias.inicializarValores(colaboracion.getIdColaboracion(), profesorUv);
+                Scene nuevaScena = new Scene(root);
+                stageInformacion.setTitle("Subir evidencias");
+                stageInformacion.setScene(nuevaScena);
+                stageInformacion.show();
+                Stage stagePrincipal = (Stage)ivMisOfertas.getScene().getWindow();
+                stagePrincipal.close();
+            }catch(IOException error){
+                error.printStackTrace();
+            }
+
         });
 
         objeto.getChildren().add(btnVerInformacion);
