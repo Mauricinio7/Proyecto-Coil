@@ -6,7 +6,7 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane id="AnchorPane" prefHeight="750.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="coilvic.controlador.FXMLRegistrarProfesorExternoController">
+<AnchorPane id="AnchorPane" prefHeight="750.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="coilvic.controlador.FXMLConsultarReporteProfesoresController">
    <children>
       <Pane layoutX="79.0" layoutY="-1.0" prefHeight="182.0" prefWidth="1124.0" style="-fx-background-color: linear-gradient(to bottom left, #e93367, #de8444);">
          <children>
@@ -22,19 +22,28 @@
             </Label>
          </children>
       </Pane>
-        <TextField fx:id="tfBusquedaProfesor" layoutX="169.0" layoutY="210.0" prefHeight="42.0" prefWidth="517.0" promptText="nombre del profesor" />
-        <Button layoutX="765.0" layoutY="210.0" mnemonicParsing="false" onAction="#btnAnadir" prefHeight="42.0" prefWidth="136.0" text="Añadir" />
-        <Button layoutX="968.0" layoutY="210.0" mnemonicParsing="false" onAction="#btnCancelar" prefHeight="42.0" prefWidth="136.0" text="Cancelar" />
-        <TableView fx:id="tvProfesoresExternos" layoutX="169.0" layoutY="298.0" prefHeight="406.0" prefWidth="967.0">
-          <columns>
-            <TableColumn fx:id="colNombre" prefWidth="216.0" text="Nombre" />
-            <TableColumn fx:id="colCorreo" prefWidth="142.0" text="Correo" />
-              <TableColumn fx:id="colIdioma" prefWidth="140.0" text="Idioma" />
-              <TableColumn fx:id="colInstitucion" prefWidth="172.0" text="Institución" />
-              <TableColumn fx:id="colPais" prefWidth="95.0" text="País" />
-              <TableColumn fx:id="colTelefono" prefWidth="201.0" text="Teléfono" />
-          </columns>
-        </TableView>
+      <Button layoutX="1059.0" layoutY="214.0" mnemonicParsing="false" onAction="#btnSalir" prefHeight="50.0" prefWidth="93.0" text="Salir" />
+      <ComboBox fx:id="cbPeriodo" layoutX="226.0" layoutY="306.0" prefHeight="42.0" prefWidth="201.0" />
+      <Pane layoutX="137.0" layoutY="397.0" prefHeight="137.0" prefWidth="1009.0" style="-fx-background-color: #D4D4D4;">
+         <children>
+            <Label layoutX="61.0" layoutY="57.0" text="Reporte de profesores">
+               <font>
+                  <Font name="Arial Rounded MT Bold" size="20.0" />
+               </font>
+            </Label>
+            <Button layoutX="767.0" layoutY="33.0" mnemonicParsing="false" onAction="#btnDescargar" prefHeight="72.0" prefWidth="191.0" text="Descargar" />
+         </children>
+      </Pane>
+      <Label layoutX="142.0" layoutY="223.0" text="Consultar Reporte de Profesores">
+         <font>
+            <Font name="Arial Rounded MT Bold" size="26.0" />
+         </font>
+      </Label>
+      <Label layoutX="142.0" layoutY="312.0" text="Periodo">
+         <font>
+            <Font size="21.0" />
+         </font>
+      </Label>
       <Pane fx:id="panelDeslisante" layoutX="-252.0" layoutY="-2.0" onMouseEntered="#entraPanel" onMouseExited="#salePanel" prefHeight="752.0" prefWidth="349.0" style="-fx-background-color: linear-gradient(to bottom, #e93367, #cd18ed);">
          <children>
             <ImageView fitHeight="58.0" fitWidth="61.0" layoutX="272.0" layoutY="159.0" pickOnBounds="true" preserveRatio="true">
@@ -98,5 +107,18 @@
                </font>
             </Label>
          </children></Pane>
+      <Pane layoutX="800.0" layoutY="550.0" prefHeight="200.0" prefWidth="401.0">
+         <children>
+            <Pane fx:id="panelDescarga" layoutX="93.0" layoutY="200.0" prefHeight="137.0" prefWidth="310.0" style="-fx-background-color: #E6E5E5;">
+               <children>
+                  <Label layoutX="51.0" layoutY="54.0" text="Descargando el reporte">
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                  </Label>
+               </children>
+            </Pane>
+         </children>
+      </Pane>
    </children>
 </AnchorPane>
