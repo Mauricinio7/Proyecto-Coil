@@ -16,6 +16,7 @@ import coilvic.modelo.pojo.Colaboracion;
 import coilvic.modelo.pojo.OfertaColaboracion;
 import coilvic.modelo.pojo.PlanProyecto;
 import coilvic.modelo.pojo.ProfesorUv;
+import coilvic.observador.ObservadorColaboracion;
 import coilvic.utilidades.Constantes;
 import coilvic.utilidades.Utils;
 import javafx.event.ActionEvent;
@@ -59,12 +60,13 @@ public class FXMLVerColaboracionController implements Initializable {
     @FXML
     private ImageView imgPlanProyecto;
     Colaboracion colaboracion;
+    ObservadorColaboracion observadorColaboracion;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
     }    
-    public void inicializarValores(int idColaboracion){ 
+    public void inicializarValores(int idColaboracion, ObservadorColaboracion observadorColaboracion){ 
         HashMap<String, Object> respuesta = ColaboracionDAO.obtenerColaboracionPorId(idColaboracion);
         boolean isError = (boolean) respuesta.get(Constantes.KEY_ERROR);
         if(!isError){
@@ -73,6 +75,8 @@ public class FXMLVerColaboracionController implements Initializable {
         }else{
             Utils.mostrarAlertaSimple("Error en la conexión", "No se han podido cargar los datos.", Alert.AlertType.ERROR);
         }
+
+        this.observadorColaboracion = observadorColaboracion;
     }
 
     private void cargarDatosColaboracion(){
@@ -182,7 +186,7 @@ public class FXMLVerColaboracionController implements Initializable {
             FXMLLoader cargarObjeto = new FXMLLoader(CoilVic.class.getResource("vista/FXMLConcluirColaboracion.fxml"));
             Parent root = cargarObjeto.load();
             FXMLConcluirColaboracionController verColaboracion = cargarObjeto.getController();
-            verColaboracion.inicializarValores(colaboracion.getIdColaboracion());
+            verColaboracion.inicializarValores(colaboracion.getIdColaboracion(), (Stage) lblColaboracion.getScene().getWindow(), observadorColaboracion);
             Scene nuevaScena = new Scene(root);
             stageConcluir.setTitle("Colaboracion");
             stageConcluir.setScene(nuevaScena);

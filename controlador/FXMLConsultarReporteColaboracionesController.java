@@ -20,6 +20,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.ComboBox;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
@@ -139,6 +140,84 @@ public class FXMLConsultarReporteColaboracionesController implements Initializab
                 desktop.open(archivo);
             }
         }
-    }    
+    } 
+    
+    @FXML
+    private void clicHome(MouseEvent event) {
+        irInicio();
+    }
+
+    @FXML
+    private void clicOfertas(MouseEvent event) {
+	irOfertasExternas();
+    }
+
+    @FXML
+    private void clicRegistrarProfesor(MouseEvent event) {
+        irProfesorExterno();
+    }
+
+    @FXML
+    private void clicConsultas(MouseEvent event) {
+        irConsultas();
+    }
+
+public void irOfertasExternas(){
+        try{
+            Stage stage = (Stage) panelDeslisante.getScene().getWindow();
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/coilvic/vista/FXMLRegistrarOfertaExterna.fxml"));
+            Parent root = loader.load();
+            Scene scene = new Scene(root);
+            stage.setScene(scene);
+            stage.setTitle("Registrar Profesor Externo");
+            stage.show();
+        }catch(IOException e){
+            e.printStackTrace();
+        }
+    }
+
+
+    public void irInicio(){
+        try{
+            Stage stage = (Stage) panelDeslisante.getScene().getWindow();
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/coilvic/vista/FXMLVistaAdmin.fxml"));
+            Parent root = loader.load();
+            Scene scene = new Scene(root);
+            stage.setScene(scene);
+            stage.setTitle("Inicio");
+            stage.show();
+        }catch(IOException error){
+            error.printStackTrace();
+        }
+    }
+
+    public void irConsultas(){
+        try{
+            Stage stage = (Stage) panelDeslisante.getScene().getWindow();
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/coilvic/vista/FXMLVistaParaConsultasAdmin.fxml"));
+            Parent root = loader.load();
+            Scene scene = new Scene(root);
+            stage.setScene(scene);
+            stage.setTitle("Consultas");
+            stage.show();
+        }catch(IOException error){
+            error.printStackTrace();
+        }
+    }
+
+    public void irProfesorExterno(){
+        try{
+            Stage stage = (Stage) panelDeslisante.getScene().getWindow();
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/coilvic/vista/FXMLRegistrarProfesorExterno.fxml"));
+            Parent root = loader.load();
+            Scene scene = new Scene(root);
+            stage.setScene(scene);
+            stage.setTitle("Registrar Profesor Externo");
+            stage.show();
+        }catch(IOException e){
+            e.printStackTrace();
+        }
+    }
+
 
 }

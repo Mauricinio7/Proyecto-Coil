@@ -44,34 +44,34 @@
             <Font size="21.0" />
          </font>
       </Label>
-      <Pane fx:id="panelDeslisante" layoutX="-252.0" layoutY="-2.0" onMouseEntered="#entraPanel" onMouseExited="#salePanel" prefHeight="752.0" prefWidth="349.0" style="-fx-background-color: linear-gradient(to bottom, #e93367, #cd18ed);">
+     <Pane fx:id="panelDeslisante" layoutX="-252.0" layoutY="-2.0" onMouseEntered="#entraPanel" onMouseExited="#salePanel" prefHeight="752.0" prefWidth="349.0" style="-fx-background-color: linear-gradient(to bottom, #e93367, #cd18ed);">
          <children>
-            <ImageView fitHeight="58.0" fitWidth="61.0" layoutX="272.0" layoutY="159.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fitHeight="58.0" fitWidth="61.0" layoutX="272.0" layoutY="159.0" onMouseClicked="#clicHome" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../recursos/home.png" />
                </image>
             </ImageView>
-            <ImageView fitHeight="67.0" fitWidth="62.0" layoutX="272.0" layoutY="262.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fitHeight="67.0" fitWidth="62.0" layoutX="272.0" layoutY="262.0" onMouseClicked="#clicOfertas" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../recursos/colaboracion.png" />
                </image>
             </ImageView>
-            <Label layoutX="140.0" layoutY="177.0" text="Inicio" textFill="WHITE">
+            <Label layoutX="140.0" layoutY="177.0" onMouseClicked="#clicHome" text="Inicio" textFill="WHITE">
                <font>
                   <Font name="Arial Black" size="28.0" />
                </font>
             </Label>
-            <Label layoutX="102.0" layoutY="268.0" text="Ofertas" textFill="WHITE">
+            <Label layoutX="102.0" layoutY="268.0" onMouseClicked="#clicOfertas" text="Ofertas" textFill="WHITE">
                <font>
                   <Font name="Arial Black" size="28.0" />
                </font>
             </Label>
-            <Label layoutX="33.0" layoutY="378.0" prefHeight="32.0" prefWidth="220.0" text="Registrar profesor" textFill="WHITE">
+            <Label layoutX="33.0" layoutY="378.0" onMouseClicked="#clicRegistrarProfesor" prefHeight="32.0" prefWidth="220.0" text="Registrar profesor" textFill="WHITE">
                <font>
                   <Font name="Arial Black" size="21.0" />
                </font>
             </Label>
-            <Label layoutX="33.0" layoutY="404.0" prefHeight="32.0" prefWidth="219.0" text="externo." textFill="WHITE">
+            <Label layoutX="33.0" layoutY="404.0" onMouseClicked="#clicRegistrarProfesor" prefHeight="32.0" prefWidth="219.0" text="externo." textFill="WHITE">
                <font>
                   <Font name="Arial Black" size="22.0" />
                </font>
@@ -91,17 +91,17 @@
                   <Font name="Arial Black" size="80.0" />
                </font>
             </Label>
-            <ImageView fitHeight="67.0" fitWidth="62.0" layoutX="267.0" layoutY="487.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fitHeight="67.0" fitWidth="62.0" layoutX="267.0" layoutY="487.0" onMouseClicked="#clicConsultas" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../recursos/colaboracion.png" />
                </image>
             </ImageView>
-            <ImageView fitHeight="67.0" fitWidth="62.0" layoutX="273.0" layoutY="377.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fitHeight="67.0" fitWidth="62.0" layoutX="273.0" layoutY="377.0" onMouseClicked="#clicRegistrarProfesor" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../recursos/colaboracion.png" />
                </image>
             </ImageView>
-            <Label layoutX="79.0" layoutY="495.0" text="Consultas" textFill="WHITE">
+            <Label layoutX="79.0" layoutY="495.0" onMouseClicked="#clicConsultas" text="Consultas" textFill="WHITE">
                <font>
                   <Font name="Arial Black" size="28.0" />
                </font>

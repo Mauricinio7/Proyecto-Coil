@@ -43,7 +43,7 @@ public class FXMLLoginController implements Initializable {
             if( !(boolean) respuesta.get(Constantes.KEY_ERROR)) {
                 int id_profesor = (int) respuesta.get("idProfesor");
                 String tipoUsuario = (String) respuesta.get("tipoUsuario"); 
-                if(tipoUsuario.equals("admin")){
+                if(tipoUsuario.equals("administrador")){
                     irPantallaAdministrador();
                 }else{
                     irPantallaProfesor(id_profesor);

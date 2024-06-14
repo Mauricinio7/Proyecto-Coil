@@ -44,6 +44,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.TextInputControl;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Label;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -124,8 +125,6 @@ public class FXMLConsultarHistorialController implements Initializable {
         transicion.setDuration(Duration.millis(500));
         transicion.setNode(panelDeslisante);
         transicion.setToX(0);
-        tvColaboraciones.setVisible(true);
-        tfName.setVisible(true);
         transicion.play();
     }
 
@@ -135,8 +134,6 @@ public class FXMLConsultarHistorialController implements Initializable {
         transicion.setDuration(Duration.millis(500));
         transicion.setNode(panelDeslisante);
         transicion.setToX(230);
-        tvColaboraciones.setVisible(false);
-        tfName.setVisible(false);
         
         transicion.play();
     }
@@ -291,52 +288,80 @@ public class FXMLConsultarHistorialController implements Initializable {
     }
 
     @FXML
-    private void irInicioIv(MouseEvent event) {
-        irPantallaInicio();
+    private void clicHome(MouseEvent event) {
+        irInicio();
     }
 
     @FXML
-    private void irOfertaIv(MouseEvent event) {
-        Utils.mostrarAlertaSimple("", expresionValidaNombreColaboracion, null);
+    private void clicOfertas(MouseEvent event) {
+	irOfertasExternas();
     }
 
     @FXML
-    private void irInicioLb(MouseEvent event) {
-        irPantallaInicio();
+    private void clicRegistrarProfesor(MouseEvent event) {
+        irProfesorExterno();
     }
 
     @FXML
-    private void irProfesorExternoLb(MouseEvent event) {
+    private void clicConsultas(MouseEvent event) {
+        irConsultas();
     }
 
-    @FXML
-    private void irProfesorExternolb(MouseEvent event) {
-    }
-
-    @FXML
-    private void irConsultaIv(MouseEvent event) {
-    }
-
-    @FXML
-    private void irProfesorExternoIv(MouseEvent event) {
-    }
-
-    @FXML
-    private void irConsultaLb(MouseEvent event) {
-    }
-    public void irPantallaInicio(){
+public void irOfertasExternas(){
         try{
-            Stage stagePrincipal = (Stage)tfName.getScene().getWindow();
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/coilvic/vista/FXMLVistaAdmin.fxml"));
+            Stage stage = (Stage) panelDeslisante.getScene().getWindow();
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/coilvic/vista/FXMLRegistrarOfertaExterna.fxml"));
             Parent root = loader.load();
-            FXMLVistaProfesorController controlador = loader.getController();
-            controlador.inicializarValores(1);
-            Scene nuevaEscena = new Scene(root);
-            stagePrincipal.setScene(nuevaEscena);
-            stagePrincipal.setTitle("Inicio");
-            stagePrincipal.show();
-        }catch(IOException error){
-
+            Scene scene = new Scene(root);
+            stage.setScene(scene);
+            stage.setTitle("Registrar Profesor Externo");
+            stage.show();
+        }catch(IOException e){
+            e.printStackTrace();
         }
     }
+
+
+    public void irInicio(){
+        try{
+            Stage stage = (Stage) panelDeslisante.getScene().getWindow();
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/coilvic/vista/FXMLVistaAdmin.fxml"));
+            Parent root = loader.load();
+            Scene scene = new Scene(root);
+            stage.setScene(scene);
+            stage.setTitle("Inicio");
+            stage.show();
+        }catch(IOException error){
+            error.printStackTrace();
+        }
+    }
+
+    public void irConsultas(){
+        try{
+            Stage stage = (Stage) panelDeslisante.getScene().getWindow();
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/coilvic/vista/FXMLVistaParaConsultasAdmin.fxml"));
+            Parent root = loader.load();
+            Scene scene = new Scene(root);
+            stage.setScene(scene);
+            stage.setTitle("Consultas");
+            stage.show();
+        }catch(IOException error){
+            error.printStackTrace();
+        }
+    }
+
+    public void irProfesorExterno(){
+        try{
+            Stage stage = (Stage) panelDeslisante.getScene().getWindow();
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/coilvic/vista/FXMLRegistrarProfesorExterno.fxml"));
+            Parent root = loader.load();
+            Scene scene = new Scene(root);
+            stage.setScene(scene);
+            stage.setTitle("Registrar Profesor Externo");
+            stage.show();
+        }catch(IOException e){
+            e.printStackTrace();
+        }
+    }
+
 }

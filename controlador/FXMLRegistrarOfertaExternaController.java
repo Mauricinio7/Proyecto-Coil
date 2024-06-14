@@ -4,6 +4,7 @@
  */
 package coilvic.controlador;
 
+import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -34,7 +35,10 @@ import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
@@ -121,22 +125,6 @@ public class FXMLRegistrarOfertaExternaController implements Initializable {
 
     @FXML
     private void clicSave(MouseEvent event) {
-        /* 
-         * MariaDB [COIL]> describe oferta_colaboracion_externa;
-+--------------------------------------+--------------+------+-----+---------+----------------+
-| Field                                | Type         | Null | Key | Default | Extra          |
-+--------------------------------------+--------------+------+-----+---------+----------------+
-| id_oferta_externa                    | int(11)      | NO   | PRI | NULL    | auto_increment |
-| nombre                               | varchar(100) | NO   | UNI | NULL    |                |
-| objetivo_general                     | varchar(350) | YES  |     | NULL    |                |
-| idioma                               | varchar(20)  | NO   |     | NULL    |                |
-| periodo                              | varchar(20)  | NO   |     | NULL    |                |
-| tema_interes                         | varchar(50)  | NO   |     | NULL    |                |
-| asignatura                           | varchar(50)  | YES  |     | NULL    |                |
-| profesor_externo_id_profesor_externo | int(11)      | NO   | MUL | NULL    |                |
-+--------------------------------------+--------------+------+-----+---------+----------------+
-
-         */
 
             if(!tfNameCol.getText().isEmpty() && !tfIdioma.getText().isEmpty() && !taTemaInteres.getText().isEmpty() && cbPeriodo.getValue() != null){
                 HashMap<String, Boolean> respuesta = new HashMap<>();
@@ -150,9 +138,8 @@ public class FXMLRegistrarOfertaExternaController implements Initializable {
                 nuevaOferta.setIdProfesorExterno(1);
                 respuesta = OfertaColaboracionExternaDAO.guardarOferta(nuevaOferta);
                 if(respuesta.containsKey("ofertaColaboracion")){
-                    Utils.mostrarAlertaConfirmacion("Guardado", "Se ha guardado correctamente", AlertType.INFORMATION);
-                    //TODO Falta mandarlo a otro lado despues de guardar
-                    
+                    Utils.mostrarAlertaConfirmacion("Guardado", "Se ha guardado correctamente", AlertType.INFORMATION, (Stage) panelDeslisante.getScene().getWindow());
+                    irInicio();
                 }else{
                     Utils.mostrarAlertaConfirmacion("Error", Constantes.ERROR_CARGAR_DATOS, AlertType.ERROR);
                 }
@@ -161,6 +148,7 @@ public class FXMLRegistrarOfertaExternaController implements Initializable {
 
         @FXML
         private void clicCancel(MouseEvent event) {
+            irInicio();
         }
 
     public void asignarFechaActualNTP(){
@@ -296,4 +284,82 @@ public class FXMLRegistrarOfertaExternaController implements Initializable {
         Matcher coincidencia = patron.matcher(text);
         return coincidencia.matches();
     }
+
+    @FXML
+    private void clicHome(MouseEvent event) {
+        irInicio();
+    }
+
+    @FXML
+    private void clicOfertas(MouseEvent event) {
+	irOfertasExternas();
+    }
+
+    @FXML
+    private void clicRegistrarProfesor(MouseEvent event) {
+        irProfesorExterno();
+    }
+
+    @FXML
+    private void clicConsultas(MouseEvent event) {
+        irConsultas();
+    }
+
+public void irOfertasExternas(){
+        try{
+            Stage stage = (Stage) panelDeslisante.getScene().getWindow();
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/coilvic/vista/FXMLRegistrarOfertaExterna.fxml"));
+            Parent root = loader.load();
+            Scene scene = new Scene(root);
+            stage.setScene(scene);
+            stage.setTitle("Registrar Profesor Externo");
+            stage.show();
+        }catch(IOException e){
+            e.printStackTrace();
+        }
+    }
+
+
+    public void irInicio(){
+        try{
+            Stage stage = (Stage) panelDeslisante.getScene().getWindow();
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/coilvic/vista/FXMLVistaAdmin.fxml"));
+            Parent root = loader.load();
+            Scene scene = new Scene(root);
+            stage.setScene(scene);
+            stage.setTitle("Inicio");
+            stage.show();
+        }catch(IOException error){
+            error.printStackTrace();
+        }
+    }
+
+    public void irConsultas(){
+        try{
+            Stage stage = (Stage) panelDeslisante.getScene().getWindow();
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/coilvic/vista/FXMLVistaParaConsultasAdmin.fxml"));
+            Parent root = loader.load();
+            Scene scene = new Scene(root);
+            stage.setScene(scene);
+            stage.setTitle("Consultas");
+            stage.show();
+        }catch(IOException error){
+            error.printStackTrace();
+        }
+    }
+
+    public void irProfesorExterno(){
+        try{
+            Stage stage = (Stage) panelDeslisante.getScene().getWindow();
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/coilvic/vista/FXMLRegistrarProfesorExterno.fxml"));
+            Parent root = loader.load();
+            Scene scene = new Scene(root);
+            stage.setScene(scene);
+            stage.setTitle("Registrar Profesor Externo");
+            stage.show();
+        }catch(IOException e){
+            e.printStackTrace();
+        }
+    }
+
 }

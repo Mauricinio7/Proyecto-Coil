@@ -339,16 +339,6 @@ public class FXMLRegistrarColaboracionSinOfertaController implements Initializab
     }
 
     @FXML
-    private void btnRegistrarEstudiantes(ActionEvent event) {
-        //LLAMA A LA VENTANA DE REGISTRAR ESTUDIANTES
-    }
-
-    @FXML
-    private void btnAsociarProfesorExterno(ActionEvent event) {
-        //LLAMA A LA VENTANA DE ASOCIAR PROFESOR EXTERNO
-    }
-
-    @FXML
     private void btnGuardar(ActionEvent event) {
         if(!camposVacios()) {
             if(validarFechas() && validarNoEstudiantes() && validarLongitudNombrePlanProyecto()) {
@@ -423,8 +413,6 @@ public class FXMLRegistrarColaboracionSinOfertaController implements Initializab
         transicion.play();
     }
 
-    //TODO paquete de barra lateral inicio
-
     @FXML
     private void clicMisOfertas(MouseEvent event) {
             irPantallaOfertasColaboracion(profesorUv);
@@ -496,8 +484,6 @@ public class FXMLRegistrarColaboracionSinOfertaController implements Initializab
             error.printStackTrace();
         }
     }
-
-    //TODO fin paquete de barra lateral
 
     private void limitarCaracteres() {
         tfNombreColaboracion.textProperty().addListener

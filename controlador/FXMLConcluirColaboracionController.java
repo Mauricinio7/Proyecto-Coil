@@ -30,6 +30,7 @@ import coilvic.modelo.pojo.Colaboracion;
 import coilvic.modelo.pojo.OfertaColaboracion;
 import coilvic.modelo.pojo.PlanProyecto;
 import coilvic.modelo.pojo.ProfesorUv;
+import coilvic.observador.ObservadorColaboracion;
 import coilvic.utilidades.Constantes;
 import coilvic.utilidades.Utils;
 import javafx.embed.swing.SwingFXUtils;
@@ -69,6 +70,8 @@ public class FXMLConcluirColaboracionController implements Initializable {
     Colaboracion colaboracion;
     private File imagenSelecionada;
     private byte[] imagenPlanProyecto = null;
+    Stage stage;
+    ObservadorColaboracion observadorColaboracion;
     @FXML
     private Label lblProfesorUV;
     @FXML
@@ -84,7 +87,7 @@ public class FXMLConcluirColaboracionController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
     }    
-    public void inicializarValores(int idColaboracion){ 
+    public void inicializarValores(int idColaboracion, Stage stage, ObservadorColaboracion observadorColaboracion){ 
         HashMap<String, Object> respuesta = ColaboracionDAO.obtenerColaboracionPorId(idColaboracion);
         boolean isError = (boolean) respuesta.get(Constantes.KEY_ERROR);
         if(!isError){
@@ -93,6 +96,9 @@ public class FXMLConcluirColaboracionController implements Initializable {
         }else{
             Utils.mostrarAlertaSimple("Error en la conexión", "No se han podido cargar los datos.", Alert.AlertType.ERROR);
         }
+
+        this.stage = stage;
+        this.observadorColaboracion = observadorColaboracion;
     }
 
     private void cargarDatosColaboracion(){
@@ -178,7 +184,9 @@ public class FXMLConcluirColaboracionController implements Initializable {
         boolean isError = (boolean) respuesta.get(Constantes.KEY_ERROR);
         if (!isError) {
             Utils.mostrarAlertaSimple("Éxito", "La colaboración se ha concluido exitosamente", Alert.AlertType.INFORMATION, (Stage) lblColaboracion.getScene().getWindow());
-            Stage stage = (Stage) lblColaboracion.getScene().getWindow();
+            Stage stage1 = (Stage) lblColaboracion.getScene().getWindow();
+            observadorColaboracion.operacionExitosa();
+            stage1.close();
             stage.close();
         } else {
             Utils.mostrarAlertaSimple("Error", (String) respuesta.get(Constantes.KEY_MENSAJE), Alert.AlertType.ERROR, (Stage) lblColaboracion.getScene().getWindow());

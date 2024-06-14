@@ -19,6 +19,7 @@ import coilvic.modelo.dao.ProfesorUvDAO;
 import coilvic.modelo.pojo.Colaboracion;
 import coilvic.modelo.pojo.Estudiante;
 import coilvic.modelo.pojo.ProfesorUv;
+import coilvic.observador.ObservadorColaboracion;
 import coilvic.utilidades.Constantes;
 import coilvic.utilidades.Utils;
 import javafx.animation.TranslateTransition;
@@ -44,7 +45,7 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.util.Duration;
 
-public class FXMLConsultarColaboraciones implements Initializable {
+public class FXMLConsultarColaboraciones implements Initializable, ObservadorColaboracion {
 
     @FXML
     private Pane panelDeslisante;
@@ -353,7 +354,7 @@ public class FXMLConsultarColaboraciones implements Initializable {
         FXMLLoader cargarObjeto = new FXMLLoader(CoilVic.class.getResource("vista/FXMLVerColaboracion.fxml"));
         Parent root = cargarObjeto.load();
         FXMLVerColaboracionController verColaboracion = cargarObjeto.getController();
-        verColaboracion.inicializarValores(idColaboracion);
+        verColaboracion.inicializarValores(idColaboracion, this);
         Scene nuevaScena = new Scene(root);
         stageVer.setTitle("Colaboracion");
         stageVer.setScene(nuevaScena);
@@ -381,6 +382,16 @@ public class FXMLConsultarColaboraciones implements Initializable {
             stagePrincipal.close();
         }catch(IOException error){
             error.printStackTrace();
+        }
+    }
+
+    @Override
+    public void operacionExitosa() {
+        if (contenedor != null && contenedor.getChildren() != null && !contenedor.getChildren().isEmpty()) {
+            contenedor.getChildren().clear();
+            cargarPanelScroll();
+        }else{
+            cargarPanelScroll();
         }
     }
 }
