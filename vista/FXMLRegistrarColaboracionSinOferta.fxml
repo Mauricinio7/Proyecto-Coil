@@ -61,7 +61,6 @@
                   <DatePicker fx:id="dpFechaFin" editable="false" layoutX="223.0" layoutY="186.0" prefHeight="31.0" prefWidth="188.0" />
                   <TextField fx:id="tfIdioma" layoutX="224.0" layoutY="219.0" />
                   <TextArea fx:id="taObjetivo" layoutX="224.0" layoutY="252.0" prefHeight="51.0" prefWidth="187.0" />
-                  <TextField fx:id="tfPeriodo" layoutX="223.0" layoutY="305.0" />
                   <TextArea fx:id="taTemaInteres" layoutX="223.0" layoutY="338.0" prefHeight="51.0" prefWidth="187.0" />
                   <TextField fx:id="tfNoEstudiantes" layoutX="223.0" layoutY="390.0" promptText="Menos de 1000" />
                   <ComboBox fx:id="cbAreaAcademica" layoutX="224.0" layoutY="423.0" prefHeight="31.0" prefWidth="186.0" />
@@ -69,6 +68,7 @@
                   <ComboBox fx:id="cbDepartamento" layoutX="224.0" layoutY="456.0" prefHeight="31.0" prefWidth="186.0" />
                   <Button fx:id="btnPlanProyecto" layoutX="574.0" layoutY="289.0" mnemonicParsing="false" onAction="#btnPlanProyecto" prefHeight="62.0" prefWidth="219.0" text="Plan de proyecto aquí" />
                   <TextArea fx:id="taDescripcionPlan" layoutX="574.0" layoutY="351.0" prefHeight="75.0" prefWidth="219.0" promptText="Descripcion del plan de proyecto" />
+                  <ComboBox fx:id="cbPeriodo" layoutX="224.0" layoutY="305.0" prefHeight="31.0" prefWidth="187.0" />
                </children>
             </AnchorPane>
         </content>
