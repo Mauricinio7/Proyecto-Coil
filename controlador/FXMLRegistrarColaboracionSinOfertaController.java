@@ -191,7 +191,7 @@ public class FXMLRegistrarColaboracionSinOfertaController implements Initializab
 
     private Asignatura obtenerAreaAcademicaOfertaColaboracion() {
         HashMap<String, Object> obtenerAreaAcademica = 
-        AsignaturaDAO.consultarAreaAcademicaPorId(ofertaColaboracion.getIdAsignatura());
+        AsignaturaDAO.consultarAsignaturaPorId(ofertaColaboracion.getIdAsignatura());
         if (!(Boolean) obtenerAreaAcademica.get(Constantes.KEY_ERROR)) {
             return (Asignatura) obtenerAreaAcademica.get("area");
         } else {
