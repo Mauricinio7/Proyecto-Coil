@@ -185,9 +185,14 @@ public class FXMLEstudiantesController implements Initializable, ObservadorEstud
     public void operacionExitosa(String tipoOperacion, String nombreEstudiante) {
         System.out.println("Operación: " + tipoOperacion);
         System.out.println("Estudiante: " + nombreEstudiante);
-        contenedor.getChildren().clear();
-        cargarPanelScroll();
-        cargarRegistroEstudiantes(colaboracion.getIdColaboracion());
+        if (contenedor != null && contenedor.getChildren() != null && !contenedor.getChildren().isEmpty()) {
+            contenedor.getChildren().clear();
+            cargarPanelScroll();
+            cargarRegistroEstudiantes(colaboracion.getIdColaboracion());
+        }else{
+            cargarPanelScroll();
+            cargarRegistroEstudiantes(colaboracion.getIdColaboracion());
+        }
     }
     
 }

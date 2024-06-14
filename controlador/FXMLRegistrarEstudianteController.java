@@ -45,6 +45,14 @@ public class FXMLRegistrarEstudianteController implements Initializable {
         if(!(camposVacios())){
             if(!datosInvalidos()){
                 HashMap<String, Object> consulta = EstudiantesDAO.comprobarExistenciaEstudiante(txtMatricula.getText());
+                if(consulta == null){
+                    guardarEstudiante();
+                    observador.operacionExitosa("Agregar", txtNombre.getText());
+                    System.out.println("No existe");
+                    cerrarVentana();
+                    return;
+                }
+                
                 if((boolean)consulta.get(Constantes.KEY_ERROR)){
                     Utils.mostrarAlertaSimple("Error en la conexión", "No se han podido cargar los datos.", Alert.AlertType.ERROR, (Stage) txtCorreo.getScene().getWindow());
                 }else {
@@ -95,7 +103,6 @@ public class FXMLRegistrarEstudianteController implements Initializable {
         estudiante.setNombre(txtNombre.getText());
         estudiante.setCorreo(txtCorreo.getText());
         estudiante.setMatricula(txtMatricula.getText());
-
         HashMap<String, Object> respuesta = EstudiantesDAO.guardarEstudiante(estudiante, colaboracion);
         if(!((boolean) respuesta.get(Constantes.KEY_ERROR))){
             Utils.mostrarAlertaSimple("Éxito", "Se ha añadido exitosamente", Alert.AlertType.INFORMATION, (Stage) txtNombre.getScene().getWindow());
