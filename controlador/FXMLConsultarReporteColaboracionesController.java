@@ -60,10 +60,14 @@ public class FXMLConsultarReporteColaboracionesController implements Initializab
 
     @FXML
     private void btnDescargar(ActionEvent event) {
-        seleccionarDirectorio();
-        if (carpeta != null) {
-            mostrarVentanaDescarga();
-            generarReporte(carpeta.getAbsolutePath());
+        if (cbPeriodo.getValue() != null) {
+            seleccionarDirectorio();
+            if (carpeta != null) {
+                mostrarVentanaDescarga();
+                generarReporte(carpeta.getAbsolutePath());
+            }
+        } else {
+            Utils.mostrarAlertaSimple("Sin registros", "No hay colaboraciones finalizadas", AlertType.ERROR);
         }
     }
 
