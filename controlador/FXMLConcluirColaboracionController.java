@@ -2,9 +2,11 @@ package coilvic.controlador;
 
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.nio.file.Files;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
@@ -13,6 +15,8 @@ import java.util.HashMap;
 import java.util.ResourceBundle;
 
 import javax.imageio.ImageIO;
+
+import com.itextpdf.text.pdf.PdfStructTreeController.returnType;
 
 import coilvic.CoilVic;
 import coilvic.modelo.dao.AsignaturaDAO;
@@ -43,6 +47,7 @@ import javafx.scene.control.TextArea;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.FileChooser;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
@@ -63,6 +68,7 @@ public class FXMLConcluirColaboracionController implements Initializable {
     private ImageView imgPlanProyecto;
     Colaboracion colaboracion;
     private File imagenSelecionada;
+    private byte[] imagenPlanProyecto = null;
     @FXML
     private Label lblProfesorUV;
     @FXML
@@ -120,6 +126,7 @@ public class FXMLConcluirColaboracionController implements Initializable {
                     if(planProyecto != null){
                         try {
                             ByteArrayInputStream inputPlan = new ByteArrayInputStream(nuevoPlanProyecto.getArchivoAdjunto());
+                            imagenPlanProyecto = nuevoPlanProyecto.getArchivoAdjunto();
                             Image image = new Image(inputPlan);
                             imgPlanProyecto.setImage(image);
                         } catch (NullPointerException ex) {
@@ -140,28 +147,61 @@ public class FXMLConcluirColaboracionController implements Initializable {
 
     @FXML
     private void btnClicGuardar(ActionEvent event) {
-        //TODO guardar cambios
-        fechaValida();
+        if(validarCamposVacios()){
+            Utils.mostrarAlertaSimple("Error", "No se han llenado todos los campos", Alert.AlertType.ERROR, (Stage) lblColaboracion.getScene().getWindow());
+        }
+        else if(validarCamposInvalidos()){
+            Utils.mostrarAlertaSimple("Error", "Los campos no son válidos", Alert.AlertType.ERROR, (Stage) lblColaboracion.getScene().getWindow());
+        }else{
+            if(Utils.mostrarAlertaConfirmacion("Confirmar", "¿Está seguro que desea concluir esta colaboración?", Alert.AlertType.WARNING, (Stage) lblColaboracion.getScene().getWindow())){
+                guardarCambios();
+            } 
+        }
     }
 
-    private void fechaValida(){
-        //TODO validar fecha y retornar boleano
-        if(dateFechaFin.getValue() == null){
-            Utils.mostrarAlertaSimple("Error", "La fecha de fin no puede estar vacía", Alert.AlertType.ERROR, (Stage) lblColaboracion.getScene().getWindow());
-        }else{
+    private void guardarCambios(){
+        LocalDate fechaFinLocalDate = dateFechaFin.getValue();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        String fechaFin = fechaFinLocalDate.format(formatter);
+        byte[] imagen = imagenPlanProyecto;
+    
+        if(imagenSelecionada != null){
+            try {
+                imagen = Files.readAllBytes(imagenSelecionada.toPath());
+            } catch (IOException e) {
+                Utils.mostrarAlertaSimple("Error", "No se pudo leer la imagen seleccionada", Alert.AlertType.ERROR, (Stage) lblColaboracion.getScene().getWindow());
+                return;
+            }
+        } 
+    
+        HashMap<String, Object> respuesta = ColaboracionDAO.guardarConcluirColaboracion(colaboracion.getIdColaboracion(), fechaFin,  imagen,"Finalizada en periodo");
+        boolean isError = (boolean) respuesta.get(Constantes.KEY_ERROR);
+        if (!isError) {
+            Utils.mostrarAlertaSimple("Éxito", "La colaboración se ha concluido exitosamente", Alert.AlertType.INFORMATION, (Stage) lblColaboracion.getScene().getWindow());
+            Stage stage = (Stage) lblColaboracion.getScene().getWindow();
+            stage.close();
+        } else {
+            Utils.mostrarAlertaSimple("Error", (String) respuesta.get(Constantes.KEY_MENSAJE), Alert.AlertType.ERROR, (Stage) lblColaboracion.getScene().getWindow());
+        }
+    }
+
+    private boolean validarCamposInvalidos(){
             LocalDate fechaFin = dateFechaFin.getValue();
             LocalDate fechaInicio = LocalDate.parse(colaboracion.getFechaInicio());
             LocalDate fechaActual = LocalDate.now();
             if(fechaFin.isBefore(fechaInicio)){
-                Utils.mostrarAlertaSimple("Error", "La fecha de fin no puede ser anterior a la fecha de inicio", Alert.AlertType.ERROR, (Stage) lblColaboracion.getScene().getWindow());
-            } else if (fechaFin.isBefore(fechaActual)) {
-                Utils.mostrarAlertaSimple("Error", "La fecha de fin no puede ser anterior a la fecha actual", Alert.AlertType.ERROR, (Stage) lblColaboracion.getScene().getWindow());
+                return true;
+            } else if (fechaFin.isAfter(fechaActual)) {
+                return true;
             } else if (fechaFin.isAfter(fechaInicio.plusMonths(6))) {
-                Utils.mostrarAlertaSimple("Error", "La fecha de fin no puede ser más de 6 meses después de la fecha de inicio", Alert.AlertType.ERROR, (Stage) lblColaboracion.getScene().getWindow());
+                return true;
             }else{
-                System.out.println("Todo correcto");
+                return false;
             }
-        }
+    }
+
+    private boolean validarCamposVacios(){
+        return (dateFechaFin.getValue() == null || imgPlanProyecto.getImage() == null);
     }
 
     @FXML
@@ -203,6 +243,9 @@ public class FXMLConcluirColaboracionController implements Initializable {
         try{
             Stage stageModificarEstudiantes = new Stage();
             stageModificarEstudiantes.initStyle(StageStyle.UTILITY);
+            Stage primaryStage = (Stage) lblColaboracion.getScene().getWindow();
+            stageModificarEstudiantes.initOwner(primaryStage);
+            stageModificarEstudiantes.initModality(Modality.APPLICATION_MODAL);
             FXMLLoader cargarObjeto = new FXMLLoader(CoilVic.class.getResource("vista/FXMLModificarEstudiantes.fxml"));
             Parent root = cargarObjeto.load();
             FXMLModificarEstudiantesController modificarEstudiantes = cargarObjeto.getController();

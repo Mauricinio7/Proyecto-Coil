@@ -29,6 +29,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
@@ -125,6 +126,9 @@ public class FXMLVerColaboracionController implements Initializable {
         try{
             Stage stageRegistrarEstudiantes = new Stage();
             stageRegistrarEstudiantes.initStyle(StageStyle.UTILITY);
+            Stage primaryStage = (Stage) lblArea.getScene().getWindow();
+            stageRegistrarEstudiantes.initOwner(primaryStage);
+            stageRegistrarEstudiantes.initModality(Modality.APPLICATION_MODAL);
             FXMLLoader cargarObjeto = new FXMLLoader(CoilVic.class.getResource("vista/FXMLEstudiantes.fxml"));
             Parent root = cargarObjeto.load();
             FXMLEstudiantesController estudiantes = cargarObjeto.getController();
@@ -146,6 +150,9 @@ public class FXMLVerColaboracionController implements Initializable {
             try{
                 Stage stageAsociarProfesorExterno = new Stage();
                 stageAsociarProfesorExterno.initStyle(StageStyle.UTILITY);
+                Stage primaryStage = (Stage) lblArea.getScene().getWindow();
+                stageAsociarProfesorExterno.initOwner(primaryStage);
+                stageAsociarProfesorExterno.initModality(Modality.APPLICATION_MODAL);
                 FXMLLoader cargarObjeto = new FXMLLoader(CoilVic.class.getResource("vista/FXMLAsociarProfesorExterno.fxml"));
                 Parent root = cargarObjeto.load();
                 FXMLAsociarProfesorExternoController asociarProfesorExterno = cargarObjeto.getController();
@@ -167,16 +174,19 @@ public class FXMLVerColaboracionController implements Initializable {
 
     private void llamarConcluirColaboracion(){
         try{
-            Stage stageVer = new Stage();
-            stageVer.initStyle(StageStyle.UTILITY);
+            Stage stageConcluir = new Stage();
+            stageConcluir.initStyle(StageStyle.UTILITY);
+            Stage primaryStage = (Stage) lblArea.getScene().getWindow();
+            stageConcluir.initOwner(primaryStage);
+            stageConcluir.initModality(Modality.APPLICATION_MODAL);
             FXMLLoader cargarObjeto = new FXMLLoader(CoilVic.class.getResource("vista/FXMLConcluirColaboracion.fxml"));
             Parent root = cargarObjeto.load();
             FXMLConcluirColaboracionController verColaboracion = cargarObjeto.getController();
             verColaboracion.inicializarValores(colaboracion.getIdColaboracion());
             Scene nuevaScena = new Scene(root);
-            stageVer.setTitle("Colaboracion");
-            stageVer.setScene(nuevaScena);
-            stageVer.showAndWait();
+            stageConcluir.setTitle("Colaboracion");
+            stageConcluir.setScene(nuevaScena);
+            stageConcluir.showAndWait();
         }catch(IOException error){
             error.printStackTrace();
         }

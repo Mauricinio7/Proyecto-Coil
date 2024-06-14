@@ -88,6 +88,59 @@ public class ColaboracionDAO {
         return respuesta;
     }
 
+    public static HashMap<String, Object> guardarConcluirColaboracion(int idColaboracion, String fechaFin, byte[] archivoAdjunto, String estado) {
+        HashMap<String, Object> respuesta = new HashMap<>();
+        respuesta.put(Constantes.KEY_ERROR, true);
+        Connection conexionBD = ConexionBD.obtenerConexion();
+    
+        if (conexionBD != null) {
+            try {
+                conexionBD.setAutoCommit(false);
+    
+                String actualizarFechaFin = "UPDATE colaboracion SET fecha_fin = ? WHERE id_colaboracion = ?";
+                PreparedStatement stmtFechaFin = conexionBD.prepareStatement(actualizarFechaFin);
+                stmtFechaFin.setString(1, fechaFin);
+                stmtFechaFin.setInt(2, idColaboracion);
+                int filasAfectadasFecha = stmtFechaFin.executeUpdate();
+    
+                String actualizarArchivoAdjunto = "UPDATE plan_proyecto SET archivo_adjunto = ? WHERE colaboracion_id_colaboracion = ?";
+                PreparedStatement stmtArchivoAdjunto = conexionBD.prepareStatement(actualizarArchivoAdjunto);
+                stmtArchivoAdjunto.setBytes(1, archivoAdjunto);
+                stmtArchivoAdjunto.setInt(2, idColaboracion);
+                int filasAfectadasArchivo = stmtArchivoAdjunto.executeUpdate();
+    
+                String actualizarEstado = "UPDATE colaboracion SET estado = ? WHERE id_colaboracion = ?";
+                PreparedStatement stmtEstado = conexionBD.prepareStatement(actualizarEstado);
+                stmtEstado.setString(1, estado);
+                stmtEstado.setInt(2, idColaboracion);
+                int filasAfectadasEstado = stmtEstado.executeUpdate();
+    
+                if (filasAfectadasFecha > 0 && filasAfectadasArchivo > 0 && filasAfectadasEstado > 0) {
+                    conexionBD.commit();
+                    respuesta.put(Constantes.KEY_ERROR, false);
+                    respuesta.put(Constantes.KEY_MENSAJE, "Colaboración concluida con éxito");
+                } else {
+                    conexionBD.rollback(); 
+                    respuesta.put(Constantes.KEY_MENSAJE, "No se han podido guardar todos los datos.");
+                }
+    
+                conexionBD.setAutoCommit(true);
+                conexionBD.close();
+            } catch (SQLException ex) {
+                try {
+                    conexionBD.rollback();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+                respuesta.put(Constantes.KEY_MENSAJE, ex.getMessage());
+            }
+        } else {
+            respuesta.put(Constantes.KEY_MENSAJE, Constantes.MENSAJE_ERROR_CONEXION);
+        }
+    
+        return respuesta;
+    }
+
     public static HashMap<String, Object> obtenerColaboracionPorId(Integer idColaboracion) {
         HashMap<String, Object> respuesta = new HashMap<>();
         respuesta.put(Constantes.KEY_ERROR, true);
