@@ -67,13 +67,11 @@ public class FXMLConsultaColaboracionController implements Initializable {
     @FXML
     private Button btnCancelar;
 
-    /**
-     * Initializes the controller class.
-     */
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
     }    
+    
     public void inicializarValores(Colaboracion colaboracion, String tipoConsulta){
         this.tipoConsulta = tipoConsulta;
         this.colaboracion = colaboracion;
