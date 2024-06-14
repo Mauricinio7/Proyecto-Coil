@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.StringJoiner;
 
 import coilvic.modelo.ConexionBD;
 import coilvic.utilidades.Constantes;
@@ -18,7 +19,7 @@ public class LoginDAO {
         Connection conexionBD = ConexionBD.obtenerConexion();
         if (conexionBD != null) {
             try {
-                String consulta = "SELECT id_profesor"
+                String consulta = "SELECT profesoruv_id_profesoruv, tipo_usuario "
                         + " FROM usuario"
                         + " WHERE nombre_usuario = ? AND contrasena = ?";
                 PreparedStatement prepararSentencia = conexionBD.prepareStatement(consulta);
@@ -26,10 +27,13 @@ public class LoginDAO {
                 prepararSentencia.setString(2, contrasena);
                 ResultSet resultado = prepararSentencia.executeQuery();
                 Integer idProfesorUv = null;
+                String tipoUsuario = null;
                 if (resultado.next()) {
-                    idProfesorUv = resultado.getInt("id_profesor");
+                    idProfesorUv = resultado.getInt("profesoruv_id_profesoruv");
+                    tipoUsuario = resultado.getString("tipo_usuario");
                     respuesta.put(Constantes.KEY_ERROR, false);
-                    respuesta.put("idProfesor",idProfesorUv);
+                    respuesta.put("idProfesor", idProfesorUv);
+                    respuesta.put("tipoUsuario", tipoUsuario);
                 } else {
                     respuesta.put(Constantes.KEY_MENSAJE,"Usuario y/o contraseña incorrectos");
                 }

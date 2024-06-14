@@ -64,21 +64,6 @@ public class Utils {
         return (botonSeleccionado.isPresent() && botonSeleccionado.get() == btnAceptar);
     }
     
-    public static void irVistaPorComponent(TextField btVista, String path, List<Object> lista){
-        try{
-            Stage stagePrincipal = (Stage)btVista.getScene().getWindow();
-            FXMLLoader loader = new FXMLLoader(CoilVic.class.getResource(path));
-            Parent root =loader.load();
-            FXMLVistaProfesorController pantallaPrincipalControlador = loader.getController();
-            pantallaPrincipalControlador.inicializarValores();
-            Scene nuevaEscena = new Scene(root);
-            stagePrincipal.setScene(nuevaEscena);
-            stagePrincipal.setTitle("Pantalla Profesor");
-            stagePrincipal.show();
-        }catch(IOException error){
-
-        }
-    }
 
     public static FXMLLoader obtenerLoader(String ruta){
         return new FXMLLoader(coilvic.CoilVic.class.getResource(ruta));

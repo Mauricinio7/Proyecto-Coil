@@ -113,7 +113,7 @@ public class FXMLRegistrarColaboracionSinOfertaController implements Initializab
         ofertaColaboracion.setPeriodo("Enero - Junio 2020");
         ofertaColaboracion.setTemaInteres("Tema de interés");
         ofertaColaboracion.setIdDepartamento(103);
-        inicializarValores(profesorUv, ofertaColaboracion);
+        inicializarValores(profesorUv);
         //Eliminar termina
     }    
     
@@ -129,7 +129,6 @@ public class FXMLRegistrarColaboracionSinOfertaController implements Initializab
         configurarSeleccionAsignatura();
         configurarFechaFin();
         dpFechaFin.setDisable(true);
-
 
         cbDepartamento.setDisable(true);
         cargarEstadoComponentes();
@@ -306,11 +305,6 @@ public class FXMLRegistrarColaboracionSinOfertaController implements Initializab
                 }
             }
         });
-    }
-
-    private void configurarFechasInicioYFin() {
-        LocalDateTime fechaNTP = ConexionApacheNet.obtenerFechaHoraServidorNTP(Constantes.SERVIDOR_NTP);
-        //TODO
     }
 
     private boolean camposVacios(){
