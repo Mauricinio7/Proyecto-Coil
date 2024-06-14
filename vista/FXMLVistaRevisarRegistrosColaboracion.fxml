@@ -12,8 +12,8 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="coilvic.controlador.FXMLConsultarHistorialController">
-      <children>
+<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/21" fx:controller="coilvic.controlador.FXMLVistaRevisarRegistrosColaboracionController">
+    <children>
       <Pane layoutX="79.0" layoutY="-1.0" prefHeight="182.0" prefWidth="1124.0" style="-fx-background-color: linear-gradient(to bottom left, #e93367, #de8444);">
          <children>
             <ImageView fitHeight="143.0" fitWidth="149.0" layoutX="167.0" layoutY="16.0" pickOnBounds="true" preserveRatio="true">
@@ -91,7 +91,7 @@
                </font>
             </Label>
          </children></Pane>
-      <Label layoutX="403.0" layoutY="220.0" text="Historial de Colaboraciones">
+      <Label layoutX="403.0" layoutY="220.0" text="Registros de Colaboraciones">
          <font>
             <Font name="Liberation Sans Bold" size="36.0" />
          </font>

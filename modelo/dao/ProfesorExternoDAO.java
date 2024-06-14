@@ -210,4 +210,60 @@ public class ProfesorExternoDAO {
 
 
 
+    /* 
+     * MariaDB [COIL]> describe profesor_externo;
++---------------------+--------------+------+-----+---------+----------------+
+| Field               | Type         | Null | Key | Default | Extra          |
++---------------------+--------------+------+-----+---------+----------------+
+| nombre              | varchar(100) | NO   |     | NULL    |                |
+| id_profesor_externo | int(11)      | NO   | PRI | NULL    | auto_increment |
+| correo              | varchar(50)  | YES  |     | NULL    |                |
+| idioma              | varchar(20)  | YES  |     | NULL    |                |
+| institucion         | varchar(100) | NO   |     | NULL    |                |
+| pais                | varchar(30)  | NO   |     | NULL    |                |
+| telefono            | varchar(10)  | NO   |     | NULL    |                |
++---------------------+--------------+------+-----+---------+----------------+
+7 rows in set (0.001 sec)
+
+     */
+
+     public static HashMap<String, Object> obtenerCorreoProfesorExternoPorId(int idProfesorExterno){
+        HashMap<String, Object> respuesta = new HashMap<>();
+        try(Connection conexionDB = ConexionBD.obtenerConexion()){
+            StringBuilder consulta = new StringBuilder();
+            consulta.append("SELECT correo ");
+            consulta.append("FROM profesor_externo ");
+            consulta.append("WHERE id_profesor_externo = ?");
+            PreparedStatement sentenciaPreparada = conexionDB.prepareStatement(consulta.toString());
+            sentenciaPreparada.setInt(1, idProfesorExterno);
+            ResultSet resultado = sentenciaPreparada.executeQuery();
+            if(resultado.next()){
+                respuesta.put("correo", resultado.getString("correo"));
+            }
+        }catch(SQLException errorSql){
+            respuesta.put(Constantes.KEY_MENSAJE, "No se han podido cargar los datos");
+            errorSql.printStackTrace();
+        }
+        return respuesta;
+     }
+     public static HashMap<String, Object> obtenerInstitucionPorIdProfesorExterno(int idProfesorExterno){
+        HashMap<String, Object> respuesta = new HashMap<>();
+        try(Connection conexionDB = ConexionBD.obtenerConexion()){
+            StringBuilder consulta = new StringBuilder();
+            consulta.append("SELECT institucion ");
+            consulta.append("FROM profesor_externo ");
+            consulta.append("WHERE id_profesor_externo = ?");
+            PreparedStatement sentenciaPreparada = conexionDB.prepareStatement(consulta.toString());
+            sentenciaPreparada.setInt(1, idProfesorExterno);
+            ResultSet resultado = sentenciaPreparada.executeQuery();
+            if(resultado.next()){
+                respuesta.put("institucion", resultado.getString("institucion"));
+            }
+        }catch(SQLException errorSql){
+            respuesta.put(Constantes.KEY_MENSAJE, "No se han podido cargar los datos");
+            errorSql.printStackTrace();
+        }
+        return respuesta;
+     }
 }
+

@@ -455,4 +455,67 @@ public class ColaboracionDAO {
         }
         return respuesta;
     }
+    public static HashMap<String, Object> consultarColaboracionPorSimilitudDeNombreYEstado(String nombreColaboracion, String posibleEstado, String posibleEstado2){
+        HashMap <String, Object> respuesta = new HashMap<>();
+        ArrayList<Colaboracion> listaColaboracion = new ArrayList<>();
+        try(Connection conexionBD = ConexionBD.obtenerConexion()){
+            StringBuilder consulta = new StringBuilder();
+            consulta.append("SELECT estado, fecha_inicio, fecha_fin, idioma, nombre, objetivo_general, tema_interes, periodo, no_estudiante_externo, ");
+;           consulta.append("profesoruv_id_profesoruv, profesor_externo_id_profesor_externo, asignatura_id_asignatura, region_id_region, departamento_id_departamento, id_colaboracion ");
+            consulta.append("FROM colaboracion ");
+            consulta.append("WHERE nombre LIKE ? AND (estado = ? OR estado = ?)");
+            PreparedStatement consultaPreparada = conexionBD.prepareStatement(consulta.toString());
+            consultaPreparada.setString(1, "%" + nombreColaboracion + "%");
+            consultaPreparada.setString(2, posibleEstado);
+            consultaPreparada.setString(3, posibleEstado2);
+            ResultSet resultado = consultaPreparada.executeQuery();
+            while(resultado.next()){
+                Colaboracion colaboracion = new Colaboracion();
+                colaboracion.setEstado(resultado.getString("estado"));
+                colaboracion.setFechaInicio(resultado.getString("fecha_inicio"));
+                colaboracion.setFechaFin(resultado.getString("fecha_fin"));
+                colaboracion.setIdioma(resultado.getString("idioma"));
+                colaboracion.setNombre(resultado.getString("nombre"));
+                colaboracion.setObjetivoGeneral(resultado.getString("objetivo_general"));
+                colaboracion.setTemaInteres(resultado.getString("tema_interes"));
+                colaboracion.setPeriodo(resultado.getString("periodo"));
+                colaboracion.setNoEstudiantesExternos(resultado.getInt("no_estudiante_externo"));
+                colaboracion.setIdProfesorUV(resultado.getInt("profesoruv_id_profesoruv"));
+                colaboracion.setIdProfesorExterno(resultado.getInt("profesor_externo_id_profesor_externo"));
+                colaboracion.setIdAsignatura(resultado.getInt("asignatura_id_asignatura"));
+                colaboracion.setIdRegion(resultado.getInt("region_id_region"));
+                colaboracion.setIdDepartamento(resultado.getInt("departamento_id_departamento"));
+                colaboracion.setIdColaboracion(resultado.getInt("id_colaboracion"));
+                listaColaboracion.add(colaboracion);
+            }   
+            respuesta.put("listaColaboracion", listaColaboracion);
+            if(listaColaboracion.isEmpty()){
+                respuesta.put(Constantes.KEY_ERROR, true);
+            }
+        }catch(SQLException errorSql){
+            errorSql.printStackTrace();
+            respuesta.put(Constantes.KEY_ERROR, true);
+        }
+        return respuesta;
+    }
+    public static HashMap<String, Object> modificarEstadoColaboracionPorId(String estado, int idColaboracion){
+        HashMap<String, Object> respuesta = new HashMap<>();
+        try(Connection conexionBD = ConexionBD.obtenerConexion()){
+            StringBuilder consulta = new StringBuilder();
+            consulta.append("UPDATE colaboracion ");
+            consulta.append("SET estado = ? ");
+            consulta.append("WHERE id_colaboracion = ?");
+            PreparedStatement consultaPreparada = conexionBD.prepareStatement(consulta.toString());
+            consultaPreparada.setString(1, estado);
+            consultaPreparada.setInt(2, idColaboracion);
+            consultaPreparada.executeUpdate();
+            respuesta.put(Constantes.KEY_ERROR, false);
+        }catch(SQLException errorSql){
+            errorSql.printStackTrace();
+        }
+        if(respuesta.isEmpty()){
+            respuesta.put(Constantes.KEY_ERROR, true);
+        }
+        return respuesta;
+    }
 }

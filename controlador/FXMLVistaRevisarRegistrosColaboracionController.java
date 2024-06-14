@@ -11,8 +11,6 @@ import java.util.HashMap;
 import java.util.ResourceBundle;
 import java.util.regex.Pattern;
 
-import com.mysql.jdbc.Util;
-
 import coilvic.modelo.dao.AsignaturaDAO;
 import coilvic.modelo.dao.ColaboracionDAO;
 import coilvic.modelo.dao.DepartamentoDAO;
@@ -20,7 +18,6 @@ import coilvic.modelo.dao.ProfesorExternoDAO;
 import coilvic.modelo.dao.ProfesorUvDAO;
 import coilvic.modelo.dao.RegionDAO;
 import coilvic.modelo.pojo.Colaboracion;
-import coilvic.modelo.pojo.ProfesorExterno;
 import coilvic.utilidades.Constantes;
 import coilvic.utilidades.ThreadVerifyRepetitiveChars;
 import coilvic.utilidades.Utils;
@@ -35,6 +32,9 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TableCell;
@@ -42,13 +42,9 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextInputControl;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
@@ -57,9 +53,9 @@ import javafx.util.Duration;
  *
  * @author outis
  */
-public class FXMLConsultarHistorialController implements Initializable {
+public class FXMLVistaRevisarRegistrosColaboracionController implements Initializable {
 
-    String expresionValidaNombreColaboracion = "[a-zA-Z0-9íáéóúüñÁÉÍÓÚÑÜ.\\- ]+";
+   String expresionValidaNombreColaboracion = "[a-zA-Z0-9íáéóúüñÁÉÍÓÚÑÜ.\\- ]+";
     Pattern patronNombreColaboracion = Pattern.compile(expresionValidaNombreColaboracion);
     ObservableList<Colaboracion> listaColaboracionObservable;
     private ObservableList<String> listaEstado;
@@ -124,8 +120,8 @@ public class FXMLConsultarHistorialController implements Initializable {
     }
     public void fillEstado(){
         listaEstado = FXCollections.observableArrayList();
-        listaEstado.add("Colaboraciones Activas");
-        listaEstado.add("Colaboraciones Finalizadas");
+        listaEstado.add("Colaboraciones Pendientes");
+        listaEstado.add("Colaboraciones Aceptadas");
         cbEstado.setItems(listaEstado);
         cbEstado.setValue(listaEstado.get(0));
     }
@@ -148,7 +144,7 @@ public class FXMLConsultarHistorialController implements Initializable {
                             Parent root = loader.load();
                             FXMLConsultaColaboracionController controlador = loader.getController();
                             String estado = cbEstado.getSelectionModel().getSelectedItem();
-                            controlador.inicializarValores(colaboracion, "Historial");
+                            controlador.inicializarValores(colaboracion, "Registro");
                             Scene nuevaEscena = new Scene(root);
                             stagePrincipal.setScene(nuevaEscena);
                             stagePrincipal.setTitle("Consulta Colaboración");
@@ -198,12 +194,12 @@ public class FXMLConsultarHistorialController implements Initializable {
         String posibleEstado;
         String posibleEstado2;
         String seleccionCombobox = cbEstado.getSelectionModel().getSelectedItem();
-        if(seleccionCombobox.equals("Colaboraciones Activas")){
-            posibleEstado = "Activo";
+        if(seleccionCombobox.equals("Colaboraciones Pendientes")){
+            posibleEstado = "Inactivo";
             posibleEstado2 = "";
         }else{
-            posibleEstado = "Finalizada en periodo";
-            posibleEstado2 = "Finalizada completamente";
+            posibleEstado = "Activo";
+            posibleEstado2 = "";
         }
         if(tfName.getText().isEmpty()){
             respuesta = ColaboracionDAO.consultarColaboracionPorEstado(posibleEstado, posibleEstado2);

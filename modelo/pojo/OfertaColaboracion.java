@@ -9,6 +9,7 @@ public class OfertaColaboracion {
     int idAsignatura;
     int idProfesor;
     int idDepartamento;
+    int contador;
 
     public OfertaColaboracion() {
     }
@@ -24,6 +25,12 @@ public class OfertaColaboracion {
         this.idDepartamento = idDepartamento;
     }
     
+    public int getContador() {
+        return contador;
+    }
+    public void setContador(int contador) {
+        this.contador = contador;
+    }
     public int getIdAsignatura() {
         return idAsignatura;
     }
