@@ -36,14 +36,18 @@ public class FXMLLoginController implements Initializable {
     private void btnContinuar(ActionEvent event) {
         String usuario = tfUsuario.getText();
         String contrasena = pfUsuario.getText();
-        Utils.irVistaPorComponent(tfUsuario,"vista/FXMLVistaProfesor.fxml", null);
+        //Utils.irVistaPorComponent(tfUsuario,"vista/FXMLVistaProfesor.fxml", null);
         //Utils.irVistaPorComponent(tfUsuario,"../vista/FXMLVistaAdmin.fxml", null);
         if (validarCampos()) {
             HashMap<String, Object> respuesta = LoginDAO.iniciarSesion(usuario, contrasena);
             if( !(boolean) respuesta.get(Constantes.KEY_ERROR)) {
-
-                //PASAR A LA SIGUIENTE VENTANA
-                Utils.mostrarAlertaSimple("Prueba", "Prueba", AlertType.INFORMATION); //Eliminar
+                int id_profesor = (int) respuesta.get("idProfesor");
+                String tipoUsuario = (String) respuesta.get("tipoUsuario"); 
+                if(tipoUsuario.equals("admin")){
+                    irPantallaAdministrador();
+                }else{
+                    irPantallaProfesor(id_profesor);
+                }
             } else {
                 Utils.mostrarAlertaSimple("Error", ""+respuesta.get(Constantes.KEY_MENSAJE),AlertType.ERROR);
             }
@@ -72,13 +76,13 @@ public class FXMLLoginController implements Initializable {
 
         }
     }
-    public void irPantallaProfesor(){
+    public void irPantallaProfesor(int id_profesor){
         try{
             Stage stagePrincipal = (Stage)tfUsuario.getScene().getWindow();
-            FXMLLoader loader = new FXMLLoader(CoilVic.class.getResource("coilvic/vista/FXMLVistaProfesor.fxml"));
+            FXMLLoader loader = new FXMLLoader(CoilVic.class.getResource("vista/FXMLVistaProfesor.fxml"));
             Parent root =loader.load();
             FXMLVistaProfesorController pantallaPrincipalControlador = loader.getController();
-            pantallaPrincipalControlador.inicializarValores();
+            pantallaPrincipalControlador.inicializarValores(id_profesor);
             Scene nuevaEscena = new Scene(root);
             stagePrincipal.setScene(nuevaEscena);
             stagePrincipal.setTitle("Pantalla Profesor");

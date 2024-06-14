@@ -94,26 +94,39 @@ public class FXMLConsultarColaboraciones implements Initializable {
         transicion.play();
     }
 
+    //TODO paquete de barra lateral inicio
+
     @FXML
-    private void clicMisOfertasIV(MouseEvent event) {
-        HashMap<String, Object> mapProfesorUV = ProfesorUvDAO.obtenerProfesorUvPorId(1);
-        if(mapProfesorUV.containsKey("Profesor")){
-            ProfesorUv profesorUvSesion = (ProfesorUv) mapProfesorUV.get("Profesor");
-            irPantallaOfertasColaboracion(profesorUvSesion);
-        }else{
-            System.out.println("Error al conectar con la bd");
-        }
-        
+    private void clicMisOfertas(MouseEvent event) {
+            irPantallaOfertasColaboracion(profesorUv);
     }
 
     @FXML
-    private void clicMisOfertasLB(MouseEvent event) {
-        HashMap<String, Object> mapProfesorUV = ProfesorUvDAO.obtenerProfesorUvPorId(1); //TODO Profesor del login
-        if(mapProfesorUV.containsKey("Profesor")){
-            ProfesorUv profesorUvSesion = (ProfesorUv) mapProfesorUV.get("Profesor");
-            irPantallaOfertasColaboracion(profesorUvSesion);
-        }else{
-            System.out.println("Error al conectar con la bd");
+    private void clicMisColaboraciones(MouseEvent event) {
+        irPantallaColaboraciones(profesorUv);
+    }
+
+    @FXML
+    private void clicHome(MouseEvent event) {
+        irPantallaHome(profesorUv);
+    }
+
+    public void irPantallaColaboraciones(ProfesorUv profesorUv){
+        try{
+            Stage stageInformacion = new Stage();
+            stageInformacion.initStyle(StageStyle.UTILITY);
+            FXMLLoader cargarObjeto = new FXMLLoader(CoilVic.class.getResource("vista/FXMLConsultarColaboraciones.fxml"));
+            Parent root = cargarObjeto.load();
+            FXMLConsultarColaboraciones consultarColaboraciones = cargarObjeto.getController();
+            consultarColaboraciones.inicializarValores(profesorUv);
+            Scene nuevaScena = new Scene(root);
+            stageInformacion.setTitle("Consultar colaboraciones");
+            stageInformacion.setScene(nuevaScena);
+            stageInformacion.show();
+            Stage stagePrincipal = (Stage)ivMisOfertas.getScene().getWindow();
+            stagePrincipal.close();
+        }catch(IOException error){
+            error.printStackTrace();
         }
     }
 
@@ -135,6 +148,27 @@ public class FXMLConsultarColaboraciones implements Initializable {
             error.printStackTrace();
         }
     }
+
+    public void irPantallaHome(ProfesorUv profesorUv){
+        try{
+            Stage stageInformacion = new Stage();
+            stageInformacion.initStyle(StageStyle.UTILITY);
+            FXMLLoader cargarObjeto = new FXMLLoader(CoilVic.class.getResource("vista/FXMLVistaProfesor.fxml"));
+            Parent root = cargarObjeto.load();
+            FXMLVistaProfesorController vistaHome = cargarObjeto.getController();
+            vistaHome.inicializarValores(profesorUv.getIdProfesorUv());
+            Scene nuevaScena = new Scene(root);
+            stageInformacion.setTitle("Registrar ofertas de colaboracion");
+            stageInformacion.setScene(nuevaScena);
+            stageInformacion.show();
+            Stage stagePrincipal = (Stage)ivMisOfertas.getScene().getWindow();
+            stagePrincipal.close();
+        }catch(IOException error){
+            error.printStackTrace();
+        }
+    }
+
+    //TODO fin paquete de barra lateral
 
     public void cargarCombos(){
         cbFiltro.getItems().addAll(
@@ -176,7 +210,7 @@ public class FXMLConsultarColaboraciones implements Initializable {
     
      private void cargarColaboracionesTodas(){
         colaboraciones = FXCollections.observableArrayList();
-        HashMap<String, Object> respuesta = ColaboracionDAO.obtenerColaboracionesPorProfesor(1); //TODO Darle el profesor
+        HashMap<String, Object> respuesta = ColaboracionDAO.obtenerColaboracionesPorProfesor(profesorUv.getIdProfesorUv());
         boolean isError = (boolean) respuesta.get(Constantes.KEY_ERROR);
         if(!isError){
             ArrayList<Colaboracion> colaboracionesBD = (ArrayList) respuesta.get("colaboraciones");
@@ -192,7 +226,7 @@ public class FXMLConsultarColaboraciones implements Initializable {
 
     private void cargarColaboracionesFiltro(String filtro){
         colaboraciones = FXCollections.observableArrayList();
-        HashMap<String, Object> respuesta = ColaboracionDAO.obtenerColaboracionesPorProfesorConFiltro(1, filtro); //TODO Darle el profesor
+        HashMap<String, Object> respuesta = ColaboracionDAO.obtenerColaboracionesPorProfesorConFiltro(profesorUv.getIdProfesorUv(), filtro);
         boolean isError = (boolean) respuesta.get(Constantes.KEY_ERROR);
         if(!isError){
             ArrayList<Colaboracion> colaboracionesBD = (ArrayList) respuesta.get("colaboraciones");
