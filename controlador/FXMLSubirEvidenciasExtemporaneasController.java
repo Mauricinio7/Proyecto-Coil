@@ -74,11 +74,6 @@ public class FXMLSubirEvidenciasExtemporaneasController implements Initializable
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
 
-        //Eliminar inicia
-        obtenerColaboracion(4);
-        obtenerListaEvidencias();
-        //Eliminar termina
-
         limitarCaracteres();
         configurarTabla();
         configurarBtnSolicitarConstancias();

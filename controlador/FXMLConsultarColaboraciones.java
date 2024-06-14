@@ -281,6 +281,7 @@ public class FXMLConsultarColaboraciones implements Initializable {
         btnSubirReportes.setLayoutX(840);
         btnSubirReportes.setOnAction(e -> {
             //TODO llamar a Subir evidencias extemporaneas
+            
         });
 
         objeto.getChildren().add(btnVerInformacion);
