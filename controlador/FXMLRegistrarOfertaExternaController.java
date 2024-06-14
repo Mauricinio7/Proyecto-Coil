@@ -11,6 +11,7 @@ import java.util.HashMap;
 import java.util.ResourceBundle;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import coilvic.modelo.dao.OfertaColaboracionExternaDAO;
 
 import coilvic.modelo.ConexionApacheNet;
 import coilvic.modelo.dao.AsignaturaDAO;
@@ -20,6 +21,7 @@ import coilvic.modelo.dao.RegionDAO;
 import coilvic.modelo.pojo.Asignatura;
 import coilvic.modelo.pojo.Departamento;
 import coilvic.modelo.pojo.OfertaColaboracion;
+import coilvic.modelo.pojo.OfertaColaboracionExterna;
 import coilvic.modelo.pojo.ProfesorUv;
 import coilvic.modelo.pojo.Region;
 import coilvic.utilidades.Constantes;
@@ -119,11 +121,47 @@ public class FXMLRegistrarOfertaExternaController implements Initializable {
 
     @FXML
     private void clicSave(MouseEvent event) {
-    }
+        /* 
+         * MariaDB [COIL]> describe oferta_colaboracion_externa;
++--------------------------------------+--------------+------+-----+---------+----------------+
+| Field                                | Type         | Null | Key | Default | Extra          |
++--------------------------------------+--------------+------+-----+---------+----------------+
+| id_oferta_externa                    | int(11)      | NO   | PRI | NULL    | auto_increment |
+| nombre                               | varchar(100) | NO   | UNI | NULL    |                |
+| objetivo_general                     | varchar(350) | YES  |     | NULL    |                |
+| idioma                               | varchar(20)  | NO   |     | NULL    |                |
+| periodo                              | varchar(20)  | NO   |     | NULL    |                |
+| tema_interes                         | varchar(50)  | NO   |     | NULL    |                |
+| asignatura                           | varchar(50)  | YES  |     | NULL    |                |
+| profesor_externo_id_profesor_externo | int(11)      | NO   | MUL | NULL    |                |
++--------------------------------------+--------------+------+-----+---------+----------------+
 
-    @FXML
-    private void clicCancel(MouseEvent event) {
-    }
+         */
+
+            if(!tfNameCol.getText().isEmpty() && !tfIdioma.getText().isEmpty() && !taTemaInteres.getText().isEmpty() && cbPeriodo.getValue() != null){
+                HashMap<String, Boolean> respuesta = new HashMap<>();
+                OfertaColaboracionExterna nuevaOferta = new OfertaColaboracionExterna();
+                nuevaOferta.setNombre(tfNameCol.getText());
+                nuevaOferta.setObjetivoGeneral(taObjetivo.getText());
+                nuevaOferta.setIdioma(tfIdioma.getText());
+                nuevaOferta.setPeriodo(cbPeriodo.getValue());
+                nuevaOferta.setTemaInteres(taTemaInteres.getText());
+                nuevaOferta.setAsignatura(tfAsignatura.getText());
+                nuevaOferta.setIdProfesorExterno(1);
+                respuesta = OfertaColaboracionExternaDAO.guardarOferta(nuevaOferta);
+                if(respuesta.containsKey("ofertaColaboracion")){
+                    Utils.mostrarAlertaConfirmacion("Guardado", "Se ha guardado correctamente", AlertType.INFORMATION);
+                    //TODO Falta mandarlo a otro lado despues de guardar
+                    
+                }else{
+                    Utils.mostrarAlertaConfirmacion("Error", Constantes.ERROR_CARGAR_DATOS, AlertType.ERROR);
+                }
+            }
+        }
+
+        @FXML
+        private void clicCancel(MouseEvent event) {
+        }
 
     public void asignarFechaActualNTP(){
         try{
