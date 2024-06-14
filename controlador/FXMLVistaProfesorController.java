@@ -35,13 +35,20 @@ public class FXMLVistaProfesorController implements Initializable {
     private ImageView ivMisOfertas;
     @FXML
     private Label lbMisOfertas;
+    ProfesorUv profesorUvSesion;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
     }    
-    public void inicializarValores(){
-        
+    public void inicializarValores(int idProfesorUv){
+        HashMap<String, Object> mapProfesorUV = ProfesorUvDAO.obtenerProfesorUvPorId(idProfesorUv);
+        if(mapProfesorUV.containsKey("Profesor")){
+            profesorUvSesion = (ProfesorUv) mapProfesorUV.get("Profesor");
+            System.out.println(profesorUvSesion.getNombre());
+        }else{
+            System.out.println("Error al conectar con la bd");
+        }
     }
     @FXML
     private void salePanel(MouseEvent event) {
@@ -77,13 +84,7 @@ public class FXMLVistaProfesorController implements Initializable {
 
     @FXML
     private void clicMisOfertasLB(MouseEvent event) {
-        HashMap<String, Object> mapProfesorUV = ProfesorUvDAO.obtenerProfesorUvPorId(1);
-        if(mapProfesorUV.containsKey("Profesor")){
-            ProfesorUv profesorUvSesion = (ProfesorUv) mapProfesorUV.get("Profesor");
             irPantallaOfertasColaboracion(profesorUvSesion);
-        }else{
-            System.out.println("Error al conectar con la bd");
-        }
     }
 
     public void irPantallaOfertasColaboracion(ProfesorUv profesorUv){
