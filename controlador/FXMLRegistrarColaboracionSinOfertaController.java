@@ -113,7 +113,7 @@ public class FXMLRegistrarColaboracionSinOfertaController implements Initializab
         ofertaColaboracion.setPeriodo("Enero - Junio 2020");
         ofertaColaboracion.setTemaInteres("Tema de interés");
         ofertaColaboracion.setIdDepartamento(103);
-        inicializarValores(profesorUv);
+        inicializarValores(profesorUv, ofertaColaboracion);
         //Eliminar termina
     }    
     
@@ -306,6 +306,11 @@ public class FXMLRegistrarColaboracionSinOfertaController implements Initializab
                 }
             }
         });
+    }
+
+    private void configurarFechasInicioYFin() {
+        LocalDateTime fechaNTP = ConexionApacheNet.obtenerFechaHoraServidorNTP(Constantes.SERVIDOR_NTP);
+        //TODO
     }
 
     private boolean camposVacios(){
