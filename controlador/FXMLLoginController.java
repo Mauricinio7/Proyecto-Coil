@@ -36,12 +36,14 @@ public class FXMLLoginController implements Initializable {
     private void btnContinuar(ActionEvent event) {
         String usuario = tfUsuario.getText();
         String contrasena = pfUsuario.getText();
+        //Utils.irVistaPorComponent(tfUsuario,"vista/FXMLVistaProfesor.fxml", null);
+        //Utils.irVistaPorComponent(tfUsuario,"../vista/FXMLVistaAdmin.fxml", null);
         if (validarCampos()) {
             HashMap<String, Object> respuesta = LoginDAO.iniciarSesion(usuario, contrasena);
             if( !(boolean) respuesta.get(Constantes.KEY_ERROR)) {
                 int id_profesor = (int) respuesta.get("idProfesor");
                 String tipoUsuario = (String) respuesta.get("tipoUsuario"); 
-                if(tipoUsuario.equals("administrador")){
+                if(tipoUsuario.equals("admin")){
                     irPantallaAdministrador();
                 }else{
                     irPantallaProfesor(id_profesor);
