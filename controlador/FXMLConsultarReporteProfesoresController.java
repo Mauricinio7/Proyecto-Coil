@@ -20,7 +20,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ComboBox;
 import javafx.scene.input.MouseEvent;
@@ -61,10 +60,14 @@ public class FXMLConsultarReporteProfesoresController implements Initializable {
 
     @FXML
     private void btnDescargar(ActionEvent event) {
-        seleccionarDirectorio();
-        if (carpeta != null) {
-            mostrarVentanaDescarga();
-            generarReporte(carpeta.getAbsolutePath());
+        if (cbPeriodo.getValue() != null) {
+            seleccionarDirectorio();
+            if (carpeta != null) {
+                mostrarVentanaDescarga();
+                generarReporte(carpeta.getAbsolutePath());
+            }
+        } else {
+            Utils.mostrarAlertaSimple("Sin registros", "No hay profesores participantes", AlertType.ERROR);
         }
     }
 

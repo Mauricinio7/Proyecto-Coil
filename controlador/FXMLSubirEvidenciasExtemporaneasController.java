@@ -99,7 +99,7 @@ public class FXMLSubirEvidenciasExtemporaneasController implements Initializable
 
     private void obtenerColaboracion(Integer idColaboracion) {
         HashMap<String, Object> mapColaboracion = ColaboracionDAO.obtenerColaboracionPorId(idColaboracion);
-        if (!(boolean)mapColaboracion.get("error")){
+        if (!(boolean)mapColaboracion.get(Constantes.KEY_ERROR)){
             colaboracion = (Colaboracion) mapColaboracion.get("Colaboracion");
         }else{
             Utils.mostrarAlertaSimple(null, "No se han podido cargar los datos", AlertType.ERROR, (Stage) panelDeslisante.getScene().getWindow());
@@ -110,7 +110,7 @@ public class FXMLSubirEvidenciasExtemporaneasController implements Initializable
         evidencias = FXCollections.observableArrayList();
         HashMap<String, Object> mapEvidencias = 
         EvidenciaDAO.obtenerEvidenciasPorIdColaboracion(colaboracion.getIdColaboracion());
-        if (!(boolean)mapEvidencias.get("error")){
+        if (!(boolean)mapEvidencias.get(Constantes.KEY_ERROR)){
             ArrayList<Evidencia> listaEvidencias = (ArrayList<Evidencia>) mapEvidencias.get("evidencias");
             evidencias.addAll(listaEvidencias);
             tvArchivosEvidencias.setItems(evidencias);
@@ -151,7 +151,7 @@ public class FXMLSubirEvidenciasExtemporaneasController implements Initializable
         } else {
             obtenerDatosEvidencia();
             HashMap<String, Object> mapEvidencia = EvidenciaDAO.insertarEvidencia(evidencia);
-            if (!(boolean)mapEvidencia.get("error")){
+            if (!(boolean)mapEvidencia.get(Constantes.KEY_ERROR)){
                 if (evidencias.size() < 6) {
                     Utils.mostrarAlertaSimple(null, ""+mapEvidencia.get(Constantes.KEY_MENSAJE), AlertType.INFORMATION, (Stage) panelDeslisante.getScene().getWindow());
                     evidencias.add(evidencia);
@@ -216,11 +216,6 @@ public class FXMLSubirEvidenciasExtemporaneasController implements Initializable
     @FXML
     private void btnCancelar(ActionEvent event) {
         irPantallaHome(profesorUv);
-    }
-
-
-    private void actualizarTabla() {
-        tvArchivosEvidencias.refresh();
     }
     
     @FXML

@@ -36,7 +36,6 @@ public class FXMLFormularioAgregarProfesorExternoController implements Initializ
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
         limitarCaracteresTextField(tfCorreo, 50);
         limitarCaracteresTextField(tfIdioma, 20);
         limitarCaracteresTextField(tfInstitucion, 100);
