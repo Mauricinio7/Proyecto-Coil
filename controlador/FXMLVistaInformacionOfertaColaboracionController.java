@@ -108,9 +108,9 @@ public class FXMLVistaInformacionOfertaColaboracionController implements Initial
         try{
             //abrir ventana consultar oferta colaboracion
             Stage stage = (Stage) btnAceptar.getScene().getWindow();
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/coilvic/vista/FXMLConsultaOfertaColaboracion.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/coilvic/vista/FXMLConsultaOfertaColaboraciones.fxml"));
             Parent root = loader.load();
-            FXMLConsultaOfertaColaboracionController controller = loader.getController();
+            FXMLConsultaOfertaColaboracionesController controller = loader.getController();
             controller.inicializarValores(profesorSesion);
             stage.getScene().setRoot(root);
             stage.setTitle("Consulta Oferta Colaboracion");
