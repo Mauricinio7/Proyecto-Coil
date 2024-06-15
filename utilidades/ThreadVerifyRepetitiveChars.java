@@ -16,14 +16,14 @@ public class ThreadVerifyRepetitiveChars implements Runnable{
             int stringLength = textComponent.getText().length();
             if(stringLength < 3) return;
             String cadena = textComponent.getText();
-            int count = 0;
+            int contador = 0;
             for(int i = 1; i < stringLength; i++){
                 if(cadena.charAt(i) == cadena.charAt(i - 1)){
-                    count++;
+                    contador++;
                 }else{
-                    count = 0;
+                    contador = 0;
                 }
-                if(count == 3){
+                if(contador == 3){
                     textComponent.setText(oldValue);
                     textComponent.positionCaret(textComponent.getLength());
                 }
