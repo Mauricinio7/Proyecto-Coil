@@ -346,6 +346,7 @@ public class FXMLVistaOfertaColaboracionController implements Initializable {
                 nuevaOfertaColaboracion.setObjetivoGeneral(taObjetivo.getText());
                 nuevaOfertaColaboracion.setPeriodo(cbPeriodo.getSelectionModel().getSelectedItem());
                 nuevaOfertaColaboracion.setTemaInteres(taTemaInteres.getText());
+                nuevaOfertaColaboracion.setIdDepartamento(cbDepartamento.getSelectionModel().getSelectedItem().getIdDepartamento());
                 HashMap <String, Boolean> mapGuardadoOferta = OfertaColaboracionDAO.guardarOferta(nuevaOfertaColaboracion);
                 if(mapGuardadoOferta != null && mapGuardadoOferta.containsKey("ofertaColaboracion")){
                     Stage stagePrincipal = (Stage)tfIdioma.getScene().getWindow();

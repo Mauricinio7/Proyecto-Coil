@@ -18,8 +18,8 @@ public class OfertaColaboracionDAO {
             StringBuilder consulta = new StringBuilder();
             consulta.append("INSERT INTO oferta_colaboracion ");
             consulta.append("(idioma, nombre, objetivo_general, periodo, tema_interes, ");
-            consulta.append("profesoruv_id_profesoruv, asignatura_id_asignatura) ");
-            consulta.append("VALUES (?, ?, ?, ?, ?, ?, ?)");
+            consulta.append("profesoruv_id_profesoruv, asignatura_id_asignatura, departamento_id_departamento) ");
+            consulta.append("VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
             PreparedStatement prepararSentencia = conexionDB.prepareStatement(consulta.toString());
             prepararSentencia.setString(1, nuevaOferta.getIdioma());
             prepararSentencia.setString(2, nuevaOferta.getNombre());
@@ -28,6 +28,7 @@ public class OfertaColaboracionDAO {
             prepararSentencia.setString(5, nuevaOferta.getTemaInteres());
             prepararSentencia.setInt(6, nuevaOferta.getIdProfesor());
             prepararSentencia.setInt(7, nuevaOferta.getIdAsignatura());
+            prepararSentencia.setInt(8, nuevaOferta.getIdDepartamento());
             int filasAfectada =prepararSentencia.executeUpdate();
             if(filasAfectada > 0){
                 respuesta.put("ofertaColaboracion", true);
