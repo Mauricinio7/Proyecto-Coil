@@ -390,29 +390,7 @@ public class ColaboracionDAO {
         }
         return respuesta;
     }
-    /* 
-     * MariaDB [COIL]> describe colaboracion;
-+--------------------------------------+--------------+------+-----+---------+----------------+
-| Field                                | Type         | Null | Key | Default | Extra          |
-+--------------------------------------+--------------+------+-----+---------+----------------+
-| id_colaboracion                      | int(11)      | NO   | PRI | NULL    | auto_increment |
-| estado                               | varchar(50)  | YES  |     | NULL    |                |
-| fecha_inicio                         | date         | NO   |     | NULL    |                |
-| fecha_fin                            | date         | NO   |     | NULL    |                |
-| idioma                               | varchar(20)  | NO   |     | NULL    |                |
-| nombre                               | varchar(100) | NO   | UNI | NULL    |                |
-| objetivo_general                     | varchar(350) | YES  |     | NULL    |                |
-| tema_interes                         | varchar(50)  | NO   |     | NULL    |                |
-| periodo                              | varchar(20)  | NO   |     | NULL    |                |
-| no_estudiante_externo                | int(11)      | NO   |     | NULL    |                |
-| profesoruv_id_profesoruv             | int(11)      | NO   | MUL | NULL    |                |
-| departamento_id_departamento         | int(11)      | NO   | MUL | NULL    |                |
-| region_id_region                     | int(11)      | NO   | MUL | NULL    |                |
-| asignatura_id_asignatura             | int(11)      | NO   | MUL | NULL    |                |
-| profesor_externo_id_profesor_externo | int(11)      | NO   | MUL | NULL    |                |
-+--------------------------------------+--------------+------+-----+---------+----------------+
-
-     */
+    
     public static HashMap<String, Object> consultarColaboracionPorEstado(String estadoPosible, String estadoPosible2){
         HashMap <String, Object> respuesta = new HashMap<>();
         ArrayList<Colaboracion> listaColaboracion = new ArrayList<>();

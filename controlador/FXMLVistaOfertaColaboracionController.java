@@ -59,13 +59,13 @@ import javafx.util.Duration;
  */
 public class FXMLVistaOfertaColaboracionController implements Initializable {
 
-    String expresionValidaNombreColaboracion = "[a-zA-Z0-9íáéóúüñÁÉÍÓÚÑÜ.\\- ]+";
-    Pattern patronNombreColaboracion = Pattern.compile(expresionValidaNombreColaboracion);
-    String expresionValidaNombreIdioma = "[a-zA-ZíáéóúñÁÉÍÓÚÑÜ. ]+";
-    Pattern patronNombreIdioma = Pattern.compile(expresionValidaNombreIdioma);
-    String expresionValidaTopic = "[a-zA-Z0-9()íáéóúñÁÉÍÓÚÑÜ¿?.\\[\\]\\- ]+";
-    Pattern patronTopic= Pattern.compile(expresionValidaTopic);
-    ProfesorUv profesorSesion;
+    private String expresionValidaNombreColaboracion;
+    private Pattern patronNombreColaboracion;
+    private String expresionValidaNombreIdioma;
+    private Pattern patronNombreIdioma;
+    private String expresionValidaTopic;
+    private Pattern patronTopic;
+    private ProfesorUv profesorSesion;
     private ObservableList<Region> observadorRegion;
     private ObservableList<Asignatura> observadorAsignatura;
     private ObservableList<String> observadorAreaAcademica;
@@ -116,30 +116,31 @@ public class FXMLVistaOfertaColaboracionController implements Initializable {
     public void inicializarValores(ProfesorUv profesorSesion){
         this.profesorSesion = profesorSesion;
         asignarFechaActualNTP();
+        inicializarPattern();
         fillPeriodo();
-        fillRegion();
+        llenarRegion();
         modificarAreaAcademica();
         modificarDepartamento();
         modificarAsignatura();
-        verifyNonValideCharsNameColaboracion();
-        verifyNonValideCharsLenguage();
-        verifyNonValideCharsObjetivo();
-        verifyNonValidTopic();
+        verificarInputValidosTfName();
+        verificarInputValidosTfIdioma();
+        verificarInputValidosTaObjetivo();
+        verificarInputValidosTaTema();
     }
     //metodos de crud
-    public void fillRegion(){
+    public void llenarRegion(){
         HashMap<String, Object> obtenerRegion = RegionDAO.consultarListaRegion();
         verificarConsulta(obtenerRegion, cbRegion, observadorRegion, "listaRegion");
     }
-    public void fillAreaAcademicaPorRegion(int idRegion){
+    public void llenarAreaAcademicaPorRegion(int idRegion){
         HashMap<String, Object> obtenerAreaAcademica = AsignaturaDAO.consultarAreaAcademicaPorRegion(idRegion);
         verificarConsulta(obtenerAreaAcademica, cbAreaAcad, observadorAreaAcademica, "listaArea");
     }
-    public void fillDepartamentoPorAreaAcad(String areaAcad){
+    public void llenarDepartamentoPorAreaAcad(String areaAcad){
         HashMap<String, Object> obtenerDepartamento = DepartamentoDAO.consultarDepartamentoPorAreaAcad(areaAcad);
         verificarConsulta(obtenerDepartamento, cbDepartamento, observadorDepartamento, "listaDepartamento");
     }
-    public void fillAsignaturaPorDepartamento(int idDepartamento){
+    public void llenarAsignaturaPorDepartamento(int idDepartamento){
         HashMap<String, Object> obtenerAsignatura = AsignaturaDAO.consultaAsignaturaDepartamento(idDepartamento);
         verificarConsulta(obtenerAsignatura, cbAsignatura, observadorAsignatura, "listaAsignatura");
     }
@@ -157,14 +158,14 @@ public class FXMLVistaOfertaColaboracionController implements Initializable {
     public boolean setComboboxValues(Object classType){
         if(classType == null) return false;
         if(classType instanceof Region){
-            fillAreaAcademicaPorRegion(cbRegion.getSelectionModel().getSelectedItem().getIdRegion());
-            fillDepartamentoPorAreaAcad(cbAreaAcad.getSelectionModel().getSelectedItem());
-            fillAsignaturaPorDepartamento(cbDepartamento.getSelectionModel().getSelectedItem().getIdDepartamento());
+            llenarAreaAcademicaPorRegion(cbRegion.getSelectionModel().getSelectedItem().getIdRegion());
+            llenarDepartamentoPorAreaAcad(cbAreaAcad.getSelectionModel().getSelectedItem());
+            llenarAsignaturaPorDepartamento(cbDepartamento.getSelectionModel().getSelectedItem().getIdDepartamento());
         }else if(classType instanceof Asignatura && classType instanceof String){
-            fillDepartamentoPorAreaAcad(cbAreaAcad.getSelectionModel().getSelectedItem());
-            fillAsignaturaPorDepartamento(cbDepartamento.getSelectionModel().getSelectedItem().getIdDepartamento());
+            llenarDepartamentoPorAreaAcad(cbAreaAcad.getSelectionModel().getSelectedItem());
+            llenarAsignaturaPorDepartamento(cbDepartamento.getSelectionModel().getSelectedItem().getIdDepartamento());
         }else if(classType instanceof Departamento){
-            fillAsignaturaPorDepartamento(cbDepartamento.getSelectionModel().getSelectedItem().getIdDepartamento());
+            llenarAsignaturaPorDepartamento(cbDepartamento.getSelectionModel().getSelectedItem().getIdDepartamento());
         }
         return true;
     }
@@ -174,7 +175,7 @@ public class FXMLVistaOfertaColaboracionController implements Initializable {
             @Override
             public void changed(ObservableValue<? extends Region> observable, Region oldValue, Region newValue) {
                 if(newValue != null){
-                    fillAreaAcademicaPorRegion(newValue.getIdRegion());
+                    llenarAreaAcademicaPorRegion(newValue.getIdRegion());
                 }
             }
         });
@@ -185,7 +186,7 @@ public class FXMLVistaOfertaColaboracionController implements Initializable {
             public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
                 if(newValue != null){
                     cbDepartamento.setDisable(false);
-                    fillDepartamentoPorAreaAcad(newValue);
+                    llenarDepartamentoPorAreaAcad(newValue);
                 }
             }
         });
@@ -196,7 +197,7 @@ public class FXMLVistaOfertaColaboracionController implements Initializable {
             public void changed(ObservableValue<? extends Departamento> observable, Departamento oldValue, Departamento newValue) {
                 if(newValue != null){
                     cbAsignatura.setDisable(false);
-                    fillAsignaturaPorDepartamento(newValue.getIdDepartamento());
+                    llenarAsignaturaPorDepartamento(newValue.getIdDepartamento());
                 }
             }
         });
@@ -214,7 +215,7 @@ public class FXMLVistaOfertaColaboracionController implements Initializable {
             error.printStackTrace();
         }
     }
-    public void verifyNonValideCharsNameColaboracion(){
+    public void verificarInputValidosTfName(){
         tfNameCol.textProperty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
@@ -226,7 +227,7 @@ public class FXMLVistaOfertaColaboracionController implements Initializable {
             }
         });
     }
-    public void verifyNonValideCharsLenguage(){
+    public void verificarInputValidosTfIdioma(){
         tfIdioma.textProperty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
@@ -239,7 +240,7 @@ public class FXMLVistaOfertaColaboracionController implements Initializable {
             
         });
     }
-    void verifyNonValideCharsObjetivo(){
+    void verificarInputValidosTaObjetivo(){
         taObjetivo.textProperty().addListener(new ChangeListener<String>() {
 
             @Override
@@ -253,7 +254,7 @@ public class FXMLVistaOfertaColaboracionController implements Initializable {
             
         });
     }
-    void verifyNonValidTopic(){
+    void verificarInputValidosTaTema(){
         taTemaInteres.textProperty().addListener(new ChangeListener<String>() {
 
             @Override
@@ -336,7 +337,7 @@ public class FXMLVistaOfertaColaboracionController implements Initializable {
     }
     @FXML
     private void clicSave(MouseEvent event) {
-       if(!areComboboxEmpty() && isValidText(tfNameCol.getText(), patronNombreColaboracion) && isValidText(tfIdioma.getText(), patronNombreIdioma)
+       if(!verificarComboboxVacios() && isValidText(tfNameCol.getText(), patronNombreColaboracion) && isValidText(tfIdioma.getText(), patronNombreIdioma)
             && (taObjetivo.getText().length() == 0 || isValidText(taObjetivo.getText(), patronTopic)) && isValidText(taTemaInteres.getText(), patronTopic)){
                 OfertaColaboracion nuevaOfertaColaboracion = new OfertaColaboracion();
                 nuevaOfertaColaboracion.setNombre(tfNameCol.getText());
@@ -367,7 +368,7 @@ public class FXMLVistaOfertaColaboracionController implements Initializable {
         }
     }
     //validacions
-    public boolean areComboboxEmpty(){
+    public boolean verificarComboboxVacios(){
         if(cbAreaAcad.getSelectionModel().getSelectedItem() == null || cbRegion.getSelectionModel().getSelectedItem() == null 
             || cbAsignatura.getSelectionModel().getSelectedItem() == null || cbPeriodo.getSelectionModel().getSelectedItem() == null || cbDepartamento.getSelectionModel().getSelectedItem() == null){
                 return true;

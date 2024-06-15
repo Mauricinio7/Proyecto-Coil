@@ -172,8 +172,6 @@ public class ProfesorExternoDAO {
         return respuesta;
     }
 
-    
-
     public static HashMap<String, Object> obtenerProfesoresExternoPorNombre(String nombre) {
         HashMap<String, Object> respuesta = new HashMap<>();
         respuesta.put("error", true);

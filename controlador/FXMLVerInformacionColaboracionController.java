@@ -67,7 +67,7 @@ public class FXMLVerInformacionColaboracionController implements Initializable {
             colaboracion = (Colaboracion) respuesta.get("Colaboracion");
             cargarDatosColaboracion();
         }else{
-            Utils.mostrarAlertaSimple("Error en la conexión", "No se han podido cargar los datos.", Alert.AlertType.ERROR);
+            Utils.mostrarAlertaSimple(Constantes.TITTLE_ERROR_CONEXION, Constantes.ERROR_CARGAR_DATOS, Alert.AlertType.ERROR);
         }
     }
 
@@ -105,7 +105,7 @@ public class FXMLVerInformacionColaboracionController implements Initializable {
                             Image image = new Image(inputPlan);
                             imgPlanProyecto.setImage(image);
                         } catch (NullPointerException ex) {
-                            Utils.mostrarAlertaSimple("Error en la conexión", "No se han podido cargar los datos.", Alert.AlertType.ERROR);
+                            Utils.mostrarAlertaSimple(Constantes.TITTLE_ERROR_CONEXION, Constantes.ERROR_CARGAR_DATOS, Alert.AlertType.ERROR);
                         }
                     }
                 }else{

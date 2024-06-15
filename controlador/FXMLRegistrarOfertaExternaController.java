@@ -89,12 +89,12 @@ public class FXMLRegistrarOfertaExternaController implements Initializable {
         // TODO
         asignarFechaActualNTP();
         inicializarPattern();
-        verifyNonValideCharsNameColaboracion();
-        verifyNonValideCharsLenguage();
-        verifyNonValideCharsObjetivo();
-        verifyNonValidTopic();
-        verifyNonValidAsignatura();
-        fillPeriodo();
+        verificarValoresValidosTfName();
+        verificarValoresValidosTfIdoma();
+        verificarValoresValidosTaObjetivo();;
+        verificarValoresValidosTaTema();
+        verificarValoresValidosAsignatura();
+        llenarPeriodo();
     }    
 
        @FXML
@@ -132,7 +132,7 @@ public class FXMLRegistrarOfertaExternaController implements Initializable {
                     Utils.mostrarAlertaConfirmacion("Guardado", "Se ha guardado correctamente", AlertType.INFORMATION);
                     
                 }else{
-                    Utils.mostrarAlertaConfirmacion("Error", Constantes.ERROR_CARGAR_DATOS, AlertType.ERROR);
+                    Utils.mostrarAlertaConfirmacion(Constantes.KEY_ERROR, Constantes.ERROR_CARGAR_DATOS, AlertType.ERROR);
                 }
             }
         }
@@ -154,32 +154,32 @@ public class FXMLRegistrarOfertaExternaController implements Initializable {
             error.printStackTrace();
         }
     }
-    public void verifyNonValideCharsNameColaboracion(){
+    public void verificarValoresValidosTfName(){
         tfNameCol.textProperty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
                 if(newValue.length() == 0){
                     tfNameCol.setText("");
                 }else{
-                    threadValidationInputText(oldValue, tfNameCol);              
+                    hiloParaVerificarLosInputText(oldValue, tfNameCol);              
                 }
             }
         });
     }
-    public void verifyNonValideCharsLenguage(){
+    public void verificarValoresValidosTfIdoma(){
         tfIdioma.textProperty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
                 if(newValue.length() == 0){
                     tfIdioma.setText("");
                 }else{
-                    threadValidationInputText(oldValue, tfIdioma);
+                    hiloParaVerificarLosInputText(oldValue, tfIdioma);
                 }
             }
             
         });
     }
-    public void verifyNonValideCharsObjetivo(){
+    public void verificarValoresValidosTaObjetivo(){
         taObjetivo.textProperty().addListener(new ChangeListener<String>() {
 
             @Override
@@ -187,13 +187,13 @@ public class FXMLRegistrarOfertaExternaController implements Initializable {
                 if(newValue.length() == 0){
                     taObjetivo.setText("");
                 }else{
-                    threadValidationInputText(oldValue, taObjetivo);
+                    hiloParaVerificarLosInputText(oldValue, taObjetivo);
                 }
             }
             
         });
     }
-    public void verifyNonValidTopic(){
+    public void verificarValoresValidosTaTema(){
         taTemaInteres.textProperty().addListener(new ChangeListener<String>() {
 
             @Override
@@ -201,13 +201,13 @@ public class FXMLRegistrarOfertaExternaController implements Initializable {
                 if(newValue.length() == 0){
                     taTemaInteres.setText("");
                 }else{
-                    threadValidationInputText(oldValue, taTemaInteres);
+                    hiloParaVerificarLosInputText(oldValue, taTemaInteres);
                 }
             }
             
         });
     }
-    public void verifyNonValidAsignatura(){
+    public void verificarValoresValidosAsignatura(){
         tfAsignatura.textProperty().addListener(new ChangeListener<String>() {
 
             @Override
@@ -215,13 +215,13 @@ public class FXMLRegistrarOfertaExternaController implements Initializable {
                 if(newValue.length() == 0){
                     tfAsignatura.setText("");
                 }else{
-                    threadValidationInputText(oldValue, tfAsignatura);
+                    hiloParaVerificarLosInputText(oldValue, tfAsignatura);
                 }
             }
             
         });
     }
-    public void fillPeriodo(){
+    public void llenarPeriodo(){
         ObservableList<String> observablePeriodo =  FXCollections.observableArrayList();
         ArrayList<String> listaPeriodos = new ArrayList<>();
         String []periodos = {"ENER-JUN", "AGOST-DIC"};
@@ -236,7 +236,7 @@ public class FXMLRegistrarOfertaExternaController implements Initializable {
             observablePeriodo.addAll(listaPeriodos);
             cbPeriodo.setItems(observablePeriodo);
     }
-    public void threadValidationInputText(String oldValue, TextInputControl component){
+    public void hiloParaVerificarLosInputText(String oldValue, TextInputControl component){
         Thread threadVerifyValidCharsName = new Thread(new VerifyValidCharsThread(component, patronNombreColaboracion, oldValue));
         Thread threadVerifyRepetitiveChars = new Thread(new ThreadVerifyRepetitiveChars(component, oldValue));
         threadVerifyValidCharsName.start(); 

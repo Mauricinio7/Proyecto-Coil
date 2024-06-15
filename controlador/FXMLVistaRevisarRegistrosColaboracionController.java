@@ -56,8 +56,8 @@ import javafx.util.Duration;
  */
 public class FXMLVistaRevisarRegistrosColaboracionController implements Initializable {
 
-   String expresionValidaNombreColaboracion = "[a-zA-Z0-9íáéóúüñÁÉÍÓÚÑÜ.\\- ]+";
-    Pattern patronNombreColaboracion = Pattern.compile(expresionValidaNombreColaboracion);
+    private String expresionValidaNombreColaboracion;
+    private Pattern patronNombreColaboracion;
     ObservableList<Colaboracion> listaColaboracionObservable;
     private ObservableList<String> listaEstado;
     @FXML
@@ -85,9 +85,6 @@ public class FXMLVistaRevisarRegistrosColaboracionController implements Initiali
     @FXML
     private TableColumn clInformacion;
 
-    /**
-     * Initializes the controller class.
-     */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         fillEstado();
@@ -341,4 +338,8 @@ public void irOfertasExternas(){
         }
     }
 
+    public void inicializarPattern(){
+        expresionValidaNombreColaboracion = "[a-zA-Z0-9íáéóúüñÁÉÍÓÚÑÜ.\\- ]+";
+        patronNombreColaboracion = Pattern.compile(expresionValidaNombreColaboracion);
+    }
 }

@@ -53,9 +53,9 @@ import javafx.util.Duration;
 
 public class FXMLConsultarHistorialController implements Initializable {
 
-    String expresionValidaNombreColaboracion;
-    Pattern patronNombreColaboracion;
-    ObservableList<Colaboracion> listaColaboracionObservable;
+    private String expresionValidaNombreColaboracion;
+    private Pattern patronNombreColaboracion;
+    private ObservableList<Colaboracion> listaColaboracionObservable;
     private ObservableList<String> listaEstado;
     @FXML
     private Pane panelDeslisante;
