@@ -88,11 +88,12 @@ public class FXMLVistaRevisarRegistrosColaboracionController implements Initiali
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         fillEstado();
+        inicializarPattern();
         configurarTabla();
         Platform.runLater(() -> {
             btnBuscar.requestFocus();
         });
-        verifyNonValideTfName();
+        verificarInputValidasTfName();
     }    
       @FXML
     private void salePanel(MouseEvent event) {
@@ -160,7 +161,7 @@ public class FXMLVistaRevisarRegistrosColaboracionController implements Initiali
             };
         });
     }
-    public void verifyNonValideTfName(){
+    public void verificarInputValidasTfName(){
         tfName.textProperty().addListener(new ChangeListener<String>() {
 
             @Override
@@ -168,13 +169,13 @@ public class FXMLVistaRevisarRegistrosColaboracionController implements Initiali
                 if(newValue.length() == 0){
                     tfName.setText("");
                 }else{                      
-                    threadValidationInputText(oldValue, tfName);
+                    hiloVerificarInputText(oldValue, tfName);
                 }
             }
             
         });
     }
-    public void threadValidationInputText(String oldValue, TextInputControl textComponent){
+    public void hiloVerificarInputText(String oldValue, TextInputControl textComponent){
         Platform.runLater(()-> {
             Thread validacionRepetidos = new Thread(new ThreadVerifyRepetitiveChars(textComponent, oldValue));
             Thread validacionCaracteresNoValidos = new Thread(new VerifyValidCharsThread(textComponent, patronNombreColaboracion, oldValue));
