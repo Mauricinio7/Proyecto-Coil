@@ -49,7 +49,6 @@ public class FXMLVistaInformacionOfertaColaboracionController implements Initial
     private Label lbProfesor;
     @FXML
     private Label lbAsignatura;
-    private Label lbCorreo;
     @FXML
     private TextArea taObjetico;
     @FXML
@@ -105,19 +104,26 @@ public class FXMLVistaInformacionOfertaColaboracionController implements Initial
 
     @FXML
     private void clicBtnAceptar(ActionEvent event) {
-        try{
-            //abrir ventana consultar oferta colaboracion
-            Stage stage = (Stage) btnAceptar.getScene().getWindow();
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/coilvic/vista/FXMLConsultaOfertaColaboracion.fxml"));
-            Parent root = loader.load();
-            FXMLConsultaOfertaColaboracionController controller = loader.getController();
-            controller.inicializarValores(profesorSesion);
-            stage.getScene().setRoot(root);
-            stage.setTitle("Consulta Oferta Colaboracion");
-            stage.show();
-        }catch(IOException e){
-            e.printStackTrace();
-        }
+        irPantallaOfertasColaboracion(profesorSesion);
+        
     }
     
+    public void irPantallaOfertasColaboracion(ProfesorUv profesorUv){
+        try{
+            Stage stageInformacion = new Stage();
+            stageInformacion.initStyle(StageStyle.UTILITY);
+            FXMLLoader cargarObjeto = new FXMLLoader(CoilVic.class.getResource("vista/FXMLConsultarOfertaColaboraciones.fxml"));
+            Parent root = cargarObjeto.load();
+            FXMLConsultaOfertaColaboracionesController vistaOfertaCol = cargarObjeto.getController();
+            vistaOfertaCol.inicializarValores(profesorUv);
+            Scene nuevaScena = new Scene(root);
+            stageInformacion.setTitle("Mis ofertas");
+            stageInformacion.setScene(nuevaScena);
+            stageInformacion.show();
+            Stage stagePrincipal = (Stage)taTema.getScene().getWindow();
+            stagePrincipal.close();
+        }catch(IOException error){
+            error.printStackTrace();
+        }
+    }
 }
