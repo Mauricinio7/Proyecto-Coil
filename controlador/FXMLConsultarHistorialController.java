@@ -11,8 +11,6 @@ import java.util.HashMap;
 import java.util.ResourceBundle;
 import java.util.regex.Pattern;
 
-import com.mysql.jdbc.Util;
-
 import coilvic.modelo.dao.AsignaturaDAO;
 import coilvic.modelo.dao.ColaboracionDAO;
 import coilvic.modelo.dao.DepartamentoDAO;
@@ -20,7 +18,6 @@ import coilvic.modelo.dao.ProfesorExternoDAO;
 import coilvic.modelo.dao.ProfesorUvDAO;
 import coilvic.modelo.dao.RegionDAO;
 import coilvic.modelo.pojo.Colaboracion;
-import coilvic.modelo.pojo.ProfesorExterno;
 import coilvic.utilidades.Constantes;
 import coilvic.utilidades.ThreadVerifyRepetitiveChars;
 import coilvic.utilidades.Utils;
@@ -44,22 +41,20 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.TextInputControl;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Label;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
 
 public class FXMLConsultarHistorialController implements Initializable {
 
-    String expresionValidaNombreColaboracion = "[a-zA-Z0-9íáéóúüñÁÉÍÓÚÑÜ.\\- ]+";
-    Pattern patronNombreColaboracion = Pattern.compile(expresionValidaNombreColaboracion);
+    String expresionValidaNombreColaboracion;
+    Pattern patronNombreColaboracion;
     ObservableList<Colaboracion> listaColaboracionObservable;
     private ObservableList<String> listaEstado;
     @FXML
@@ -105,12 +100,13 @@ public class FXMLConsultarHistorialController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        fillEstado();
+        llenarEstado();
         configurarTabla();
+        inicializarPattern();
         Platform.runLater(() -> {
             btnBuscar.requestFocus();
         });
-        verifyNonValideTfName();
+        verificarInputsNoValidosTfName();
     }    
       @FXML
     private void salePanel(MouseEvent event) {
@@ -130,7 +126,7 @@ public class FXMLConsultarHistorialController implements Initializable {
         
         transicion.play();
     }
-    public void fillEstado(){
+    public void llenarEstado(){
         listaEstado = FXCollections.observableArrayList();
         listaEstado.add("Colaboraciones Activas");
         listaEstado.add("Colaboraciones Finalizadas");
@@ -179,7 +175,7 @@ public class FXMLConsultarHistorialController implements Initializable {
             };
         });
     }
-    public void verifyNonValideTfName(){
+    public void verificarInputsNoValidosTfName(){
         tfName.textProperty().addListener(new ChangeListener<String>() {
 
             @Override
@@ -187,13 +183,13 @@ public class FXMLConsultarHistorialController implements Initializable {
                 if(newValue.length() == 0){
                     tfName.setText("");
                 }else{                      
-                    threadValidationInputText(oldValue, tfName);
+                    hiloValidacionInputText(oldValue, tfName);
                 }
             }
             
         });
     }
-    public void threadValidationInputText(String oldValue, TextInputControl textComponent){
+    public void hiloValidacionInputText(String oldValue, TextInputControl textComponent){
         Platform.runLater(()-> {
             Thread validacionRepetidos = new Thread(new ThreadVerifyRepetitiveChars(textComponent, oldValue));
             Thread validacionCaracteresNoValidos = new Thread(new VerifyValidCharsThread(textComponent, patronNombreColaboracion, oldValue));
@@ -357,4 +353,8 @@ public void irOfertasExternas(){
         }
     }
 
+    public void inicializarPattern(){
+        expresionValidaNombreColaboracion = "[a-zA-Z0-9íáéóúüñÁÉÍÓÚÑÜ.\\- ]+";
+        patronNombreColaboracion = Pattern.compile(expresionValidaNombreColaboracion);
+    }
 }
