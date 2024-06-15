@@ -28,7 +28,6 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
@@ -90,14 +89,13 @@ public class FXMLRegistrarProfesorExternoController implements Initializable, Ob
     }
 
     private void configurarBusqueda() {
-        profesoresExternosFiltrados = new FilteredList<>(profesoresExternos, p -> false); // Inicialmente filtra todo
-        
+        profesoresExternosFiltrados = new FilteredList<>(profesoresExternos, p -> false);
         tfBusquedaProfesor.textProperty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
                 profesoresExternosFiltrados.setPredicate(profesorExterno -> {
                     if (newValue == null || newValue.isEmpty()) {
-                        return false; // No mostrar nada si el campo de búsqueda está vacío
+                        return false;
                     }
                     String valorMinuscula = newValue.toLowerCase();
                     return profesorExterno.getNombre().toLowerCase().contains(valorMinuscula);
