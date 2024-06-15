@@ -10,11 +10,8 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<<<<<<< HEAD
 <AnchorPane id="AnchorPane" prefHeight="700.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="coilvic.controlador.FXMLVistaInformacionOfertaColaboracionController">
-=======
-<AnchorPane id="AnchorPane" prefHeight="700.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="coilvic.controlador.FXMLVistaInformacionOfertaColaboracionController">
->>>>>>> ce412053ed0ec18588aa8629ac2fefe3466083c5
+
     <children>
       <Label layoutX="293.0" layoutY="42.0" text="Datos de Oferta de Colaboración">
          <font>
@@ -26,17 +23,10 @@
       <Label fx:id="lbNameColaboracion" layoutX="333.0" layoutY="120.0" text="Label" />
       <Label layoutX="32.0" layoutY="185.0" text="Profesor" />
       <Label fx:id="lbProfesor" layoutX="333.0" layoutY="176.0" text="Label" />
-<<<<<<< HEAD
       <Label layoutX="32.0" layoutY="257.0" text="Asignatura" />
       <Label layoutX="32.0" layoutY="332.0" text="Periodo" />
       <Label fx:id="lbAsignatura" layoutX="333.0" layoutY="266.0" text="Label" />
       <Label fx:id="lbPeriodo" layoutX="333.0" layoutY="341.0" text="Label" />
-=======
-      <Label layoutX="26.0" layoutY="249.0" text="Asignatura" />
-      <Label layoutX="26.0" layoutY="307.0" text="Periodo" />
-      <Label fx:id="lbAsignatura" layoutX="332.0" layoutY="249.0" text="Label" />
-      <Label fx:id="lbPeriodo" layoutX="333.0" layoutY="307.0" text="Label" />
->>>>>>> ce412053ed0ec18588aa8629ac2fefe3466083c5
       <Button fx:id="btnAceptar" layoutX="384.0" layoutY="632.0" mnemonicParsing="false" onAction="#clicBtnAceptar" text="Aceptar" />
       <Label layoutX="32.0" layoutY="405.0" text="Objetivo General" />
       <Label layoutX="509.0" layoutY="405.0" text="Tema de  interés" />
