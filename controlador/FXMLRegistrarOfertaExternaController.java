@@ -278,4 +278,20 @@ public class FXMLRegistrarOfertaExternaController implements Initializable {
         Matcher coincidencia = patron.matcher(text);
         return coincidencia.matches();
     }
+
+    @FXML
+    private void clicHome(MouseEvent event) {
+    }
+
+    @FXML
+    private void clicOfertas(MouseEvent event) {
+    }
+
+    @FXML
+    private void clicRegistrarProfesor(MouseEvent event) {
+    }
+
+    @FXML
+    private void clicConsultas(MouseEvent event) {
+    }
 }
