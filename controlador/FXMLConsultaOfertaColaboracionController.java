@@ -15,6 +15,7 @@ import coilvic.CoilVic;
 import coilvic.modelo.dao.OfertaColaboracionDAO;
 import coilvic.modelo.pojo.OfertaColaboracion;
 import coilvic.modelo.pojo.ProfesorUv;
+import coilvic.utilidades.Constantes;
 import coilvic.utilidades.ThreadVerifyRepetitiveChars;
 import coilvic.utilidades.Utils;
 import coilvic.utilidades.VerifyValidCharsThread;
@@ -49,9 +50,9 @@ import javafx.util.Duration;
 
 public class FXMLConsultaOfertaColaboracionController implements Initializable {
 
-    ProfesorUv profesorSesion;
-    String expresionValidaNombreColaboracion = "[a-zA-Z0-9íáéóúüñÁÉÍÓÚÑÜ.\\- ]+";
-    Pattern patronNombreColaboracion = Pattern.compile(expresionValidaNombreColaboracion);
+    private ProfesorUv profesorSesion;
+    private String expresionValidaNombreColaboracion;
+    private Pattern patronNombreColaboracion;
     ObservableList<OfertaColaboracion> listaOfertaColaboracionObservable;
     @FXML
     private Pane panelDeslisante;
@@ -80,10 +81,11 @@ public class FXMLConsultaOfertaColaboracionController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         configurarTabla();
+        inicializarPattern();
         Platform.runLater(() -> {
             btnBuscar.requestFocus();
         });
-        verifyNonValideTfName();
+        verificarInputNoValidoTfName();
         tvColaboraciones.setVisible(false);
         this.profesorSesion = new ProfesorUv();
         profesorSesion.setIdProfesorUv(3);
@@ -91,6 +93,7 @@ public class FXMLConsultaOfertaColaboracionController implements Initializable {
     public void inicializarValores(ProfesorUv profesorSesion){
         this.profesorSesion = profesorSesion;
     }
+
       @FXML
     private void salePanel(MouseEvent event) {
         TranslateTransition transicion = new TranslateTransition();
@@ -119,22 +122,7 @@ public class FXMLConsultaOfertaColaboracionController implements Initializable {
                 {
                     botonInformacion.setOnAction(event -> {
                         OfertaColaboracion oferta = getTableView().getItems().get(getIndex());
-                        try {
-                            Stage stagePrincipal = (Stage)tfName.getScene().getWindow();
-                            FXMLLoader loader = new FXMLLoader(getClass().getResource("/coilvic/vista/FXMLVistaInformacionOfertaColaboracion.fxml"));
-                            Parent root = loader.load();
-                            FXMLVistaInformacionOfertaColaboracionController controlador = loader.getController();
-                            controlador.inicializarValores(oferta, profesorSesion);
-                            Scene nuevaEscena = new Scene(root);
-                            stagePrincipal.setScene(nuevaEscena);
-                            stagePrincipal.setTitle("Información Oferta Colaboración");
-                            stagePrincipal.setMinWidth(nuevaEscena.getWidth());
-                            stagePrincipal.setMinHeight(nuevaEscena.getHeight());
-                            stagePrincipal.show();
-                        } catch (IOException error) {
-                            error.printStackTrace();
-                        }
-                        
+                        irVistaInformacionOferta(oferta);
                     });
                 }
 
@@ -150,7 +138,7 @@ public class FXMLConsultaOfertaColaboracionController implements Initializable {
             };
         });
     }
-    public void verifyNonValideTfName(){
+    public void verificarInputNoValidoTfName(){
         tfName.textProperty().addListener(new ChangeListener<String>() {
 
             @Override
@@ -158,13 +146,32 @@ public class FXMLConsultaOfertaColaboracionController implements Initializable {
                 if(newValue.length() == 0){
                     tfName.setText("");
                 }else{                      
-                    threadValidationInputText(oldValue, tfName);
+                    hiloParaValidarInputTexto(oldValue, tfName);
                 }
             }
             
         });
     }
-    public void threadValidationInputText(String oldValue, TextInputControl textComponent){
+    
+    public void irVistaInformacionOferta(OfertaColaboracion oferta){
+        try {
+            Stage stagePrincipal = (Stage)tfName.getScene().getWindow();
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/coilvic/vista/FXMLVistaInformacionOfertaColaboracion.fxml"));
+            Parent root = loader.load();
+            FXMLVistaInformacionOfertaColaboracionController controlador = loader.getController();
+            controlador.inicializarValores(oferta, profesorSesion);
+            Scene nuevaEscena = new Scene(root);
+            stagePrincipal.setScene(nuevaEscena);
+            stagePrincipal.setTitle("Información Oferta Colaboración");
+            stagePrincipal.setMinWidth(nuevaEscena.getWidth());
+            stagePrincipal.setMinHeight(nuevaEscena.getHeight());
+            stagePrincipal.show();
+        } catch (IOException error) {
+            error.printStackTrace();
+        }
+
+    }
+    public void hiloParaValidarInputTexto(String oldValue, TextInputControl textComponent){
         Platform.runLater(()-> {
             Thread validacionRepetidos = new Thread(new ThreadVerifyRepetitiveChars(textComponent, oldValue));
             Thread validacionCaracteresNoValidos = new Thread(new VerifyValidCharsThread(textComponent, patronNombreColaboracion, oldValue));
@@ -181,11 +188,10 @@ public class FXMLConsultaOfertaColaboracionController implements Initializable {
             }
             tvColaboraciones.setItems(listaOfertaColaboracionObservable);
         }else{
-            Utils.mostrarAlertaSimple("Colaboraciones no encontradas", "No se han encontrado ofertas de colaboración", AlertType.ERROR);
+            Utils.mostrarAlertaSimple(Constantes.COLABORACION_NOT_FOUND, "No se han encontrado ofertas de colaboración", AlertType.ERROR);
         }
            
     }
-    
 
     @FXML
     private void clicBtnBuscar(ActionEvent event) {
@@ -289,5 +295,10 @@ public class FXMLConsultaOfertaColaboracionController implements Initializable {
         }catch(IOException error){
             error.printStackTrace();
         }
+    }
+
+    public void inicializarPattern(){
+        expresionValidaNombreColaboracion = "[a-zA-Z0-9íáéóúüñÁÉÍÓÚÑÜ.\\- ]+";
+        patronNombreColaboracion = Pattern.compile(expresionValidaNombreColaboracion);
     }
 }

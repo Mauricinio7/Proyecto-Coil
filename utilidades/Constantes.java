@@ -21,4 +21,5 @@ public class Constantes {
     public static final String TITTLE_ERROR_CONEXION = "No hay conexión con la base de datos.";
     public static final String TITTLE_ERROR_GUARDAR_BD = "No se han podido guardar los datos.";
     public static final String SAVE_OFERTA_MESSAGE = "Guardado exitosamente, ahora lo puede ver en la pestaña mis Colaboraciones";
+    public static final String COLABORACION_NOT_FOUND = "No se han encontrado colaboraciones";
 }
