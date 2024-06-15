@@ -451,4 +451,12 @@ public class FXMLVistaOfertaColaboracionController implements Initializable {
             error.printStackTrace();
         }
     }
+    public void inicializarPattern(){
+        expresionValidaNombreColaboracion = "[a-zA-Z0-9íáéóúüñÁÉÍÓÚÑÜ.\\- ]+";
+        patronNombreColaboracion = Pattern.compile(expresionValidaNombreColaboracion);
+        expresionValidaNombreIdioma = "[a-zA-ZíáéóúñÁÉÍÓÚÑÜ. ]+";
+        patronNombreIdioma = Pattern.compile(expresionValidaNombreIdioma);
+        expresionValidaTopic = "[a-zA-Z0-9()íáéóúñÁÉÍÓÚÑÜ¿?.\\[\\]\\- ]+";
+        patronTopic= Pattern.compile(expresionValidaTopic);
+    }
 }
