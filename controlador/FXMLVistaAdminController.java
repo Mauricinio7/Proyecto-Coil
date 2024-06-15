@@ -121,7 +121,7 @@ public class FXMLVistaAdminController implements Initializable {
             Parent root = loader.load();
             Scene scene = new Scene(root);
             stage.setScene(scene);
-            stage.setTitle("Registrar Profesor Externo");
+            stage.setTitle("Registrar oferta externa");
             stage.show();
         }catch(IOException e){
             e.printStackTrace();

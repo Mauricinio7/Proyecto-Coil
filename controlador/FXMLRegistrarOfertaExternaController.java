@@ -4,6 +4,7 @@
  */
 package coilvic.controlador;
 
+import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -14,16 +15,7 @@ import java.util.regex.Pattern;
 import coilvic.modelo.dao.OfertaColaboracionExternaDAO;
 
 import coilvic.modelo.ConexionApacheNet;
-import coilvic.modelo.dao.AsignaturaDAO;
-import coilvic.modelo.dao.DepartamentoDAO;
-import coilvic.modelo.dao.OfertaColaboracionDAO;
-import coilvic.modelo.dao.RegionDAO;
-import coilvic.modelo.pojo.Asignatura;
-import coilvic.modelo.pojo.Departamento;
-import coilvic.modelo.pojo.OfertaColaboracion;
 import coilvic.modelo.pojo.OfertaColaboracionExterna;
-import coilvic.modelo.pojo.ProfesorUv;
-import coilvic.modelo.pojo.Region;
 import coilvic.utilidades.Constantes;
 import coilvic.utilidades.ThreadVerifyRepetitiveChars;
 import coilvic.utilidades.Utils;
@@ -34,7 +26,10 @@ import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
@@ -54,12 +49,12 @@ import javafx.util.Duration;
  */
 public class FXMLRegistrarOfertaExternaController implements Initializable {
 
-    private String expresionValidaNombreColaboracion = "[a-zA-Z0-9íáéóúüñÁÉÍÓÚÑÜ.\\- ]+";
-    private Pattern patronNombreColaboracion = Pattern.compile(expresionValidaNombreColaboracion);
-    private String expresionValidaNombreIdioma = "[a-zA-ZíáéóúñÁÉÍÓÚÑÜ. ]+";
-    private Pattern patronNombreIdioma = Pattern.compile(expresionValidaNombreIdioma);
-    private String expresionValidaTopic = "[a-zA-Z0-9()íáéóúñÁÉÍÓÚÑÜ¿?.\\[\\]\\- ]+";
-    private Pattern patronTopic= Pattern.compile(expresionValidaTopic);
+    private String expresionValidaNombreColaboracion;
+    private Pattern patronNombreColaboracion;
+    private String expresionValidaNombreIdioma;
+    private Pattern patronNombreIdioma;
+    private String expresionValidaTopic;
+    private Pattern patronTopic;
     private LocalDateTime fechaNTP;
     @FXML
     private Pane panelDeslisante;
@@ -93,6 +88,7 @@ public class FXMLRegistrarOfertaExternaController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
         asignarFechaActualNTP();
+        inicializarPattern();
         verifyNonValideCharsNameColaboracion();
         verifyNonValideCharsLenguage();
         verifyNonValideCharsObjetivo();
@@ -281,17 +277,86 @@ public class FXMLRegistrarOfertaExternaController implements Initializable {
 
     @FXML
     private void clicHome(MouseEvent event) {
+        irInicio();
     }
 
     @FXML
     private void clicOfertas(MouseEvent event) {
+	irOfertasExternas();
     }
 
     @FXML
     private void clicRegistrarProfesor(MouseEvent event) {
+        irProfesorExterno();
     }
 
     @FXML
     private void clicConsultas(MouseEvent event) {
+        irConsultas();
+    }
+
+public void irOfertasExternas(){
+        try{
+            Stage stage = (Stage) panelDeslisante.getScene().getWindow();
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/coilvic/vista/FXMLRegistrarOfertaExterna.fxml"));
+            Parent root = loader.load();
+            Scene scene = new Scene(root);
+            stage.setScene(scene);
+            stage.setTitle("Registrar Profesor Externo");
+            stage.show();
+        }catch(IOException e){
+            e.printStackTrace();
+        }
+    }
+
+
+    public void irInicio(){
+        try{
+            Stage stage = (Stage) panelDeslisante.getScene().getWindow();
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/coilvic/vista/FXMLVistaAdmin.fxml"));
+            Parent root = loader.load();
+            Scene scene = new Scene(root);
+            stage.setScene(scene);
+            stage.setTitle("Inicio");
+            stage.show();
+        }catch(IOException error){
+            error.printStackTrace();
+        }
+    }
+
+    public void irConsultas(){
+        try{
+            Stage stage = (Stage) panelDeslisante.getScene().getWindow();
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/coilvic/vista/FXMLVistaParaConsultasAdmin.fxml"));
+            Parent root = loader.load();
+            Scene scene = new Scene(root);
+            stage.setScene(scene);
+            stage.setTitle("Consultas");
+            stage.show();
+        }catch(IOException error){
+            error.printStackTrace();
+        }
+    }
+
+    public void irProfesorExterno(){
+        try{
+            Stage stage = (Stage) panelDeslisante.getScene().getWindow();
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/coilvic/vista/FXMLRegistrarProfesorExterno.fxml"));
+            Parent root = loader.load();
+            Scene scene = new Scene(root);
+            stage.setScene(scene);
+            stage.setTitle("Registrar Profesor Externo");
+            stage.show();
+        }catch(IOException e){
+            e.printStackTrace();
+        }
+    }
+    public void inicializarPattern(){
+        expresionValidaNombreColaboracion = "[a-zA-Z0-9íáéóúüñÁÉÍÓÚÑÜ.\\- ]+";
+        patronNombreColaboracion = Pattern.compile(expresionValidaNombreColaboracion);
+        expresionValidaNombreIdioma = "[a-zA-ZíáéóúñÁÉÍÓÚÑÜ. ]+";
+        patronNombreIdioma = Pattern.compile(expresionValidaNombreIdioma);
+        expresionValidaTopic = "[a-zA-Z0-9()íáéóúñÁÉÍÓÚÑÜ¿?.\\[\\]\\- ]+";
+        patronTopic= Pattern.compile(expresionValidaTopic);
     }
 }
